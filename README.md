@@ -20,16 +20,28 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
+### Check for outdated packages
+
+```sh
+npm outdated
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run build
+npm run lint
+```
+
+### Format with [Prettier](https://prettier.io/)
+
+```sh
+npm run format
 ```
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
@@ -38,8 +50,8 @@ npm run build
 npm run test:unit
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run lint
+npm run build
 ```
