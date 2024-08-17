@@ -14,44 +14,50 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
+## Install yarn
+
+```sh
+npm install --global yarn
+```
+
 ## Project Setup
 
 ```sh
-npm install
+yarn install
 ```
 
 ### Check for outdated packages
 
 ```sh
-npm outdated
+yarn outdated
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+yarn run dev
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run lint
+yarn run lint
 ```
 
 ### Format with [Prettier](https://prettier.io/)
 
 ```sh
-npm run format
+yarn run format
 ```
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
-npm run test:unit
+yarn run test:unit
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+yarn run build
 ```
