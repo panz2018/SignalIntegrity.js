@@ -67,3 +67,9 @@ yarn run test:unit
 ```sh
 yarn run build
 ```
+
+### Preview the built static website for production
+
+```sh
+yarn run preview
+```
