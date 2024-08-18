@@ -32,6 +32,12 @@ yarn install
 yarn outdated
 ```
 
+### Upgrades packages
+
+```
+yarn upgrade
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
