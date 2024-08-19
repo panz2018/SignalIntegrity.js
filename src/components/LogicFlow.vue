@@ -3,8 +3,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+// Initialize Vue
+import { ref, onMounted } from 'vue'
 const container = ref(null)
+
+// Prepare graph data
+const data = {
+  // Nodes
+  nodes: [
+    {
+      id: '21',
+      type: 'rect',
+      x: 100,
+      y: 200,
+      text: 'rect node'
+    },
+    {
+      id: '50',
+      type: 'circle',
+      x: 300,
+      y: 400,
+      text: 'circle node'
+    }
+  ],
+  // Edges
+  edges: [
+    {
+      type: 'polyline',
+      sourceNodeId: '50',
+      targetNodeId: '21'
+    }
+  ]
+}
+
+// Initialize LogicFlow
+import LogicFlow from '@logicflow/core'
+import '@logicflow/core/lib/style/index.css'
+let lf
+onMounted(() => {
+  if (container.value !== null) {
+    lf = new LogicFlow({
+      container: container.value as HTMLElement,
+      grid: true
+    })
+    lf.render(data)
+  }
+})
 </script>
 
 <style scoped>
