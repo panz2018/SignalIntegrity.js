@@ -39,14 +39,14 @@ const data = {
 // Initialize LogicFlow
 import LogicFlow from '@logicflow/core'
 import '@logicflow/core/lib/style/index.css'
-let lf
+const lf = ref<LogicFlow>()
 onMounted(() => {
   if (container.value !== null) {
-    lf = new LogicFlow({
+    lf.value = new LogicFlow({
       container: container.value as HTMLElement,
       grid: true
     })
-    lf.render(data)
+    lf.value.render(data)
   }
 })
 </script>
