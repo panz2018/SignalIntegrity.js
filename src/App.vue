@@ -1,9 +1,10 @@
 <template>
-  <LogicFlow class="main" />
+  <div></div>
+  <!-- <LogicFlow class="main" /> -->
 </template>
 
 <script setup lang="ts">
-import LogicFlow from './components/LogicFlow.vue'
+// import LogicFlow from './components/LogicFlow.vue'
 </script>
 
 <style scoped>
