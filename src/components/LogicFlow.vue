@@ -39,16 +39,37 @@ const data = {
 // Initialize LogicFlow
 import LogicFlow from '@logicflow/core'
 import '@logicflow/core/lib/style/index.css'
+import { DndPanel, Menu, SelectionSelect } from '@logicflow/extension'
 const lf = ref<LogicFlow>()
 onMounted(() => {
   if (container.value !== null) {
     lf.value = new LogicFlow({
       container: container.value as HTMLElement,
-      grid: true
+      grid: true,
+      plugins: [DndPanel, Menu, SelectionSelect]
     })
+    console.log(lf.value.extension.menu)
+    lf.value.extension.menu.setMenuConfig({
+      nodeMenu: [
+        {
+          text: 'Delete',
+          callback(node) {
+            console.log(node)
+          }
+        }
+      ],
+      edgeMenu: [],
+      graphMenu: []
+    })
+
     lf.value.render(data)
   }
 })
+
+// https://www.yuque.com/xxtx/zeots5/ddq1vwsvgr2alv6c
+// https://1024code.com/codecubes/pa3KWw7
+// https://site.logic-flow.cn/
+// https://site-logic--flow-cn.translate.goog/?_x_tr_sl=zh-CN&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
 </script>
 
 <style scoped>
