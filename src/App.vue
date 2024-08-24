@@ -1,9 +1,10 @@
 <template>
-  <LogicFlow class="main" />
+  <div></div>
+  <FlowChart class="main" />
 </template>
 
 <script setup lang="ts">
-import LogicFlow from './components/LogicFlow.vue'
+import FlowChart from './components/FlowChart.vue'
 </script>
 
 <style scoped>
