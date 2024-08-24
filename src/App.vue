@@ -1,10 +1,10 @@
 <template>
   <div></div>
-  <!-- <LogicFlow class="main" /> -->
+  <FlowChart class="main" />
 </template>
 
 <script setup lang="ts">
-// import LogicFlow from './components/LogicFlow.vue'
+import FlowChart from './components/FlowChart.vue'
 </script>
 
 <style scoped>
