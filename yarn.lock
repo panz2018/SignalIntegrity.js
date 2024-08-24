@@ -2081,10 +2081,10 @@ read-package-json-fast@^3.0.2:
     json-parse-even-better-errors "^3.0.0"
     npm-normalize-package-bin "^3.0.0"
 
-relation-graph-vue3@^2.2.3:
+relation-graph@^2.2.3:
   version "2.2.3"
-  resolved "https://registry.yarnpkg.com/relation-graph-vue3/-/relation-graph-vue3-2.2.3.tgz#eecf93cb29c9af2925d51aef380db712e06c8088"
-  integrity sha512-a/NFfFkZf3eQcsQ71X3vM7wQ68JIE2rdyHTD/mhhM6i/oQz7nA+nPvhOqPZZpEtukxtsfNWrPQOEeP+Y1dw8TQ==
+  resolved "https://registry.yarnpkg.com/relation-graph/-/relation-graph-2.2.3.tgz#d020b154cfb5cd73b5e6ace99c0cd853ed0d7a5d"
+  integrity sha512-SU4aHUgZ0N4Zb1PprPers1r5khhkUnZasm75OTslB43NjeYcXzbsf+++lw05kQ06yRTiBMi8lHPSCc2wikpHeQ==
   dependencies:
     html2canvas "^1.4.1"
     screenfull "^5.1.0"
