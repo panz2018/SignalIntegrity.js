@@ -1,10 +1,10 @@
 <template>
   <div></div>
-  <FlowChart class="main" />
+  <FlowGraph class="main" />
 </template>
 
 <script setup lang="ts">
-import FlowChart from './components/FlowChart.vue'
+import FlowGraph from './components/FlowGraph.vue'
 </script>
 
 <style scoped>
