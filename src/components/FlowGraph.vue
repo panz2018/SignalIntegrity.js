@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="border: #efefef solid 1px; height: calc(100% - 5px); width: calc(100% - 2px)">
+    <div class="main">
       <relation-graph ref="graphRef" :options="options" />
     </div>
   </div>
@@ -52,4 +52,9 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.main {
+  height: calc(100% - 4px);
+  width: calc(100%);
+}
+</style>
