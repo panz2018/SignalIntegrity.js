@@ -8,6 +8,9 @@
   >
     <Background pattern-color="#AAAAAA" :gap="16" />
     <MiniMap />
+    <Controls position="top-left">
+      <ControlButton title="Rest Transform" @click="resetTransform"> </ControlButton>
+    </Controls>
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
     </Panel>
@@ -18,8 +21,9 @@
 import { ref } from 'vue'
 
 // Setup the VueFlow
-import { VueFlow } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import type { Node, Edge } from '@vue-flow/core'
+const { onInit, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
 const nodes = ref<Node[]>([
   {
     id: '1',
@@ -70,9 +74,15 @@ function addNode() {
   })
 }
 
-// Setup background, minimap
+// Setup background, minimap for VueFlow
 import { Background } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
+
+// Setup toolbar for VueFlow
+import { ControlButton, Controls } from '@vue-flow/controls'
+function resetTransform() {
+  setViewport({ x: 0, y: 0, zoom: 1 })
+}
 </script>
 
 <style scoped></style>
@@ -80,4 +90,5 @@ import { MiniMap } from '@vue-flow/minimap'
 <style>
 @import '@vue-flow/core/dist/style.css';
 @import '@vue-flow/core/dist/theme-default.css';
+@import '@vue-flow/controls/dist/style.css';
 </style>
