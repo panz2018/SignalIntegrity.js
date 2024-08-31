@@ -8,8 +8,16 @@
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <MiniMap :pannable="true" :zoomable="true" />
-    <Controls position="top-left" :showZoom="true" :showFitView="true" :showInteractive="true">
-      <!-- <ControlButton title="Rest Transform" @click="resetTransform"> </ControlButton> -->
+    <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="true">
+      <ControlButton title="Zoom full" @click="flow.fitView">
+        <ZoomFull width="24" height="24" />
+      </ControlButton>
+      <ControlButton title="Zoom in" @click="flow.zoomIn">
+        <ZoomIn />
+      </ControlButton>
+      <ControlButton title="Zoom out" @click="flow.zoomOut">
+        <ZoomOut />
+      </ControlButton>
     </Controls>
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
@@ -89,7 +97,7 @@ import { MiniMap } from '@vue-flow/minimap'
 import '@vue-flow/minimap/dist/style.css'
 
 // Setup toolbar for VueFlow
-import { Controls } from '@vue-flow/controls'
+import { ControlButton, Controls } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
 // import { ControlButton, Controls } from '@vue-flow/controls'
 // function resetTransform() {
@@ -104,6 +112,16 @@ flow.onInit((instance) => instance.fitView())
 flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
+
+// Setup icons
+import ZoomFull from '../assets/ZoomFull.vue'
+import ZoomIn from '../assets/ZoomIn.vue'
+import ZoomOut from '../assets/ZoomOut.vue'
 </script>
 
-<style scoped></style>
+<style scoped>
+.vue-flow__controls-button svg {
+  max-width: 16px;
+  max-height: 16px;
+}
+</style>
