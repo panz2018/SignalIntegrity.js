@@ -1,5 +1,4 @@
 <template>
-  <div></div>
   <FlowGraph class="main" />
 </template>
 
