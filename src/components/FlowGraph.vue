@@ -8,7 +8,7 @@
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <MiniMap :pannable="true" :zoomable="true" />
-    <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="true">
+    <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
       <ControlButton title="Zoom full" @click="flow.fitView">
         <ZoomFull width="24" height="24" />
       </ControlButton>
@@ -17,6 +17,39 @@
       </ControlButton>
       <ControlButton title="Zoom out" @click="flow.zoomOut">
         <ZoomOut />
+      </ControlButton>
+      <ControlButton
+        :title="
+          flow.nodesDraggable.value || flow.nodesConnectable.value || flow.elementsSelectable.value
+            ? 'Enable modification'
+            : 'Disable modification'
+        "
+        @click="
+          flow.setInteractive(
+            !(
+              flow.nodesDraggable.value ||
+              flow.nodesConnectable.value ||
+              flow.elementsSelectable.value
+            )
+          )
+        "
+      >
+        <LockSolid
+          v-if="
+            !(
+              flow.nodesDraggable.value ||
+              flow.nodesConnectable.value ||
+              flow.elementsSelectable.value
+            )
+          "
+        />
+        <UnlockSolid
+          v-if="
+            flow.nodesDraggable.value ||
+            flow.nodesConnectable.value ||
+            flow.elementsSelectable.value
+          "
+        />
       </ControlButton>
     </Controls>
     <Panel position="top-right">
@@ -117,6 +150,8 @@ flow.onConnect((connection) => {
 import ZoomFull from '../assets/ZoomFull.vue'
 import ZoomIn from '../assets/ZoomIn.vue'
 import ZoomOut from '../assets/ZoomOut.vue'
+import LockSolid from '@/assets/LockSolid.vue'
+import UnlockSolid from '@/assets/UnlockSolid.vue'
 </script>
 
 <style scoped>
