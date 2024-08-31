@@ -2,6 +2,7 @@
   <VueFlow
     :nodes="nodes"
     :edges="edges"
+    :class="{ dark }"
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.2"
     :max-zoom="4"
@@ -50,6 +51,10 @@
             flow.elementsSelectable.value
           "
         />
+      </ControlButton>
+      <ControlButton :title="dark ? 'Dark theme' : 'Bright theme'" @click="toggleDarkMode">
+        <DarkIcon v-if="dark" />
+        <BrightIcon v-else />
       </ControlButton>
     </Controls>
     <Panel position="top-right">
@@ -132,10 +137,6 @@ import '@vue-flow/minimap/dist/style.css'
 // Setup toolbar for VueFlow
 import { ControlButton, Controls } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
-// import { ControlButton, Controls } from '@vue-flow/controls'
-// function resetTransform() {
-//   setViewport({ x: 0, y: 0, zoom: 1 })
-// }
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
@@ -147,16 +148,83 @@ flow.onConnect((connection) => {
 })
 
 // Setup icons
-import ZoomFull from '../assets/ZoomFull.vue'
-import ZoomIn from '../assets/ZoomIn.vue'
-import ZoomOut from '../assets/ZoomOut.vue'
+import ZoomFull from '@/assets/ZoomFull.vue'
+import ZoomIn from '@/assets/ZoomIn.vue'
+import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'
 import UnlockSolid from '@/assets/UnlockSolid.vue'
+
+// Setup bright/dark theme
+const dark = ref(true)
+import BrightIcon from '@/assets/BrightIcon.vue'
+import DarkIcon from '@/assets/DarkIcon.vue'
+function toggleDarkMode() {
+  dark.value = !dark.value
+}
 </script>
 
 <style scoped>
 .vue-flow__controls-button svg {
   max-width: 16px;
   max-height: 16px;
+}
+
+.dark {
+  background: #2d3748;
+  color: #fffffb;
+}
+
+.dark .vue-flow__node {
+  background: #4a5568;
+  color: #fffffb;
+}
+
+.dark .vue-flow__node.selected {
+  background: hsl(0, 0%, 20%);
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+.vue-flow__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dark .vue-flow__controls {
+  border: 1px solid #fffffb;
+}
+
+.vue-flow__controls .vue-flow__controls-button {
+  border: none;
+  border-right: 1px solid #eee;
+}
+
+.vue-flow__controls .vue-flow__controls-button svg {
+  height: 100%;
+  width: 100%;
+}
+
+.vue-flow__controls .vue-flow__controls-button {
+  fill: #222;
+  stroke: #222;
+}
+
+.dark .vue-flow__controls .vue-flow__controls-button {
+  background: hsl(0, 0%, 20%);
+  fill: #fffffb;
+  stroke: #fffffb;
+  border: none;
+}
+
+.dark .vue-flow__controls .vue-flow__controls-button:hover {
+  background: hsl(0, 0%, 30%);
+}
+
+.dark .vue-flow__edge-textbg {
+  fill: #292524;
+}
+
+.dark .vue-flow__edge-text {
+  fill: #fffffb;
 }
 </style>
