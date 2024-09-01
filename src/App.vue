@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import FlowGraph from './components/FlowGraph.vue'
+import FlowGraph from '@/FlowGraph/FlowGraph.vue'
 </script>
 
 <style scoped>
