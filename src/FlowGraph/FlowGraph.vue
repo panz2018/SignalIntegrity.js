@@ -2,7 +2,7 @@
   <VueFlow
     :nodes="nodes"
     :edges="edges"
-    :class="{ dark }"
+    :class="{ dark: theme.theme === 'Dark' ? true : false }"
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.2"
     :max-zoom="4"
@@ -10,9 +10,7 @@
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <MiniMap :pannable="true" :zoomable="true" />
     <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
-      <ControlButton title="Zoom full" @click="flow.fitView">
-        <ZoomFull width="24" height="24" />
-      </ControlButton>
+      <ZoomFull />
       <ControlButton title="Zoom in" @click="flow.zoomIn">
         <ZoomIn />
       </ControlButton>
@@ -52,8 +50,11 @@
           "
         />
       </ControlButton>
-      <ControlButton :title="dark ? 'Dark theme' : 'Bright theme'" @click="toggleDarkMode">
-        <DarkIcon v-if="dark" />
+      <ControlButton
+        :title="theme.theme === 'Dark' ? 'Dark theme' : 'Bright theme'"
+        @click="theme.toggle"
+      >
+        <DarkIcon v-if="theme.theme === 'Dark'" />
         <BrightIcon v-else />
       </ControlButton>
     </Controls>
@@ -148,25 +149,32 @@ flow.onConnect((connection) => {
 })
 
 // Setup icons
-import ZoomFull from '@/assets/ZoomFull.vue'
+import ZoomFull from '@/FlowGraph/ZoomFull.vue'
 import ZoomIn from '@/assets/ZoomIn.vue'
 import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'
 import UnlockSolid from '@/assets/UnlockSolid.vue'
 
 // Setup bright/dark theme
-const dark = ref(true)
+import { watch } from 'vue'
+import { useThemeStore } from '@/stores/theme'
 import BrightIcon from '@/assets/BrightIcon.vue'
 import DarkIcon from '@/assets/DarkIcon.vue'
-function toggleDarkMode() {
-  dark.value = !dark.value
-}
+const theme = useThemeStore()
+watch(theme, () => {
+  theme.save()
+})
 </script>
 
 <style scoped>
+.vue-flow__controls-button {
+  width: 20px;
+  height: 20px;
+}
+
 .vue-flow__controls-button svg {
-  max-width: 16px;
-  max-height: 16px;
+  max-width: 20px;
+  max-height: 20px;
 }
 
 .dark {
