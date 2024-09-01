@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
+import ToastService from 'primevue/toastservice'
 
 import App from './App.vue'
 
@@ -22,6 +23,7 @@ app.use(PrimeVue, {
     }
   }
 })
+app.use(ToastService)
 app.config.errorHandler = (err, vm, info) => {
   console.error('Error:', err)
   console.error('Vue component:', vm)
