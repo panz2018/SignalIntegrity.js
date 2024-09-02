@@ -11,5 +11,27 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        manualChunks(file) {
+          if (file.includes('node_modules')) {
+            if (file.includes('primevue')) {
+              return 'primevue'
+            } else if (file.includes('vue-flow')) {
+              return 'vueflow'
+            } else {
+              return 'package'
+            }
+          } else {
+            return 'index'
+          }
+        }
+      }
+    }
   }
 })

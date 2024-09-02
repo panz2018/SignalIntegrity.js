@@ -12,6 +12,7 @@ const app = createApp(App)
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)
 app.use(createPinia())
+app.use(ToastService)
 app.use(PrimeVue, {
   ripple: true,
   theme: {
@@ -23,7 +24,6 @@ app.use(PrimeVue, {
     }
   }
 })
-app.use(ToastService)
 app.config.errorHandler = (err, vm, info) => {
   console.error('Error:', err)
   console.error('Vue component:', vm)

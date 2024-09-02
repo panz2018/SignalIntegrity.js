@@ -1,10 +1,15 @@
 <template>
-  <PrimeMenu :model="items" breakpoint="450px"></PrimeMenu>
+  <PrimeMenu :model="items" breakpoint="450px">
+    <template #end>
+      <ThemeSwitcher />
+    </template>
+  </PrimeMenu>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import PrimeMenu from 'primevue/menubar'
+import ThemeSwitcher from '@/MenuBar/ThemeSwitcher.vue'
 
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
