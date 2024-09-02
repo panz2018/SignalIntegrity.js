@@ -6,7 +6,7 @@ import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
 import ToastService from 'primevue/toastservice'
 
-import App from './App.vue'
+import App from '@/App.vue'
 
 const app = createApp(App)
 app.directive('ripple', Ripple)

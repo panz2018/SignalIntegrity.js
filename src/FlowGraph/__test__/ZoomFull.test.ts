@@ -26,6 +26,10 @@ describe.concurrent('ZoomFull.Vue', () => {
     const wrapper = mount(ZoomFull, { props: {} })
     expect(wrapper.isVisible()).toBeTruthy()
   })
+  it('disabled', () => {
+    const wrapper = mount(ZoomFull, { props: {} })
+    expect(wrapper.attributes('disabled')).toBeUndefined()
+  })
   it('click', async () => {
     const wrapper = mount(ZoomFull, { props: {} })
     await wrapper.find('button').trigger('click')
