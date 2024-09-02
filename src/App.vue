@@ -30,7 +30,7 @@ import FlowGraph from '@/FlowGraph/FlowGraph.vue'
 .graph {
   position: absolute;
   width: 100%;
-  top: 60px;
+  top: 58px;
   left: 0px;
   right: 0px;
   bottom: 0px;

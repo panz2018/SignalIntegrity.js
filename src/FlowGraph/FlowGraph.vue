@@ -164,7 +164,7 @@ const theme = useThemeStore()
 }
 
 .dark {
-  background: #2d3748;
+  background: #18181b;
   color: #fffffb;
 }
 
