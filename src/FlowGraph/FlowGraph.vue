@@ -2,7 +2,7 @@
   <VueFlow
     :nodes="nodes"
     :edges="edges"
-    :class="{ dark: theme.theme === 'Dark' ? true : false }"
+    :class="{ dark: theme.theme === 'Bright' ? false : true }"
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.2"
     :max-zoom="4"
@@ -49,13 +49,6 @@
             flow.elementsSelectable.value
           "
         />
-      </ControlButton>
-      <ControlButton
-        :title="theme.theme === 'Dark' ? 'Dark theme' : 'Bright theme'"
-        @click="theme.toggle"
-      >
-        <DarkIcon v-if="theme.theme === 'Dark'" />
-        <BrightIcon v-else />
       </ControlButton>
     </Controls>
     <Panel position="top-right">
@@ -155,15 +148,8 @@ import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'
 import UnlockSolid from '@/assets/UnlockSolid.vue'
 
-// Setup bright/dark theme
-import { watch } from 'vue'
 import { useThemeStore } from '@/stores/theme'
-import BrightIcon from '@/assets/BrightIcon.vue'
-import DarkIcon from '@/assets/DarkIcon.vue'
 const theme = useThemeStore()
-watch(theme, () => {
-  theme.save()
-})
 </script>
 
 <style scoped>
