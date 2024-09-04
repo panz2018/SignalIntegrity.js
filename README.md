@@ -48,7 +48,7 @@ yarn run format
 yarn run test:unit
 ```
 
-## Run component or end-to-end (E2E) testing
+## Run component or end-to-end (E2E) testing with [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
 
 ```sh
 npx cypress open
