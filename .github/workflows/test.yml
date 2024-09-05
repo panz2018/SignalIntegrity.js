@@ -34,9 +34,7 @@ jobs:
           node-version: 22
 
       - name: Run install
-        uses: sergioramos/yarn-actions@v6
-        with:
-          cmd: install # will run `yarn install` command
+        run: yarn install
 
       - name: Test
         run: yarn run test
