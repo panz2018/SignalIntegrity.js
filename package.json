@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "run-p lint && run-p format test type-check \"build-only {@}\" --",
+    "test": "run-p lint && run-p format type-check test:unit test:component",
+    "build": "vite build",
     "preview": "vite preview",
-    "test:unit": "vitest",
-    "test": "vitest run && cypress run --component",
-    "build-only": "vite build",
+    "test:unit": "vitest run",
+    "test:component": "cypress run --component",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
