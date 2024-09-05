@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
-
 import { useThemeStore } from './theme'
 
 describe('theme.ts', () => {
@@ -14,11 +13,13 @@ describe('theme.ts', () => {
     expect(useThemeStore).to.exist
   })
   it('localStorage: empty', () => {
+    const rootClass = document.getElementsByTagName('html')[0].classList
     localStorage.clear()
     expect(localStorage.getItem('theme')).to.eq(null)
     const theme = useThemeStore()
     expect(localStorage.getItem('theme')).to.eq('Dark')
     expect(theme.theme).to.eq('Dark')
+    console.log(rootClass)
   })
   it('localStorage: Dark', () => {
     localStorage.setItem('theme', 'Dark')

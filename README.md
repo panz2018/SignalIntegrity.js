@@ -44,11 +44,27 @@ yarn run format
 
 ## Run Unit Tests with [Vitest](https://vitest.dev/)
 
+### Command line
+
 ```sh
 yarn run test:unit
 ```
 
-## Run component or end-to-end (E2E) testing with [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
+### Interactive development
+
+```sh
+yarn vitest
+```
+
+## Run component tests with [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
+
+### Command line
+
+```sh
+yarn run test:component
+```
+
+### Interactive development
 
 ```sh
 npx cypress open
