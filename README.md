@@ -21,7 +21,7 @@ yarn outdated
 ## Upgrades packages
 
 ```
-yarn upgrade
+yarn upgrade --latest
 ```
 
 ## Compile and Hot-Reload for Development
@@ -46,6 +46,12 @@ yarn run format
 
 ```sh
 yarn run test:unit
+```
+
+## Run component or end-to-end (E2E) testing with [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
+
+```sh
+npx cypress open
 ```
 
 ## Type-Check, Compile and Minify for Production
