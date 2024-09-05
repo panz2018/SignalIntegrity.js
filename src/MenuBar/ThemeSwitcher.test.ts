@@ -7,7 +7,6 @@ import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
 import ThemeSwitcher from './ThemeSwitcher.vue'
-import { useThemeStore } from '@/stores/theme'
 
 const app = createApp({})
 app.directive('ripple', Ripple)
@@ -27,10 +26,11 @@ const pinia = createPinia()
 app.use(pinia)
 setActivePinia(pinia)
 describe.concurrent('ThemeSwitcher.Vue', () => {
-  it('valid', () => {
+  it('Valid', () => {
     expect(ThemeSwitcher).toBeTruthy()
   })
-  it('attributes', () => {
+  it('Initialized', () => {
+    expect(localStorage.getItem('theme')).toBe(null)
     const wrapper = mount(ThemeSwitcher, {
       props: {},
       global: {
@@ -43,48 +43,17 @@ describe.concurrent('ThemeSwitcher.Vue', () => {
     expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(Object.keys(wrapper.attributes())).toContain('type')
     expect(wrapper.attributes('type')).toEqual('button')
-  })
-  it('Internal Vue instance', () => {
-    const wrapper = mount(ThemeSwitcher, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect(wrapper.vm).toEqual({})
-  })
-  it('visible', () => {
-    const wrapper = mount(ThemeSwitcher, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
     expect(wrapper.isVisible()).toBeTruthy()
-  })
-  it('disabled', () => {
-    const wrapper = mount(ThemeSwitcher, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
     expect(wrapper.attributes('disabled')).toBeUndefined()
+    expect((wrapper.vm as any).theme.theme).toEqual('Dark')
+    expect(localStorage.getItem('theme')).toEqual('Dark')
+    expect((wrapper.vm as any).tooltip).toBe('Dark theme')
+    expect((wrapper.vm as any).icon).toBe('pi-moon')
+    expect(wrapper.find('i').attributes('class')).toBe('dark:text-white pi pi-moon')
   })
   it('click', async () => {
     localStorage.setItem('theme', 'Bright')
     expect(localStorage.getItem('theme')).toEqual('Bright')
-    const theme = useThemeStore()
-    expect(theme.theme).toBe('Bright')
     const wrapper = mount(ThemeSwitcher, {
       props: {},
       global: {
@@ -94,19 +63,23 @@ describe.concurrent('ThemeSwitcher.Vue', () => {
         }
       }
     })
+    expect((wrapper.vm as any).theme.theme).toEqual('Bright')
+    expect(localStorage.getItem('theme')).toEqual('Bright')
     expect((wrapper.vm as any).tooltip).toBe('Bright theme')
     expect((wrapper.vm as any).icon).toBe('pi-sun')
     expect(Object.keys(wrapper.find('i').attributes())).toContain('class')
     expect(wrapper.find('i').attributes('class')).toBe('dark:text-white pi pi-sun')
     // Click button once
     await wrapper.find('button').trigger('click')
-    expect(theme.theme).toBe('Dark')
+    expect((wrapper.vm as any).theme.theme).toEqual('Dark')
+    expect(localStorage.getItem('theme')).toEqual('Dark')
     expect((wrapper.vm as any).tooltip).toBe('Dark theme')
     expect((wrapper.vm as any).icon).toBe('pi-moon')
     expect(wrapper.find('i').attributes('class')).toBe('dark:text-white pi pi-moon')
     // Click button second time
     await wrapper.find('button').trigger('click')
-    expect(theme.theme).toBe('Bright')
+    expect((wrapper.vm as any).theme.theme).toEqual('Bright')
+    expect(localStorage.getItem('theme')).toEqual('Bright')
     expect((wrapper.vm as any).tooltip).toBe('Bright theme')
     expect((wrapper.vm as any).icon).toBe('pi-sun')
     expect(wrapper.find('i').attributes('class')).toBe('dark:text-white pi pi-sun')
