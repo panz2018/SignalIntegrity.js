@@ -1,5 +1,8 @@
 <template>
   <PrimeMenu :model="items" breakpoint="450px">
+    <template #start>
+      <MenuLogo />
+    </template>
     <template #end>
       <ThemeSwitcher />
     </template>
@@ -9,6 +12,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PrimeMenu from 'primevue/menubar'
+import MenuLogo from '@/MenuBar/MenuLogo.vue'
 import ThemeSwitcher from '@/MenuBar/ThemeSwitcher.vue'
 
 import { useToast } from 'primevue/usetoast'

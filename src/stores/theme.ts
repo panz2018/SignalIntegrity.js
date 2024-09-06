@@ -8,6 +8,7 @@ export const useThemeStore = () => {
 
     function toggle() {
       theme.value = theme.value === 'Dark' ? 'Bright' : 'Dark'
+      save()
     }
 
     function read() {
@@ -25,10 +26,6 @@ export const useThemeStore = () => {
       // Save to local storage
       localStorage.setItem('theme', theme.value)
     }
-
-    watch(theme, () => {
-      save()
-    })
 
     return { theme, toggle, read, save }
   })
