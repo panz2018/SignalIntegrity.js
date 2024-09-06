@@ -1,5 +1,5 @@
 <template>
-  <PrimeMenu :model="items" breakpoint="450px">
+  <PrimeMenu :model="items" breakpoint="480px">
     <template #start>
       <MenuLogo />
     </template>
@@ -17,6 +17,14 @@ import ThemeSwitcher from '@/MenuBar/ThemeSwitcher.vue'
 
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
+const command = () => {
+  toast.add({
+    severity: 'warn',
+    summary: 'Warning',
+    detail: 'Under construction',
+    life: 3000
+  })
+}
 
 const items = ref([
   {
@@ -25,67 +33,48 @@ const items = ref([
     items: [
       {
         label: 'New',
-        icon: 'pi pi-plus',
-        command: () => {
-          toast.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 })
-        }
+        icon: 'pi pi-file-plus',
+        command: command
       },
       {
-        label: 'Print',
-        icon: 'pi pi-print',
-        command: () => {
-          toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No printer connected',
-            life: 3000
-          })
-        }
+        label: 'Export',
+        icon: 'pi pi-camera',
+        command: command
       }
     ]
   },
   {
-    label: 'Search',
-    icon: 'pi pi-search',
-    command: () => {
-      toast.add({
-        severity: 'warn',
-        summary: 'Search Results',
-        detail: 'No results found',
-        life: 3000
-      })
-    }
+    label: 'View',
+    icon: 'pi pi-eye',
+    items: [
+      {
+        label: 'Zoom In',
+        icon: 'pi pi-plus',
+        command: command
+      },
+      {
+        label: 'Zoom Out',
+        icon: 'pi pi-minus',
+        command: command
+      },
+      {
+        label: 'Fit View',
+        icon: 'pi pi-window-maximize',
+        command: command
+      }
+    ]
   },
   {
     separator: true
   },
   {
-    label: 'Sync',
-    icon: 'pi pi-cloud',
+    label: 'Calculate',
+    icon: 'pi pi-calculator',
     items: [
       {
-        label: 'Import',
-        icon: 'pi pi-cloud-download',
-        command: () => {
-          toast.add({
-            severity: 'info',
-            summary: 'Downloads',
-            detail: 'Downloaded from cloud',
-            life: 3000
-          })
-        }
-      },
-      {
-        label: 'Export',
-        icon: 'pi pi-cloud-upload',
-        command: () => {
-          toast.add({
-            severity: 'info',
-            summary: 'Shared',
-            detail: 'Exported to cloud',
-            life: 3000
-          })
-        }
+        label: 'S-parameter Viewer',
+        icon: 'pi pi-th-large',
+        command: command
       }
     ]
   }
