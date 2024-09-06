@@ -7,6 +7,7 @@ import Tooltip from 'primevue/tooltip'
 import ToastService from 'primevue/toastservice'
 
 import App from '@/App.vue'
+import { favicon } from '@/favicon'
 
 const app = createApp(App)
 app.directive('ripple', Ripple)
@@ -30,3 +31,4 @@ app.config.errorHandler = (err, vm, info) => {
   console.error('Additional info:', info)
 }
 app.mount('#app')
+favicon()
