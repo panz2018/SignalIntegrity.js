@@ -137,13 +137,12 @@ import '@vue-flow/controls/dist/style.css'
 import { useVueFlow } from '@vue-flow/core'
 const flow = useVueFlow('FlowGraph')
 flow.snapToGrid.value = true // to enable snapping to grid
-// flow.onInit((instance) => instance.fitView())
 flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
 
 // Setup icons
-import FitView from '@/FlowGraph/FitView.vue'
+import FitView from '@/Controls/FitView/FitView.vue'
 import ZoomIn from '@/assets/ZoomIn.vue'
 import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'

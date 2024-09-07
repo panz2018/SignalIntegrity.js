@@ -26,11 +26,8 @@ const command = () => {
   })
 }
 
-// Get id of FlowGraph
-import { useVueFlow } from '@vue-flow/core'
-let flow = useVueFlow('FlowGraph')
-
 // Menu items
+import fitview from '@/Controls/FitView/FitView'
 const items = ref([
   {
     label: 'File',
@@ -52,13 +49,7 @@ const items = ref([
     label: 'View',
     icon: 'pi pi-eye',
     items: [
-      {
-        label: 'Fit View',
-        icon: 'pi pi-window-maximize',
-        command: () => {
-          flow.fitView()
-        }
-      },
+      fitview,
       {
         label: 'Zoom In',
         icon: 'pi pi-plus',

@@ -1,15 +1,13 @@
 <template>
-  <ControlButton v-ripple v-tooltip.bottom="'Fit View'" @click="flow.fitView">
-    <i class="pi pi-window-maximize" />
+  <ControlButton v-ripple v-tooltip.bottom="fitview.label" @click="fitview.command">
+    <i :class="fitview.icon" />
   </ControlButton>
 </template>
 
 <script setup lang="ts">
 import { ControlButton } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
-
-import { useVueFlow } from '@vue-flow/core'
-const flow = useVueFlow('FlowGraph')
+import fitview from './FitView'
 </script>
 
 <style scope>
