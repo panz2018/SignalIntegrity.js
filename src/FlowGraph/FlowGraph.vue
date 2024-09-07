@@ -10,12 +10,7 @@
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <MiniMap :pannable="true" :zoomable="true" />
-    <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
-      <FitView />
-      <ZoomIn />
-      <ZoomOut />
-      <ModificationSwitcher />
-    </Controls>
+    <ToolBar />
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
     </Panel>
@@ -94,8 +89,7 @@ import { MiniMap } from '@vue-flow/minimap'
 import '@vue-flow/minimap/dist/style.css'
 
 // Setup toolbar for VueFlow
-import { Controls } from '@vue-flow/controls'
-import '@vue-flow/controls/dist/style.css'
+import ToolBar from './ToolBar/ToolBar.vue'
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
@@ -105,27 +99,12 @@ flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
 
-// Setup icons
-import FitView from '@/FlowGraph/ToolBar/FitView/FitView.vue'
-import ZoomIn from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn.vue'
-import ZoomOut from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut.vue'
-import ModificationSwitcher from '@/FlowGraph/ToolBar/Modification/ModificationSwitcher.vue'
-
+// Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
 </script>
 
 <style scoped>
-.vue-flow__controls-button {
-  width: 20px;
-  height: 20px;
-}
-
-.vue-flow__controls-button svg {
-  max-width: 20px;
-  max-height: 20px;
-}
-
 .dark {
   background: #18181b;
   color: #fffffb;
@@ -139,42 +118,6 @@ const theme = useThemeStore()
 .dark .vue-flow__node.selected {
   background: hsl(0, 0%, 20%);
   box-shadow: 0 0 0 2px #2563eb;
-}
-
-.vue-flow__controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.dark .vue-flow__controls {
-  border: 1px solid #fffffb;
-}
-
-.vue-flow__controls .vue-flow__controls-button {
-  border: none;
-  border-right: 1px solid #eee;
-}
-
-.vue-flow__controls .vue-flow__controls-button svg {
-  height: 100%;
-  width: 100%;
-}
-
-.vue-flow__controls .vue-flow__controls-button {
-  fill: #222;
-  stroke: #222;
-}
-
-.dark .vue-flow__controls .vue-flow__controls-button {
-  background: hsl(0, 0%, 20%);
-  fill: #fffffb;
-  stroke: #fffffb;
-  border: none;
-}
-
-.dark .vue-flow__controls .vue-flow__controls-button:hover {
-  background: hsl(0, 0%, 30%);
 }
 
 .dark .vue-flow__edge-textbg {
