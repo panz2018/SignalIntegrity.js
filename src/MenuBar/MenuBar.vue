@@ -29,6 +29,7 @@ const command = () => {
 // Menu items
 import fitview from '@/FlowGraph/Controls/FitView/FitView'
 import zoomin from '@/FlowGraph/Controls/ZoomIn/ZoomIn'
+import zoomout from '@/FlowGraph/Controls/ZoomOut/ZoomOut'
 const items = ref([
   {
     label: 'File',
@@ -49,15 +50,7 @@ const items = ref([
   {
     label: 'View',
     icon: 'pi pi-eye',
-    items: [
-      fitview,
-      zoomin,
-      {
-        label: 'Zoom Out',
-        icon: 'pi pi-minus',
-        command: command
-      }
-    ]
+    items: [fitview, zoomin, zoomout]
   },
   {
     separator: true

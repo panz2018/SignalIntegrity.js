@@ -13,9 +13,7 @@
     <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
       <FitView />
       <ZoomIn />
-      <ControlButton v-tooltip.bottom="'Zoom out'" @click="flow.zoomOut">
-        <ZoomOut />
-      </ControlButton>
+      <ZoomOut />
       <ControlButton
         :title="
           flow.nodesDraggable.value || flow.nodesConnectable.value || flow.elementsSelectable.value
@@ -142,7 +140,8 @@ flow.onConnect((connection) => {
 // Setup icons
 import FitView from '@/FlowGraph/Controls/FitView/FitView.vue'
 import ZoomIn from '@/FlowGraph/Controls/ZoomIn/ZoomIn.vue'
-import ZoomOut from '@/assets/ZoomOut.vue'
+import ZoomOut from '@/FlowGraph/Controls/ZoomOut/ZoomOut.vue'
+
 import LockSolid from '@/assets/LockSolid.vue'
 import UnlockSolid from '@/assets/UnlockSolid.vue'
 
