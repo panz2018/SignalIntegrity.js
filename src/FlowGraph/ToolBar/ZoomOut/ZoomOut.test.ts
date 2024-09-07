@@ -49,9 +49,9 @@ describe.concurrent('ZoomIn.Vue', () => {
       }
     })
     expect(wrapper.element.tagName).toBe('BUTTON')
-    expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
+    expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
     expect(wrapper.find('i').attributes('class')).toBe('pi pi-search-minus')
   })
