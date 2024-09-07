@@ -30,6 +30,7 @@ const command = () => {
 import { useVueFlow } from '@vue-flow/core'
 let flow = useVueFlow('FlowGraph')
 
+// Menu items
 const items = ref([
   {
     label: 'File',
@@ -52,6 +53,13 @@ const items = ref([
     icon: 'pi pi-eye',
     items: [
       {
+        label: 'Fit View',
+        icon: 'pi pi-window-maximize',
+        command: () => {
+          flow.fitView()
+        }
+      },
+      {
         label: 'Zoom In',
         icon: 'pi pi-plus',
         command: command
@@ -60,13 +68,6 @@ const items = ref([
         label: 'Zoom Out',
         icon: 'pi pi-minus',
         command: command
-      },
-      {
-        label: 'Fit View',
-        icon: 'pi pi-window-maximize',
-        command: () => {
-          flow.fitView()
-        }
       }
     ]
   },
