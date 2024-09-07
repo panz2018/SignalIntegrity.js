@@ -1,4 +1,4 @@
-import { logo } from '@/logo'
+import { logo } from './logo'
 
 export function favicon() {
   let favicon = document.querySelector("link[rel*='icon']") as HTMLLinkElement

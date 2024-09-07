@@ -106,12 +106,12 @@ flow.onConnect((connection) => {
 })
 
 // Setup icons
-import FitView from '@/FlowGraph/Controls/FitView/FitView.vue'
-import ZoomIn from '@/FlowGraph/Controls/ZoomIn/ZoomIn.vue'
-import ZoomOut from '@/FlowGraph/Controls/ZoomOut/ZoomOut.vue'
-import ModificationSwitcher from '@/FlowGraph/Controls/Modification/ModificationSwitcher.vue'
+import FitView from '@/FlowGraph/ToolBar/FitView/FitView.vue'
+import ZoomIn from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn.vue'
+import ZoomOut from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut.vue'
+import ModificationSwitcher from '@/FlowGraph/ToolBar/Modification/ModificationSwitcher.vue'
 
-import { useThemeStore } from '@/stores/theme'
+import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
 </script>
 

@@ -12,8 +12,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PrimeMenu from 'primevue/menubar'
-import MenuLogo from '@/MenuBar/MenuLogo.vue'
-import ThemeSwitcher from '@/MenuBar/ThemeSwitcher.vue'
+import MenuLogo from './MenuLogo/MenuLogo.vue'
+import ThemeSwitcher from './Theme/ThemeSwitcher.vue'
 
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
@@ -27,10 +27,10 @@ const command = () => {
 }
 
 // Menu items
-import fitview from '@/FlowGraph/Controls/FitView/FitView'
-import zoomin from '@/FlowGraph/Controls/ZoomIn/ZoomIn'
-import zoomout from '@/FlowGraph/Controls/ZoomOut/ZoomOut'
-import { useModificationStore } from '@/FlowGraph/Controls/Modification/Modification'
+import fitview from '@/FlowGraph/ToolBar/FitView/FitView'
+import zoomin from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn'
+import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
+import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 const modification = useModificationStore()
 const items = ref([
   {
@@ -61,9 +61,6 @@ const items = ref([
       },
       modification
     ]
-  },
-  {
-    separator: true
   },
   {
     label: 'Calculate',

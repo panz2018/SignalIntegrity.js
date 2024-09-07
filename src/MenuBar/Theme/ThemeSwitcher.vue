@@ -10,7 +10,7 @@ import Button from 'primevue/button'
 import 'primeicons/primeicons.css'
 
 // Setup bright/dark theme
-import { useThemeStore } from '@/stores/theme'
+import { useThemeStore } from './theme'
 const theme = useThemeStore()
 
 // Compute the theme mode
