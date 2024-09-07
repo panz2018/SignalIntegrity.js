@@ -5,8 +5,8 @@ import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
-import FitView from './FitView.vue'
-import fitview from './FitView'
+import ZoomIn from './ZoomIn.vue'
+import zoomin from './ZoomIn'
 
 const app = createApp({})
 app.directive('ripple', Ripple)
@@ -23,23 +23,23 @@ app.use(PrimeVue, {
   }
 })
 
-describe.concurrent('FitView.ts', () => {
+describe.concurrent('ZoomIn.ts', () => {
   it('Valid', () => {
-    expect(fitview).toBeTruthy()
+    expect(zoomin).toBeTruthy()
   })
   it('Initialized', () => {
-    expect(Object.keys(fitview)).toStrictEqual(['label', 'icon', 'command'])
-    expect(fitview.label).toBe('Fit View')
-    expect(fitview.icon).toBe('pi pi-window-maximize')
+    expect(Object.keys(zoomin)).toStrictEqual(['label', 'icon', 'command'])
+    expect(zoomin.label).toBe('Zoom In')
+    expect(zoomin.icon).toBe('pi pi-search-plus')
   })
 })
 
-describe.concurrent('FitView.Vue', () => {
+describe.concurrent('ZoomIn.Vue', () => {
   it('Valid', () => {
-    expect(FitView).toBeTruthy()
+    expect(ZoomIn).toBeTruthy()
   })
   it('Initialized', () => {
-    const wrapper = mount(FitView, {
+    const wrapper = mount(ZoomIn, {
       props: {},
       global: {
         directives: {
@@ -53,10 +53,10 @@ describe.concurrent('FitView.Vue', () => {
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
     expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
-    expect(wrapper.find('i').attributes('class')).toBe('pi pi-window-maximize')
+    expect(wrapper.find('i').attributes('class')).toBe('pi pi-search-plus')
   })
   it('click', async () => {
-    const wrapper = mount(FitView, {
+    const wrapper = mount(ZoomIn, {
       props: {},
       global: {
         directives: {

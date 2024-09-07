@@ -28,6 +28,7 @@ const command = () => {
 
 // Menu items
 import fitview from '@/FlowGraph/Controls/FitView/FitView'
+import zoomin from '@/FlowGraph/Controls/ZoomIn/ZoomIn'
 const items = ref([
   {
     label: 'File',
@@ -50,11 +51,7 @@ const items = ref([
     icon: 'pi pi-eye',
     items: [
       fitview,
-      {
-        label: 'Zoom In',
-        icon: 'pi pi-plus',
-        command: command
-      },
+      zoomin,
       {
         label: 'Zoom Out',
         icon: 'pi pi-minus',

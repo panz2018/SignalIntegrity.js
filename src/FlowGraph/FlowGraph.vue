@@ -12,9 +12,7 @@
     <MiniMap :pannable="true" :zoomable="true" />
     <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
       <FitView />
-      <ControlButton title="Zoom in" @click="flow.zoomIn">
-        <ZoomIn />
-      </ControlButton>
+      <ZoomIn />
       <ControlButton v-tooltip.bottom="'Zoom out'" @click="flow.zoomOut">
         <ZoomOut />
       </ControlButton>
@@ -143,7 +141,7 @@ flow.onConnect((connection) => {
 
 // Setup icons
 import FitView from '@/FlowGraph/Controls/FitView/FitView.vue'
-import ZoomIn from '@/assets/ZoomIn.vue'
+import ZoomIn from '@/FlowGraph/Controls/ZoomIn/ZoomIn.vue'
 import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'
 import UnlockSolid from '@/assets/UnlockSolid.vue'
