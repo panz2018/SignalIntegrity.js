@@ -1,5 +1,5 @@
 <template>
-  <ControlButton title="Zoom full" @click="flow.fitView">
+  <ControlButton v-ripple v-tooltip.bottom="'Fit View'" @click="flow.fitView">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
       <g fill="none" stroke-linejoin="round" stroke-width="4">
         <path d="M44 4H4v40h40z" />
@@ -14,7 +14,7 @@ import { ControlButton } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
 
 import { useVueFlow } from '@vue-flow/core'
-const flow = useVueFlow()
+const flow = useVueFlow('FlowGraph')
 </script>
 
 <style scope>

@@ -26,6 +26,10 @@ const command = () => {
   })
 }
 
+// Get id of FlowGraph
+import { useVueFlow } from '@vue-flow/core'
+let flow = useVueFlow('FlowGraph')
+
 const items = ref([
   {
     label: 'File',
@@ -60,7 +64,9 @@ const items = ref([
       {
         label: 'Fit View',
         icon: 'pi pi-window-maximize',
-        command: command
+        command: () => {
+          flow.fitView()
+        }
       }
     ]
   },

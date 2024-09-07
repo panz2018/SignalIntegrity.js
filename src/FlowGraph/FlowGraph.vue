@@ -6,15 +6,16 @@
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.2"
     :max-zoom="4"
+    fit-view-on-init
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <MiniMap :pannable="true" :zoomable="true" />
     <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
-      <ZoomFull />
+      <FitView />
       <ControlButton title="Zoom in" @click="flow.zoomIn">
         <ZoomIn />
       </ControlButton>
-      <ControlButton title="Zoom out" @click="flow.zoomOut">
+      <ControlButton v-tooltip.bottom="'Zoom out'" @click="flow.zoomOut">
         <ZoomOut />
       </ControlButton>
       <ControlButton
@@ -134,15 +135,15 @@ import '@vue-flow/controls/dist/style.css'
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
-const flow = useVueFlow()
+const flow = useVueFlow('FlowGraph')
 flow.snapToGrid.value = true // to enable snapping to grid
-flow.onInit((instance) => instance.fitView())
+// flow.onInit((instance) => instance.fitView())
 flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
 
 // Setup icons
-import ZoomFull from '@/FlowGraph/ZoomFull.vue'
+import FitView from '@/FlowGraph/FitView.vue'
 import ZoomIn from '@/assets/ZoomIn.vue'
 import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'

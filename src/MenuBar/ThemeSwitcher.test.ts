@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
 import { describe, expect, it } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { mount } from '@vue/test-utils'
+import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
@@ -40,6 +40,7 @@ describe.concurrent('ThemeSwitcher.Vue', () => {
         }
       }
     })
+    expect(wrapper.element.tagName).toBe('BUTTON')
     expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(Object.keys(wrapper.attributes())).toContain('type')
     expect(wrapper.attributes('type')).toEqual('button')
