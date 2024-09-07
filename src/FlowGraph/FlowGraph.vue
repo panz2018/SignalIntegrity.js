@@ -14,39 +14,7 @@
       <FitView />
       <ZoomIn />
       <ZoomOut />
-      <ControlButton
-        :title="
-          flow.nodesDraggable.value || flow.nodesConnectable.value || flow.elementsSelectable.value
-            ? 'Enable modification'
-            : 'Disable modification'
-        "
-        @click="
-          flow.setInteractive(
-            !(
-              flow.nodesDraggable.value ||
-              flow.nodesConnectable.value ||
-              flow.elementsSelectable.value
-            )
-          )
-        "
-      >
-        <LockSolid
-          v-if="
-            !(
-              flow.nodesDraggable.value ||
-              flow.nodesConnectable.value ||
-              flow.elementsSelectable.value
-            )
-          "
-        />
-        <UnlockSolid
-          v-if="
-            flow.nodesDraggable.value ||
-            flow.nodesConnectable.value ||
-            flow.elementsSelectable.value
-          "
-        />
-      </ControlButton>
+      <ModificationSwitcher />
     </Controls>
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
@@ -126,7 +94,7 @@ import { MiniMap } from '@vue-flow/minimap'
 import '@vue-flow/minimap/dist/style.css'
 
 // Setup toolbar for VueFlow
-import { ControlButton, Controls } from '@vue-flow/controls'
+import { Controls } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
 
 // Setup useVueFlow
@@ -141,9 +109,7 @@ flow.onConnect((connection) => {
 import FitView from '@/FlowGraph/Controls/FitView/FitView.vue'
 import ZoomIn from '@/FlowGraph/Controls/ZoomIn/ZoomIn.vue'
 import ZoomOut from '@/FlowGraph/Controls/ZoomOut/ZoomOut.vue'
-
-import LockSolid from '@/assets/LockSolid.vue'
-import UnlockSolid from '@/assets/UnlockSolid.vue'
+import ModificationSwitcher from '@/FlowGraph/Controls/Modification/ModificationSwitcher.vue'
 
 import { useThemeStore } from '@/stores/theme'
 const theme = useThemeStore()

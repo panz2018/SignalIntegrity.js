@@ -30,6 +30,8 @@ const command = () => {
 import fitview from '@/FlowGraph/Controls/FitView/FitView'
 import zoomin from '@/FlowGraph/Controls/ZoomIn/ZoomIn'
 import zoomout from '@/FlowGraph/Controls/ZoomOut/ZoomOut'
+import { useModificationStore } from '@/FlowGraph/Controls/Modification/Modification'
+const modification = useModificationStore()
 const items = ref([
   {
     label: 'File',
@@ -50,7 +52,15 @@ const items = ref([
   {
     label: 'View',
     icon: 'pi pi-eye',
-    items: [fitview, zoomin, zoomout]
+    items: [
+      fitview,
+      zoomin,
+      zoomout,
+      {
+        separator: true
+      },
+      modification
+    ]
   },
   {
     separator: true

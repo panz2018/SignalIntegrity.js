@@ -25,6 +25,7 @@ app.use(PrimeVue, {
 const pinia = createPinia()
 app.use(pinia)
 setActivePinia(pinia)
+
 describe.concurrent('ThemeSwitcher.Vue', () => {
   it('Valid', () => {
     expect(ThemeSwitcher).toBeTruthy()
