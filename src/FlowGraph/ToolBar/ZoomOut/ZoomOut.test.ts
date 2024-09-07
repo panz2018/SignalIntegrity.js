@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
@@ -65,6 +65,12 @@ describe.concurrent('ZoomIn.Vue', () => {
         }
       }
     })
-    await wrapper.find('button').trigger('click')
+    const spy = vi.spyOn(wrapper, 'trigger')
+    await wrapper.trigger('click')
+    expect(spy).toHaveBeenCalledTimes(1)
+    await wrapper.trigger('click')
+    expect(spy).toHaveBeenCalledTimes(2)
+    await wrapper.trigger('click')
+    expect(spy).toHaveBeenCalledTimes(3)
   })
 })

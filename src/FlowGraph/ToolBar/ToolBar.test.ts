@@ -110,7 +110,7 @@ describe.concurrent('ToolBar.Vue', () => {
       const spy = vi.spyOn(modification, 'trigger')
       await modification.trigger('click')
       expect(modification.find('i').attributes('class')).toBe('pi pi-lock')
-      expect(spy).toHaveBeenCalledOnce()
+      expect(spy).toHaveBeenCalledTimes(1)
       await modification.trigger('click')
       expect(modification.find('i').attributes('class')).toBe('pi pi-lock-open')
       expect(spy).toHaveBeenCalledTimes(2)

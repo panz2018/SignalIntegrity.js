@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
@@ -49,9 +49,9 @@ describe.concurrent('FitView.Vue', () => {
       }
     })
     expect(wrapper.element.tagName).toBe('BUTTON')
-    expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
+    expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
     expect(wrapper.find('i').attributes('class')).toBe('pi pi-window-maximize')
   })
@@ -65,6 +65,12 @@ describe.concurrent('FitView.Vue', () => {
         }
       }
     })
-    await wrapper.find('button').trigger('click')
+    const spy = vi.spyOn(wrapper, 'trigger')
+    await wrapper.trigger('click')
+    expect(spy).toHaveBeenCalledTimes(1)
+    await wrapper.trigger('click')
+    expect(spy).toHaveBeenCalledTimes(2)
+    await wrapper.trigger('click')
+    expect(spy).toHaveBeenCalledTimes(3)
   })
 })

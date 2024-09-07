@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import MenuLogo from './MenuLogo.vue'
@@ -12,7 +12,7 @@ describe.concurrent('MenuLogo.Vue', () => {
   it('Valid', () => {
     expect(MenuLogo).toBeTruthy()
   })
-  it('Initialized', () => {
+  it('Initialized', async () => {
     localStorage.clear()
     expect(localStorage.getItem('theme')).toBe(null)
     const wrapper = mount(MenuLogo, {
@@ -31,6 +31,20 @@ describe.concurrent('MenuLogo.Vue', () => {
     expect(path).toBeTruthy()
     expect(path.attributes('d')).toBeTruthy()
     expect(path.attributes('fill')).toBe('white')
+    // Spy click event
+    const spy = vi.spyOn(wrapper, 'trigger')
+    // Click once
+    await wrapper.trigger('click')
+    console.log((wrapper.vm as any).theme.theme)
+    expect(spy).toHaveBeenCalledTimes(1)
+    // Click twice
+    await wrapper.trigger('click')
+    console.log((wrapper.vm as any).theme.theme)
+    expect(spy).toHaveBeenCalledTimes(2)
+    // Click third time
+    await wrapper.trigger('click')
+    console.log((wrapper.vm as any).theme.theme)
+    expect(spy).toHaveBeenCalledTimes(3)
   })
   it('localstorage: Dark', () => {
     localStorage.setItem('theme', 'Dark')

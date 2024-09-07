@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import { createApp } from 'vue'
@@ -68,7 +68,7 @@ describe.concurrent('ModificationSwitcher.Vue', () => {
     expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
     expect(wrapper.find('i').attributes('class')).toBe('pi pi-lock-open')
   })
-  it('click once', async () => {
+  it('click', async () => {
     const wrapper = mount(ModificationSwitcher, {
       props: {},
       global: {
@@ -78,30 +78,33 @@ describe.concurrent('ModificationSwitcher.Vue', () => {
         }
       }
     })
-    await wrapper.find('button').trigger('click')
+    const spy = vi.spyOn(wrapper, 'trigger')
+    // Click once
+    await wrapper.trigger('click')
     expect(wrapper.element.tagName).toBe('BUTTON')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
     expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
     expect(wrapper.find('i').attributes('class')).toBe('pi pi-lock')
-  })
-  it('click twice', async () => {
-    const wrapper = mount(ModificationSwitcher, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    await wrapper.find('button').trigger('click')
+    expect(spy).toHaveBeenCalledTimes(1)
+    // Click twice
+    await wrapper.trigger('click')
     expect(wrapper.element.tagName).toBe('BUTTON')
     expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
     expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
     expect(wrapper.find('i').attributes('class')).toBe('pi pi-lock-open')
+    expect(spy).toHaveBeenCalledTimes(2)
+    // Click third time
+    await wrapper.trigger('click')
+    expect(wrapper.element.tagName).toBe('BUTTON')
+    expect(wrapper.isVisible()).toBeTruthy()
+    expect(wrapper.attributes('disabled')).toBeUndefined()
+    expect(Object.keys(wrapper.attributes())).toContain('class')
+    expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
+    expect(wrapper.find('i').attributes('class')).toBe('pi pi-lock')
+    expect(spy).toHaveBeenCalledTimes(3)
   })
 })
