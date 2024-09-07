@@ -142,7 +142,7 @@ flow.onConnect((connection) => {
 })
 
 // Setup icons
-import FitView from '@/Controls/FitView/FitView.vue'
+import FitView from '@/FlowGraph/Controls/FitView/FitView.vue'
 import ZoomIn from '@/assets/ZoomIn.vue'
 import ZoomOut from '@/assets/ZoomOut.vue'
 import LockSolid from '@/assets/LockSolid.vue'

@@ -27,7 +27,7 @@ const command = () => {
 }
 
 // Menu items
-import fitview from '@/Controls/FitView/FitView'
+import fitview from '@/FlowGraph/Controls/FitView/FitView'
 const items = ref([
   {
     label: 'File',
