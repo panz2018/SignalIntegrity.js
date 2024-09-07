@@ -6,6 +6,7 @@ import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
 import FitView from './FitView.vue'
+import fitview from './FitView'
 
 const app = createApp({})
 app.directive('ripple', Ripple)
@@ -21,6 +22,18 @@ app.use(PrimeVue, {
     }
   }
 })
+
+describe.concurrent('FitView.ts', () => {
+  it('Valid', () => {
+    expect(FitView).toBeTruthy()
+  })
+  it('Initialized', () => {
+    expect(Object.keys(fitview)).toStrictEqual(['label', 'icon', 'command'])
+    expect(fitview.label).toBe('Fit View')
+    expect(fitview.icon).toBe('pi pi-window-maximize')
+  })
+})
+
 describe.concurrent('FitView.Vue', () => {
   it('Valid', () => {
     expect(FitView).toBeTruthy()
@@ -39,7 +52,8 @@ describe.concurrent('FitView.Vue', () => {
     expect(Object.keys(wrapper.attributes())).toContain('class')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
-    expect(wrapper.find('svg').attributes('viewBox')).toBe('0 0 48 48')
+    expect(Object.keys(wrapper.find('i').attributes())).toStrictEqual(['class'])
+    expect(wrapper.find('i').attributes('class')).toBe('pi pi-window-maximize')
   })
   it('click', async () => {
     const wrapper = mount(FitView, {
