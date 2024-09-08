@@ -8,6 +8,17 @@
 import { ControlButton } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
 import fitview from './FitView'
+
+// Fit viewport
+import { onMounted } from 'vue'
+import { useVueFlow } from '@vue-flow/core'
+const flow = useVueFlow('FlowGraph')
+onMounted(() => {
+  flow.fitView()
+})
+flow.onInit(() => {
+  flow.fitView()
+})
 </script>
 
 <style scope>

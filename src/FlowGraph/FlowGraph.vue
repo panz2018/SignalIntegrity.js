@@ -128,12 +128,6 @@ flow.onConnect((connection) => {
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
-
-// Fit viewport
-import { onMounted } from 'vue'
-onMounted(() => {
-  flow.fitView()
-})
 </script>
 
 <style scoped>
@@ -145,6 +139,11 @@ onMounted(() => {
 .dark .vue-flow__node {
   background: #4a5568;
   color: #fffffb;
+}
+
+.vue-flow__node.selected {
+  background: hsl(0, 0%, 100%);
+  box-shadow: 50px 50px 0 2px #2563eb;
 }
 
 .dark .vue-flow__node.selected {
