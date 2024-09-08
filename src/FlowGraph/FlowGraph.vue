@@ -6,7 +6,6 @@
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.1"
     :max-zoom="10"
-    fit-view-on-init
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <ToolBar />
@@ -129,6 +128,12 @@ flow.onConnect((connection) => {
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
+
+// Fit viewport
+import { onMounted } from 'vue'
+onMounted(() => {
+  flow.fitView()
+})
 </script>
 
 <style scoped>
