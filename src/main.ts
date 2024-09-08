@@ -7,7 +7,7 @@ import Tooltip from 'primevue/tooltip'
 import ToastService from 'primevue/toastservice'
 
 import App from '@/App.vue'
-import { favicon } from '@/favicon'
+import { favicon } from '@/logo/favicon'
 
 const app = createApp(App)
 app.directive('ripple', Ripple)

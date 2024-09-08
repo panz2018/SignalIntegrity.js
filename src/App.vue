@@ -5,11 +5,11 @@
 </template>
 
 <script setup lang="ts">
-// Toast is used to display messages in an overlay
-import Toast from 'primevue/toast'
-
 import MenuBar from '@/MenuBar/MenuBar.vue'
 import FlowGraph from '@/FlowGraph/FlowGraph.vue'
+
+// Toast is used to display messages in an overlay
+import Toast from 'primevue/toast'
 </script>
 
 <style scoped>

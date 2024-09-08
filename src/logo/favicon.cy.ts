@@ -1,5 +1,4 @@
-// import { describe, expect, it } from 'vitest'
-import { favicon } from '@/favicon'
+import { favicon } from './favicon'
 
 describe('favicon.ts', () => {
   beforeEach(() => {
