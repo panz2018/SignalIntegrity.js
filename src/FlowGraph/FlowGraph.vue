@@ -4,8 +4,8 @@
     :edges="edges"
     :class="{ dark: theme.theme === 'Bright' ? false : true }"
     :default-viewport="{ zoom: 1.0 }"
-    :min-zoom="0.2"
-    :max-zoom="4"
+    :min-zoom="0.1"
+    :max-zoom="10"
     fit-view-on-init
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
