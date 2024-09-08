@@ -35,6 +35,8 @@ const modification = useModificationStore()
 import { storeToRefs } from 'pinia'
 import { useToolbarStore } from './ToolBar/ToolBar'
 const { toolbar } = storeToRefs(useToolbarStore())
+import { useNavigationStore } from './NavigationMap/NavigationMap'
+const { navigation } = storeToRefs(useNavigationStore())
 const items = ref([
   {
     label: 'File',
@@ -66,7 +68,8 @@ const items = ref([
       {
         separator: true
       },
-      toolbar.value
+      toolbar.value,
+      navigation.value
     ]
   },
   {

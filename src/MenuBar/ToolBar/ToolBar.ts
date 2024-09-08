@@ -12,7 +12,7 @@ export const useToolbarStore = defineStore('ToolBar', () => {
       if (status.value) {
         toolbar.value.icon = 'pi pi-check'
       } else {
-        toolbar.value.icon = 'pi'
+        toolbar.value.icon = 'pi pi-times'
       }
     }
   })

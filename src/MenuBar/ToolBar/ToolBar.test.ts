@@ -39,7 +39,7 @@ describe.concurrent('ToolBar.ts', () => {
     toolbar.value.command()
     expect(Object.keys(toolbar.value)).toStrictEqual(['label', 'icon', 'command'])
     expect(toolbar.value.label).toBe('Tool Bar')
-    expect(toolbar.value.icon).toBe('pi')
+    expect(toolbar.value.icon).toBe('pi pi-times')
     expect(status.value).toBe(false)
     // Click twice
     toolbar.value.command()

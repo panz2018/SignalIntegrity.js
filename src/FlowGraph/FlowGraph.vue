@@ -9,8 +9,8 @@
     fit-view-on-init
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
-    <MiniMap :pannable="true" :zoomable="true" />
     <ToolBar />
+    <NavigationMap />
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
     </Panel>
@@ -84,12 +84,11 @@ function addNode() {
 // Setup background for VueFlow
 import { Background } from '@vue-flow/background'
 
-// Setup minimap for VueFlow
-import { MiniMap } from '@vue-flow/minimap'
-import '@vue-flow/minimap/dist/style.css'
-
 // Setup toolbar for VueFlow
 import ToolBar from './ToolBar/ToolBar.vue'
+
+// Setup minimap for VueFlow
+import NavigationMap from './NavigationMap/NavigationMap.vue'
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
