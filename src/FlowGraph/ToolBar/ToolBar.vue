@@ -1,5 +1,11 @@
 <template>
-  <Controls position="top-left" :showZoom="false" :showFitView="false" :showInteractive="false">
+  <Controls
+    v-show="status"
+    position="top-left"
+    :showZoom="false"
+    :showFitView="false"
+    :showInteractive="false"
+  >
     <FitView />
     <ZoomIn />
     <ZoomOut />
@@ -17,6 +23,11 @@ import FitView from '@/FlowGraph/ToolBar/FitView/FitView.vue'
 import ZoomIn from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn.vue'
 import ZoomOut from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut.vue'
 import ModificationSwitcher from '@/FlowGraph/ToolBar/Modification/ModificationSwitcher.vue'
+
+// Determine to show/hide ToolBar
+import { storeToRefs } from 'pinia'
+import { useToolbarStore } from '@/MenuBar/ToolBar/ToolBar'
+const { status } = storeToRefs(useToolbarStore())
 </script>
 
 <style scoped>

@@ -32,6 +32,9 @@ import zoomin from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn'
 import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 const modification = useModificationStore()
+import { storeToRefs } from 'pinia'
+import { useToolbarStore } from './ToolBar/ToolBar'
+const { toolbar } = storeToRefs(useToolbarStore())
 const items = ref([
   {
     label: 'File',
@@ -59,7 +62,11 @@ const items = ref([
       {
         separator: true
       },
-      modification
+      modification,
+      {
+        separator: true
+      },
+      toolbar.value
     ]
   },
   {
