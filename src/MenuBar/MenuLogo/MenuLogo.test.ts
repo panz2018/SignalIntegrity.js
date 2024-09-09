@@ -32,18 +32,18 @@ describe.concurrent('MenuLogo.Vue', () => {
     expect(path.attributes('d')).toBeTruthy()
     expect(path.attributes('fill')).toBe('white')
     // Spy click event
-    const spy = vi.spyOn(wrapper, 'trigger')
+    const spy = vi.spyOn((wrapper.vm as any).theme, 'toggle')
     // Click once
-    await wrapper.trigger('click')
-    console.log((wrapper.vm as any).theme.theme)
+    ;(wrapper.vm as any).theme.toggle()
+    expect((wrapper.vm as any).theme.theme).toEqual('Bright')
     expect(spy).toHaveBeenCalledTimes(1)
     // Click twice
-    await wrapper.trigger('click')
-    console.log((wrapper.vm as any).theme.theme)
+    ;(wrapper.vm as any).theme.toggle()
+    expect((wrapper.vm as any).theme.theme).toEqual('Dark')
     expect(spy).toHaveBeenCalledTimes(2)
     // Click third time
-    await wrapper.trigger('click')
-    console.log((wrapper.vm as any).theme.theme)
+    ;(wrapper.vm as any).theme.toggle()
+    expect((wrapper.vm as any).theme.theme).toEqual('Bright')
     expect(spy).toHaveBeenCalledTimes(3)
   })
   it('localstorage: Dark', () => {
