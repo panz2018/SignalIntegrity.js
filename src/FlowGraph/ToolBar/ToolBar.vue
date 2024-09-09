@@ -1,7 +1,7 @@
 <template>
   <Controls
-    v-show="status"
-    position="top-left"
+    v-show="toolbar.status"
+    :position="toolbar.position"
     :showZoom="false"
     :showFitView="false"
     :showInteractive="false"
@@ -26,8 +26,8 @@ import ModificationSwitcher from './Modification/ModificationSwitcher.vue'
 
 // Determine to show/hide ToolBar
 import { storeToRefs } from 'pinia'
-import { useToolbarStatus } from './ToolbarStatus'
-const { status } = storeToRefs(useToolbarStatus())
+import { useToolbarStore } from './ToolbarStore'
+const { toolbar } = storeToRefs(useToolbarStore())
 </script>
 
 <style scoped>

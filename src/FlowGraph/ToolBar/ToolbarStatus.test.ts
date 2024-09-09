@@ -5,7 +5,7 @@ import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
-import { useToolbarStatus } from './ToolbarStatus'
+import { useToolbarStatus } from './ToolbarStore'
 
 const app = createApp({})
 app.directive('ripple', Ripple)
