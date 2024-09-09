@@ -14,7 +14,7 @@ export const useNavigationStatus = () => {
           if (status.value) {
             navigation.value.icon = 'pi pi-check'
           } else {
-            navigation.value.icon = 'pi pi-times'
+            navigation.value.icon = 'pi pi-empty'
           }
           save()
         }
@@ -26,7 +26,7 @@ export const useNavigationStatus = () => {
       if (status.value) {
         navigation.value.icon = 'pi pi-check'
       } else {
-        navigation.value.icon = 'pi pi-times'
+        navigation.value.icon = 'pi pi-empty'
       }
     }
 

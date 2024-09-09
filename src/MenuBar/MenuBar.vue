@@ -88,3 +88,10 @@ const items = ref([
   }
 ])
 </script>
+
+<style>
+.pi-empty {
+  width: var(--p-icon-size);
+  height: var(--p-icon-size);
+}
+</style>

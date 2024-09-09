@@ -13,7 +13,7 @@ export const useToolbarStatus = () => {
         if (status.value) {
           toolbar.value.icon = 'pi pi-check'
         } else {
-          toolbar.value.icon = 'pi pi-times'
+          toolbar.value.icon = 'pi pi-empty'
         }
         save()
       }
@@ -24,7 +24,7 @@ export const useToolbarStatus = () => {
       if (status.value) {
         toolbar.value.icon = 'pi pi-check'
       } else {
-        toolbar.value.icon = 'pi pi-times'
+        toolbar.value.icon = 'pi pi-empty'
       }
     }
 
