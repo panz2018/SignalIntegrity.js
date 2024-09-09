@@ -26,8 +26,8 @@ import ModificationSwitcher from '@/FlowGraph/ToolBar/Modification/ModificationS
 
 // Determine to show/hide ToolBar
 import { storeToRefs } from 'pinia'
-import { useToolbarStore } from '@/MenuBar/ToolBar/ToolBar'
-const { status } = storeToRefs(useToolbarStore())
+import { useToolbarStatus } from '@/MenuBar/ToolBar/ToolbarStatus'
+const { status } = storeToRefs(useToolbarStatus())
 </script>
 
 <style scoped>
