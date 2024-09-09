@@ -35,8 +35,8 @@ const modification = useModificationStore()
 import { storeToRefs } from 'pinia'
 import { useToolbarStatus } from '@/FlowGraph/ToolBar/ToolbarStatus'
 const { toolbar } = storeToRefs(useToolbarStatus())
-import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationMap'
-const { navigation } = storeToRefs(useNavigationStore())
+import { useNavigationStatus } from '@/FlowGraph/NavigationMap/NavigationStatus'
+const { navigation } = storeToRefs(useNavigationStatus())
 const items = ref([
   {
     label: 'File',
