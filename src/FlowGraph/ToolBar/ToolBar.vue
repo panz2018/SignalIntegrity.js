@@ -19,14 +19,14 @@ import { Controls } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
 
 // Setup buttons for the toolbar
-import FitView from '@/FlowGraph/ToolBar/FitView/FitView.vue'
-import ZoomIn from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn.vue'
-import ZoomOut from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut.vue'
-import ModificationSwitcher from '@/FlowGraph/ToolBar/Modification/ModificationSwitcher.vue'
+import FitView from './FitView/FitView.vue'
+import ZoomIn from './ZoomIn/ZoomIn.vue'
+import ZoomOut from './ZoomOut/ZoomOut.vue'
+import ModificationSwitcher from './Modification/ModificationSwitcher.vue'
 
 // Determine to show/hide ToolBar
 import { storeToRefs } from 'pinia'
-import { useToolbarStatus } from '@/MenuBar/ToolBar/ToolbarStatus'
+import { useToolbarStatus } from './ToolbarStatus'
 const { status } = storeToRefs(useToolbarStatus())
 </script>
 

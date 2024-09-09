@@ -33,9 +33,9 @@ import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 const modification = useModificationStore()
 import { storeToRefs } from 'pinia'
-import { useToolbarStatus } from './ToolBar/ToolbarStatus'
+import { useToolbarStatus } from '@/FlowGraph/ToolBar/ToolbarStatus'
 const { toolbar } = storeToRefs(useToolbarStatus())
-import { useNavigationStore } from './NavigationMap/NavigationMap'
+import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationMap'
 const { navigation } = storeToRefs(useNavigationStore())
 const items = ref([
   {
@@ -69,6 +69,9 @@ const items = ref([
         separator: true
       },
       toolbar.value,
+      {
+        separator: true
+      },
       navigation.value
     ]
   },

@@ -8,6 +8,6 @@ import '@vue-flow/minimap/dist/style.css'
 
 // Determine to show/hide NavigationMap
 import { storeToRefs } from 'pinia'
-import { useNavigationStore } from '@/MenuBar/NavigationMap/NavigationMap'
+import { useNavigationStore } from './NavigationMap'
 const { status } = storeToRefs(useNavigationStore())
 </script>
