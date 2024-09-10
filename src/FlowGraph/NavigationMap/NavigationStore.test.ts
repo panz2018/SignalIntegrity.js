@@ -5,7 +5,7 @@ import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
-import { useNavigationStatus } from './NavigationStore'
+import { useNavigationStore } from './NavigationStore'
 
 const app = createApp({})
 app.directive('ripple', Ripple)
@@ -25,104 +25,123 @@ const pinia = createPinia()
 app.use(pinia)
 setActivePinia(pinia)
 
-describe.concurrent('NavigationStatus.ts', () => {
+// Default perperties
+const positions = [
+  'top-left',
+  'top-center',
+  'top-right',
+  'bottom-left',
+  'bottom-center',
+  'bottom-right'
+] as const
+
+describe.concurrent('NavigationStore.ts', () => {
   it('Valid', () => {
-    expect(useNavigationStatus).toBeTruthy()
+    expect(useNavigationStore).toBeTruthy()
   })
-  it('NavigationStatus: empty', () => {
+  it('NavigationStore: empty', () => {
     localStorage.clear()
-    expect(localStorage.getItem('NavigationStatus')).toBeNull()
-    const { navigation, status } = storeToRefs(useNavigationStatus())
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
-    // Click once
-    navigation.value.command()
-    expect(status.value).toBe(false)
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-empty')
-    // Click twice
-    navigation.value.command()
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
+    expect(localStorage.getItem('Navigation')).toBeNull()
+    testNavigation({ status: true, position: 'bottom-right' })
   })
-  it('NavigationStatus: true', () => {
-    localStorage.setItem('NavigationStatus', 'true')
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    const { navigation, status } = storeToRefs(useNavigationStatus())
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
-    // Click once
-    navigation.value.command()
-    expect(status.value).toBe(false)
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-empty')
+  for (const status of [true, false, 'other']) {
+    for (const position of [...positions, 'other']) {
+      const string = JSON.stringify({ status: status, position: position })
+      it(string, () => {
+        localStorage.setItem('Navigation', string)
+        expect(localStorage.getItem('Navigation')).toBe(string)
+        testNavigation({
+          status: status === false ? false : true,
+          position: positions.includes(position as any) ? position : 'bottom-right'
+        })
+      })
+    }
+  }
+
+  function testNavigation(anticipate: { status: boolean; position: string }) {
+    const store = useNavigationStore()
+    const { navigation, navigationMenu } = storeToRefs(store)
+    check(anticipate)
+    // Click enable/disable once
+    navigationMenu.value.at(0)?.command!()
+    for (const row of navigationMenu.value.at(1)!.items!) {
+      row.command({ item: row })
+      check({ status: !anticipate.status, position: label2position(row.label) })
+    }
     // Click twice
-    navigation.value.command()
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
-  })
-  it('NavigationStatus: false', () => {
-    localStorage.setItem('NavigationStatus', 'false')
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    const { navigation, status } = storeToRefs(useNavigationStatus())
-    expect(status.value).toBe(false)
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-empty')
-    // Click once
-    navigation.value.command()
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
-    // Click twice
-    navigation.value.command()
-    expect(status.value).toBe(false)
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-empty')
-  })
-  it('NavigationStatus: other', () => {
-    localStorage.setItem('NavigationStatus', 'other')
-    expect(localStorage.getItem('NavigationStatus')).toBe('other')
-    const { navigation, status } = storeToRefs(useNavigationStatus())
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
-    // Click once
-    navigation.value.command()
-    expect(status.value).toBe(false)
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-empty')
-    // Click twice
-    navigation.value.command()
-    expect(status.value).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
-    expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-check')
-  })
+    navigationMenu.value.at(0)?.command!()
+    for (const row of navigationMenu.value.at(1)!.items!) {
+      row.command({ item: row })
+      check({ status: anticipate.status, position: label2position(row.label) })
+    }
+
+    function check(anticipate: { status: boolean; position: string }) {
+      expect(localStorage.getItem('Navigation')).toBe(JSON.stringify(anticipate))
+      expect(navigation.value).toStrictEqual(anticipate)
+      expect(navigationMenu.value.length).toBe(2)
+      checkMenuStatus(anticipate)
+      checkMenuPosition(anticipate)
+
+      function checkMenuStatus(anticipate: { status: boolean; position: string }) {
+        const menuStatus = navigationMenu.value.at(0)
+        expect(menuStatus).toBeTruthy()
+        expect(Object.keys(menuStatus as Object)).toStrictEqual(['label', 'icon', 'command'])
+        expect(menuStatus?.label).toBe('Navigation Map')
+        if (anticipate.status) {
+          expect(menuStatus?.icon).toBe('pi pi-check')
+        } else {
+          expect(menuStatus?.icon).toBe('pi pi-empty')
+        }
+      }
+
+      function checkMenuPosition(anticipate: { status: boolean; position: string }) {
+        const menuPosition = navigationMenu.value.at(1)
+        expect(menuPosition).toBeTruthy()
+        expect(Object.keys(menuPosition as Object)).toStrictEqual(['label', 'icon', 'items'])
+        expect(menuPosition?.label).toBe('Navigation Map Position')
+        expect(menuPosition?.icon).toBe('pi pi-empty')
+        const items = menuPosition?.items
+        expect(items).toBeTruthy()
+        const numPositions = {
+          'top-left': 0,
+          'top-center': 0,
+          'top-right': 0,
+          'bottom-left': 0,
+          'bottom-center': 0,
+          'bottom-right': 0
+        }
+        expect(items?.length).toBe(Object.keys(numPositions).length)
+        for (const row of items!) {
+          expect(Object.keys(row as Object)).toStrictEqual(['label', 'icon', 'command'])
+          const label = row.label
+          const position = label2position(label)
+          expect(position2label(position)).toBe(label)
+          expect(Object.keys(numPositions)).toContain(position)
+          numPositions[position as keyof typeof numPositions] += 1
+          if (anticipate.position === position) {
+            expect(row.icon).toBe('pi pi-check')
+          } else {
+            expect(row.icon).toBe('pi pi-empty')
+          }
+        }
+        for (const number of Object.values(numPositions)) {
+          expect(number).toBe(1)
+        }
+      }
+    }
+
+    function position2label(position: string): string {
+      return position
+        .split('-')
+        .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+        .join(' ')
+    }
+
+    function label2position(label: string): string {
+      return label
+        .split(' ')
+        .map((x) => x.toLowerCase())
+        .join('-')
+    }
+  }
 })
