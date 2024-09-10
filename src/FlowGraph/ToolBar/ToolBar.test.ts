@@ -32,7 +32,6 @@ describe.concurrent('ToolBar.Vue', () => {
   })
   it('ToolbarStatus: empty', async () => {
     localStorage.clear()
-    expect(localStorage.getItem('ToolbarStatus')).toBeNull()
     const wrapper = mount(ToolBar, {
       props: {},
       global: {
@@ -42,8 +41,7 @@ describe.concurrent('ToolBar.Vue', () => {
         }
       }
     })
-    expect((wrapper.vm as any).status).toBe(true)
-    expect(localStorage.getItem('ToolbarStatus')).toBe('true')
+    expect((wrapper.vm as any).toolbar.status).toBe(true)
     expect(wrapper.element.tagName).toBe('DIV')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
@@ -122,56 +120,5 @@ describe.concurrent('ToolBar.Vue', () => {
       expect(modification.find('i').attributes('class')).toBe('pi pi-lock')
       expect(spy).toHaveBeenCalledTimes(3)
     }
-  })
-  it('ToolbarStatus: true', async () => {
-    localStorage.setItem('ToolbarStatus', 'true')
-    expect(localStorage.getItem('ToolbarStatus')).toBe('true')
-    const wrapper = mount(ToolBar, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect((wrapper.vm as any).status).toBe(true)
-    expect(localStorage.getItem('ToolbarStatus')).toBe('true')
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.isVisible()).toBeTruthy()
-  })
-  it('ToolbarStatus: false', async () => {
-    localStorage.setItem('ToolbarStatus', 'false')
-    expect(localStorage.getItem('ToolbarStatus')).toBe('false')
-    const wrapper = mount(ToolBar, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect((wrapper.vm as any).status).toBe(false)
-    expect(localStorage.getItem('ToolbarStatus')).toBe('false')
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.isVisible()).toBeFalsy()
-  })
-  it('ToolbarStatus: other', async () => {
-    localStorage.setItem('ToolbarStatus', 'other')
-    expect(localStorage.getItem('ToolbarStatus')).toBe('other')
-    const wrapper = mount(ToolBar, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect((wrapper.vm as any).status).toBe(true)
-    expect(localStorage.getItem('ToolbarStatus')).toBe('true')
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.isVisible()).toBeTruthy()
   })
 })

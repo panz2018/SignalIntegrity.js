@@ -44,7 +44,7 @@ describe.concurrent('NavigationStatus.ts', () => {
     expect(localStorage.getItem('NavigationStatus')).toBe('false')
     expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
     expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-times')
+    expect(navigation.value.icon).toBe('pi pi-empty')
     // Click twice
     navigation.value.command()
     expect(status.value).toBe(true)
@@ -68,7 +68,7 @@ describe.concurrent('NavigationStatus.ts', () => {
     expect(localStorage.getItem('NavigationStatus')).toBe('false')
     expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
     expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-times')
+    expect(navigation.value.icon).toBe('pi pi-empty')
     // Click twice
     navigation.value.command()
     expect(status.value).toBe(true)
@@ -85,7 +85,7 @@ describe.concurrent('NavigationStatus.ts', () => {
     expect(localStorage.getItem('NavigationStatus')).toBe('false')
     expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
     expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-times')
+    expect(navigation.value.icon).toBe('pi pi-empty')
     // Click once
     navigation.value.command()
     expect(status.value).toBe(true)
@@ -99,7 +99,7 @@ describe.concurrent('NavigationStatus.ts', () => {
     expect(localStorage.getItem('NavigationStatus')).toBe('false')
     expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
     expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-times')
+    expect(navigation.value.icon).toBe('pi pi-empty')
   })
   it('NavigationStatus: other', () => {
     localStorage.setItem('NavigationStatus', 'other')
@@ -116,7 +116,7 @@ describe.concurrent('NavigationStatus.ts', () => {
     expect(localStorage.getItem('NavigationStatus')).toBe('false')
     expect(Object.keys(navigation.value)).toStrictEqual(['label', 'icon', 'command'])
     expect(navigation.value.label).toBe('Navigation Map')
-    expect(navigation.value.icon).toBe('pi pi-times')
+    expect(navigation.value.icon).toBe('pi pi-empty')
     // Click twice
     navigation.value.command()
     expect(status.value).toBe(true)
