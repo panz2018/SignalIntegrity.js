@@ -58,7 +58,7 @@ export const useMenuStore = () => {
         {
           separator: true
         },
-        navigationMenu.value
+        ...navigationMenu.value
       ]
     },
     {

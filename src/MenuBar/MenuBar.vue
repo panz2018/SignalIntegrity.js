@@ -14,7 +14,7 @@ import PrimeMenu from 'primevue/menubar'
 import MenuLogo from './MenuLogo/MenuLogo.vue'
 import ThemeSwitcher from './Theme/ThemeSwitcher.vue'
 
-import { useMenuStore } from './Menu'
+import { useMenuStore } from './MenuStore'
 const menu = useMenuStore()
 </script>
 
