@@ -34,6 +34,36 @@ describe.concurrent('ToolbarStore.ts', () => {
     expect(localStorage.getItem('Toolbar')).toBeNull()
     testToolbar({ status: true, position: 'top-left' })
   })
+  for (const status of [true, false, 'other']) {
+    for (const position of [
+      'top-left',
+      'top-center',
+      'top-right',
+      'bottom-left',
+      'bottom-center',
+      'bottom-right',
+      'other'
+    ]) {
+      const string = JSON.stringify({ status: status, position: position })
+      it(string, () => {
+        localStorage.setItem('Toolbar', string)
+        expect(localStorage.getItem('Toolbar')).toBe(string)
+        testToolbar({
+          status: status === false ? false : true,
+          position: [
+            'top-left',
+            'top-center',
+            'top-right',
+            'bottom-left',
+            'bottom-center',
+            'bottom-right'
+          ].includes(position)
+            ? position
+            : 'top-left'
+        })
+      })
+    }
+  }
 
   function testToolbar(anticipate: { status: boolean; position: string }) {
     const store = useToolbarStore()
