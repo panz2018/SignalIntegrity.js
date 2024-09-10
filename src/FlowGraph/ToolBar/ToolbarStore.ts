@@ -4,16 +4,27 @@ import { defineStore } from 'pinia'
 
 export const useToolbarStore = () => {
   const innerStore = defineStore('Toolbar', () => {
+    // Default perperties
+    const positions = [
+      'top-left',
+      'top-center',
+      'top-right',
+      'bottom-left',
+      'bottom-center',
+      'bottom-right'
+    ] as const
+    type Status = true | false
+    type Position = (typeof positions)[number]
+    const init: {
+      status: Status
+      position: Position
+    } = { status: true, position: 'top-left' }
+
+    // Pinia store properties
     const toolbar: Ref<{
-      status: true | false
-      position:
-        | 'top-left'
-        | 'top-center'
-        | 'top-right'
-        | 'bottom-left'
-        | 'bottom-center'
-        | 'bottom-right'
-    }> = ref({ status: true, position: 'top-left' })
+      status: Status
+      position: Position
+    }> = ref(init)
     const toolbarMenu: Ref<
       {
         label: string
@@ -25,26 +36,17 @@ export const useToolbarStore = () => {
 
     function read() {
       // Read from local storage
-      toolbar.value = JSON.parse(
-        localStorage.getItem('Toolbar') ?? JSON.stringify({ status: true, position: 'top-left' })
-      )
+      toolbar.value = JSON.parse(localStorage.getItem('Toolbar') ?? JSON.stringify(init))
       // Check if status is valid
       if (!Object.keys(toolbar.value).includes('status') || toolbar.value.status !== false) {
-        toolbar.value.status = true
+        toolbar.value.status = init.status
       }
       // Check if position is valid
       if (
         !Object.keys(toolbar.value).includes('position') ||
-        ![
-          'top-left',
-          'top-center',
-          'top-right',
-          'bottom-left',
-          'bottom-center',
-          'bottom-right'
-        ].includes(toolbar.value.position)
+        !positions.includes(toolbar.value.position)
       ) {
-        toolbar.value.position = 'top-left'
+        toolbar.value.position = init.position
       }
       update()
     }
@@ -95,14 +97,7 @@ export const useToolbarStore = () => {
           toolbarMenu.value.push(menu)
         }
         // Update each menu item for the corresponding position
-        for (const position of [
-          'top-left',
-          'top-center',
-          'top-right',
-          'bottom-left',
-          'bottom-center',
-          'bottom-right'
-        ]) {
+        for (const position of positions) {
           // Find item
           let item = menu.items!.find((row) => row.label === position2label(position))
           // Add item if not found
@@ -132,25 +127,11 @@ export const useToolbarStore = () => {
             .join(' ')
         }
 
-        function label2position(
-          label: string
-        ):
-          | 'top-left'
-          | 'top-center'
-          | 'top-right'
-          | 'bottom-left'
-          | 'bottom-center'
-          | 'bottom-right' {
+        function label2position(label: string): Position {
           return label
             .split(' ')
             .map((x) => x.toLowerCase())
-            .join('-') as
-            | 'top-left'
-            | 'top-center'
-            | 'top-right'
-            | 'bottom-left'
-            | 'bottom-center'
-            | 'bottom-right'
+            .join('-') as Position
         }
       }
     }

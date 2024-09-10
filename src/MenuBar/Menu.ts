@@ -4,7 +4,7 @@ import zoomin from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn'
 import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
-import { useNavigationStatus } from '@/FlowGraph/NavigationMap/NavigationStatus'
+import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
 
 import { useToast } from 'primevue/usetoast'
 
@@ -22,7 +22,7 @@ export const useMenuStore = () => {
   // Menu items
   const modification = useModificationStore()
   const { toolbarMenu } = storeToRefs(useToolbarStore())
-  const { navigation } = storeToRefs(useNavigationStatus())
+  const { navigationMenu } = storeToRefs(useNavigationStore())
   const menu = [
     {
       label: 'File',
@@ -58,7 +58,7 @@ export const useMenuStore = () => {
         {
           separator: true
         },
-        navigation.value
+        navigationMenu.value
       ]
     },
     {

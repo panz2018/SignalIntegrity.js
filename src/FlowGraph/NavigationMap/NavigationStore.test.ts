@@ -5,7 +5,7 @@ import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
-import { useNavigationStatus } from './NavigationStatus'
+import { useNavigationStatus } from './NavigationStore'
 
 const app = createApp({})
 app.directive('ripple', Ripple)

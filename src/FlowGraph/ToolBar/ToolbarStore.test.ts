@@ -25,6 +25,16 @@ const pinia = createPinia()
 app.use(pinia)
 setActivePinia(pinia)
 
+// Default perperties
+const positions = [
+  'top-left',
+  'top-center',
+  'top-right',
+  'bottom-left',
+  'bottom-center',
+  'bottom-right'
+] as const
+
 describe.concurrent('ToolbarStore.ts', () => {
   it('Valid', () => {
     expect(useToolbarStore).toBeTruthy()
@@ -35,31 +45,14 @@ describe.concurrent('ToolbarStore.ts', () => {
     testToolbar({ status: true, position: 'top-left' })
   })
   for (const status of [true, false, 'other']) {
-    for (const position of [
-      'top-left',
-      'top-center',
-      'top-right',
-      'bottom-left',
-      'bottom-center',
-      'bottom-right',
-      'other'
-    ]) {
+    for (const position of [...positions, 'other']) {
       const string = JSON.stringify({ status: status, position: position })
       it(string, () => {
         localStorage.setItem('Toolbar', string)
         expect(localStorage.getItem('Toolbar')).toBe(string)
         testToolbar({
           status: status === false ? false : true,
-          position: [
-            'top-left',
-            'top-center',
-            'top-right',
-            'bottom-left',
-            'bottom-center',
-            'bottom-right'
-          ].includes(position)
-            ? position
-            : 'top-left'
+          position: positions.includes(position as any) ? position : 'top-left'
         })
       })
     }
@@ -110,7 +103,7 @@ describe.concurrent('ToolbarStore.ts', () => {
       expect(menuPosition?.icon).toBe('pi pi-empty')
       const items = menuPosition?.items
       expect(items).toBeTruthy()
-      const positions = {
+      const numPositions = {
         'top-left': 0,
         'top-center': 0,
         'top-right': 0,
@@ -118,21 +111,21 @@ describe.concurrent('ToolbarStore.ts', () => {
         'bottom-center': 0,
         'bottom-right': 0
       }
-      expect(items?.length).toBe(Object.keys(positions).length)
+      expect(items?.length).toBe(Object.keys(numPositions).length)
       for (const row of items!) {
         expect(Object.keys(row as Object)).toStrictEqual(['label', 'icon', 'command'])
         const label = row.label
         const position = label2position(label)
         expect(position2label(position)).toBe(label)
-        expect(Object.keys(positions)).toContain(position)
-        positions[position as keyof typeof positions] += 1
+        expect(Object.keys(numPositions)).toContain(position)
+        numPositions[position as keyof typeof numPositions] += 1
         if (anticipate.position === position) {
           expect(row.icon).toBe('pi pi-check')
         } else {
           expect(row.icon).toBe('pi pi-empty')
         }
       }
-      for (const number of Object.values(positions)) {
+      for (const number of Object.values(numPositions)) {
         expect(number).toBe(1)
       }
     }
