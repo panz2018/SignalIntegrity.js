@@ -30,7 +30,7 @@ describe.concurrent('ToolBar.Vue', () => {
   it('Valid', () => {
     expect(ToolBar).toBeTruthy()
   })
-  it('ToolbarStatus: empty', async () => {
+  it('localStorage: empty', async () => {
     localStorage.clear()
     const wrapper = mount(ToolBar, {
       props: {},
