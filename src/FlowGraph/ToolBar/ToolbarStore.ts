@@ -104,11 +104,11 @@ export const useToolbarStore = () => {
           'bottom-right'
         ]) {
           // Find item
-          let item = menu.items!.find((row) => row.label === postion2label(position))
+          let item = menu.items!.find((row) => row.label === position2label(position))
           // Add item if not found
           if (item === undefined) {
             item = {
-              label: postion2label(position),
+              label: position2label(position),
               icon: 'pi pi-empty',
               command: (event) => {
                 toolbar.value.position = label2position(event.item.label)
@@ -125,7 +125,7 @@ export const useToolbarStore = () => {
           }
         }
 
-        function postion2label(position: string): string {
+        function position2label(position: string): string {
           return position
             .split('-')
             .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
@@ -155,7 +155,7 @@ export const useToolbarStore = () => {
       }
     }
 
-    return { toolbarMenu, toolbar, read, save }
+    return { toolbar, toolbarMenu, read, save }
   })
 
   const store = innerStore()
