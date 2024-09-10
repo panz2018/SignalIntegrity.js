@@ -30,7 +30,8 @@ describe.concurrent('ToolBar.Vue', () => {
   it('Valid', () => {
     expect(ToolBar).toBeTruthy()
   })
-  it('Initialized', async () => {
+  it('ToolbarStatus: empty', async () => {
+    localStorage.clear()
     const wrapper = mount(ToolBar, {
       props: {},
       global: {
@@ -40,6 +41,7 @@ describe.concurrent('ToolBar.Vue', () => {
         }
       }
     })
+    expect((wrapper.vm as any).toolbar.status).toBe(true)
     expect(wrapper.element.tagName).toBe('DIV')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()

@@ -1,7 +1,7 @@
 <template>
   <Controls
-    v-show="status"
-    position="top-left"
+    v-show="toolbar.status"
+    :position="toolbar.position"
     :showZoom="false"
     :showFitView="false"
     :showInteractive="false"
@@ -19,15 +19,15 @@ import { Controls } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
 
 // Setup buttons for the toolbar
-import FitView from '@/FlowGraph/ToolBar/FitView/FitView.vue'
-import ZoomIn from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn.vue'
-import ZoomOut from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut.vue'
-import ModificationSwitcher from '@/FlowGraph/ToolBar/Modification/ModificationSwitcher.vue'
+import FitView from './FitView/FitView.vue'
+import ZoomIn from './ZoomIn/ZoomIn.vue'
+import ZoomOut from './ZoomOut/ZoomOut.vue'
+import ModificationSwitcher from './Modification/ModificationSwitcher.vue'
 
 // Determine to show/hide ToolBar
 import { storeToRefs } from 'pinia'
-import { useToolbarStore } from '@/MenuBar/ToolBar/ToolBar'
-const { status } = storeToRefs(useToolbarStore())
+import { useToolbarStore } from './ToolbarStore'
+const { toolbar } = storeToRefs(useToolbarStore())
 </script>
 
 <style scoped>
