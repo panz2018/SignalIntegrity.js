@@ -12,7 +12,7 @@
     <NavigationMap />
     <Panel position="top-left">
       <button type="button" @click="addNode">Add a node</button>
-      <button type="button" @click="layoutGraph('TB')">layoutGraph('TB')</button>
+      <button type="button" @click="layoutGraph('RL')">layoutGraph('LR')</button>
     </Panel>
   </VueFlow>
 </template>
@@ -130,81 +130,68 @@ flow.onConnect((connection) => {
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
 
-/**
- * Composable to run the layout algorithm on the graph.
- * It uses the `dagre` library to calculate the layout of the nodes and edges.
- */
 import dagre from '@dagrejs/dagre'
 import { Position } from '@vue-flow/core'
-function useLayout() {
-  // const { findNode } = useVueFlow('FlowGraph')
-
-  const graph = ref(new dagre.graphlib.Graph())
-
-  const previousDirection = ref('LR')
-
-  function layout(nodes: Node[], edges: Edge[], direction: string) {
-    // we create a new graph instance, in case some nodes/edges were removed, otherwise dagre would act as if they were still there
-    const dagreGraph = new dagre.graphlib.Graph()
-
-    graph.value = dagreGraph
-
-    dagreGraph.setDefaultEdgeLabel(() => ({}))
-
-    const isHorizontal = direction === 'LR'
-    dagreGraph.setGraph({ rankdir: direction })
-
-    previousDirection.value = direction
-
-    for (const node of nodes) {
-      // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`GraphNode` type)
-      const graphNode = flow.findNode(node.id)
-
-      dagreGraph.setNode(node.id, {
-        width: graphNode.dimensions.width || 150,
-        height: graphNode.dimensions.height || 50
-      })
-    }
-
-    for (const edge of edges) {
-      dagreGraph.setEdge(edge.source, edge.target)
-    }
-
-    dagre.layout(dagreGraph)
-
-    // set nodes with updated positions
-    return nodes.map((node) => {
-      const nodeWithPosition = dagreGraph.node(node.id)
-
-      return {
-        ...node,
-        targetPosition: isHorizontal ? Position.Left : Position.Top,
-        sourcePosition: isHorizontal ? Position.Right : Position.Bottom,
-        position: { x: nodeWithPosition.x, y: nodeWithPosition.y }
-      }
+function layout(nodes: Node[], edges: Edge[], direction: 'LR' | 'RL' | 'TB' | 'BT') {
+  // Create a new graph instance, in case some nodes/edges were removed
+  // Otherwise dagre would act as if they were still there
+  const dagreGraph = new dagre.graphlib.Graph()
+  // Remove default edge labels
+  dagreGraph.setDefaultEdgeLabel(() => ({}))
+  // Set graph layout direction
+  dagreGraph.setGraph({ rankdir: direction })
+  // Assign the widht and height of nodes
+  for (const node of nodes) {
+    const graphNode = flow.findNode(node.id)
+    dagreGraph.setNode(node.id, {
+      width: graphNode?.dimensions.width || 150,
+      height: graphNode?.dimensions.height || 50
     })
   }
+  // Assign edges to the graph
+  for (const edge of edges) {
+    dagreGraph.setEdge(edge.source, edge.target)
+  }
+  // Layout the graph
+  dagre.layout(dagreGraph)
 
-  return { graph, layout, previousDirection }
+  // Assign targetPosition
+  const targets = {
+    LR: Position.Left,
+    RL: Position.Right,
+    TB: Position.Top,
+    BT: Position.Bottom
+  }
+  const target = targets[direction]
+  // Assign sourcePostion
+  const sources = {
+    LR: Position.Right,
+    RL: Position.Left,
+    TB: Position.Bottom,
+    BT: Position.Top
+  }
+  const source = sources[direction]
+
+  // Calculate new nodes with the updated positions
+  return nodes.map((node) => {
+    const position = dagreGraph.node(node.id)
+    return {
+      ...node,
+      targetPosition: target,
+      sourcePosition: source,
+      position: { x: position.x, y: position.y }
+    }
+  })
 }
 
-const { graph, layout, previousDirection } = useLayout()
-
 import { nextTick } from 'vue'
-function layoutGraph(direction: string) {
+function layoutGraph(direction: 'LR' | 'RL' | 'TB' | 'BT') {
   nodes.value = layout(nodes.value, edges.value, direction)
 
   nextTick(() => {
     flow.fitView()
   })
 }
-import { onMounted } from 'vue'
-onMounted(() => {
-  // console.log(flow.getNodes.value)
-  // console.log(flow.findNode('1'))
-  layoutGraph('LR')
-  // layoutGraph('TB')
-})
 </script>
 
 <style scoped>
