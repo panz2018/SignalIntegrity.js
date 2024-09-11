@@ -18,7 +18,7 @@ export const useToolbarStore = () => {
     const init: {
       status: Status
       position: Position
-    } = { status: true, position: 'top-left' }
+    } = { status: true, position: 'top-right' }
 
     // Pinia store properties
     const toolbar: Ref<{

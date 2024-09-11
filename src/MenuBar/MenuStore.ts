@@ -50,15 +50,15 @@ export const useMenuStore = () => {
         {
           separator: true
         },
-        modification,
-        {
-          separator: true
-        },
         ...toolbarMenu.value,
         {
           separator: true
         },
-        ...navigationMenu.value
+        ...navigationMenu.value,
+        {
+          separator: true
+        },
+        modification
       ]
     },
     {
