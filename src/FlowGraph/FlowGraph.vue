@@ -24,34 +24,13 @@ import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
 
 // Setup nodes for VueFlow
-import { ref } from 'vue'
-import type { Node } from '@vue-flow/core'
-const nodes = ref<Node[]>([
-  {
-    id: '1',
-    type: 'input',
-    position: { x: 250, y: 0 },
-    data: { label: 'Node 1' },
-    style: { color: 'white', backgroundColor: 'green', width: '100px', height: '50px' }
-  },
-  {
-    id: '2',
-    type: 'output',
-    position: { x: 100, y: 100 },
-    data: { label: 'Node 2' },
-    style: { '--vf-node-color': 'green' }
-  },
-  {
-    id: '3',
-    type: 'default',
-    position: { x: 400, y: 100 },
-    data: { label: 'Node 3' }
-  },
-  { id: '4', type: 'default', position: { x: 150, y: 200 }, data: { label: 'Node 4' } },
-  { id: '5', type: 'output', position: { x: 300, y: 300 }, data: { label: 'Node 5' } }
-])
+import { storeToRefs } from 'pinia'
+import { useNodesStore } from './Nodes/NodesStore'
+const { nodes } = storeToRefs(useNodesStore())
 
 // Setup edges for VueFlow
+import { ref } from 'vue'
+import type { Node } from '@vue-flow/core'
 import type { Edge } from '@vue-flow/core'
 import { MarkerType } from '@vue-flow/core'
 const edges = ref<Edge[]>([
