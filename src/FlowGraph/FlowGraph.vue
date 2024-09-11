@@ -29,53 +29,8 @@ import { useNodesStore } from './Nodes/NodesStore'
 const { nodes } = storeToRefs(useNodesStore())
 
 // Setup edges for VueFlow
-import { ref } from 'vue'
-import type { Node } from '@vue-flow/core'
-import type { Edge } from '@vue-flow/core'
-import { MarkerType } from '@vue-flow/core'
-const edges = ref<Edge[]>([
-  {
-    id: 'e1->2',
-    source: '1',
-    target: '2',
-    type: 'default',
-    label: undefined,
-    markerEnd: undefined,
-    animated: true,
-    style: {}
-  },
-  {
-    id: 'e1->3',
-    source: '1',
-    target: '3',
-    type: 'default',
-    label: 'edge with arrowhead',
-    markerEnd: MarkerType.ArrowClosed,
-    animated: false,
-    style: {}
-  },
-  {
-    id: 'e3-4',
-    source: '3',
-    target: '4',
-    type: 'smoothstep',
-    label: 'smoothstep-edge',
-    markerEnd: undefined,
-    animated: false,
-    style: {}
-  },
-  {
-    id: 'e4-5',
-    source: '4',
-    target: '5',
-    type: 'step',
-    label: 'Node 2',
-    markerEnd: undefined,
-    animated: false,
-    style: { stroke: 'orange' },
-    labelBgStyle: { fill: 'orange' }
-  }
-])
+import { useEdgesStore } from './Edges/EdgesStore'
+const { edges } = storeToRefs(useEdgesStore())
 
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
@@ -111,6 +66,8 @@ const theme = useThemeStore()
 
 import dagre from '@dagrejs/dagre'
 import { Position } from '@vue-flow/core'
+import type { Node } from '@vue-flow/core'
+import type { Edge } from '@vue-flow/core'
 function layout(nodes: Node[], edges: Edge[], direction: 'LR' | 'RL' | 'TB' | 'BT') {
   // Create a new graph instance, in case some nodes/edges were removed
   // Otherwise dagre would act as if they were still there
