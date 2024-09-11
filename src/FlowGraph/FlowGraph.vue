@@ -18,19 +18,24 @@
 </template>
 
 <script setup lang="ts">
+// Setup Pinia for state management
+import { storeToRefs } from 'pinia'
 // Setup the VueFlow
 import { VueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
-
+import { Background } from '@vue-flow/background'
+import ToolBar from './ToolBar/ToolBar.vue'
+import NavigationMap from './NavigationMap/NavigationMap.vue'
 // Setup nodes for VueFlow
-import { storeToRefs } from 'pinia'
 import { useNodesStore } from './Nodes/NodesStore'
 const { nodes } = storeToRefs(useNodesStore())
-
 // Setup edges for VueFlow
 import { useEdgesStore } from './Edges/EdgesStore'
 const { edges } = storeToRefs(useEdgesStore())
+// Dark/Bright theme
+import { useThemeStore } from '@/MenuBar/Theme/theme'
+const theme = useThemeStore()
 
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
@@ -43,15 +48,6 @@ function addNode() {
   })
 }
 
-// Setup background for VueFlow
-import { Background } from '@vue-flow/background'
-
-// Setup toolbar for VueFlow
-import ToolBar from './ToolBar/ToolBar.vue'
-
-// Setup minimap for VueFlow
-import NavigationMap from './NavigationMap/NavigationMap.vue'
-
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
 const flow = useVueFlow('FlowGraph')
@@ -60,10 +56,7 @@ flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
 
-// Dark/Bright theme
-import { useThemeStore } from '@/MenuBar/Theme/theme'
-const theme = useThemeStore()
-
+// Auto layout the graph
 import dagre from '@dagrejs/dagre'
 import { Position } from '@vue-flow/core'
 import type { Node } from '@vue-flow/core'
