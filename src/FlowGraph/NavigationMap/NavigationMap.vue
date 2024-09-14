@@ -1,5 +1,10 @@
 <template>
-  <MiniMap v-show="status" :pannable="true" :zoomable="true" />
+  <MiniMap
+    v-show="navigation.status"
+    :position="navigation.position"
+    :pannable="true"
+    :zoomable="true"
+  />
 </template>
 
 <script setup lang="ts">
@@ -8,6 +13,6 @@ import '@vue-flow/minimap/dist/style.css'
 
 // Determine to show/hide NavigationMap
 import { storeToRefs } from 'pinia'
-import { useNavigationStatus } from './NavigationStatus'
-const { status } = storeToRefs(useNavigationStatus())
+import { useNavigationStore } from './NavigationStore'
+const { navigation } = storeToRefs(useNavigationStore())
 </script>

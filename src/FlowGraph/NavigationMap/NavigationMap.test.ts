@@ -30,9 +30,8 @@ describe.concurrent('NavigationMap.Vue', () => {
   it('Valid', () => {
     expect(NavigationMap).toBeTruthy()
   })
-  it('NavigationStatus: empty', async () => {
+  it('localStorage: empty', async () => {
     localStorage.clear()
-    expect(localStorage.getItem('NavigationStatus')).toBeNull()
     const wrapper = mount(NavigationMap, {
       props: {},
       global: {
@@ -42,63 +41,12 @@ describe.concurrent('NavigationMap.Vue', () => {
         }
       }
     })
-    expect((wrapper.vm as any).status).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
+    expect((wrapper.vm as any).navigation.status).toBe(true)
+    expect((wrapper.vm as any).navigation.position).toBe('bottom-left')
     expect(wrapper.element.tagName).toBe('DIV')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()
     expect(Object.keys(wrapper.attributes())).toContain('style')
     expect(Object.keys(wrapper.attributes())).toContain('class')
-  })
-  it('NavigationStatus: true', async () => {
-    localStorage.setItem('NavigationStatus', 'true')
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    const wrapper = mount(NavigationMap, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect((wrapper.vm as any).status).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.isVisible()).toBeTruthy()
-  })
-  it('NavigationStatus: false', async () => {
-    localStorage.setItem('NavigationStatus', 'false')
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    const wrapper = mount(NavigationMap, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect((wrapper.vm as any).status).toBe(false)
-    expect(localStorage.getItem('NavigationStatus')).toBe('false')
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.isVisible()).toBeFalsy()
-  })
-  it('NavigationStatus: other', async () => {
-    localStorage.setItem('NavigationStatus', 'other')
-    expect(localStorage.getItem('NavigationStatus')).toBe('other')
-    const wrapper = mount(NavigationMap, {
-      props: {},
-      global: {
-        directives: {
-          ripple: Ripple,
-          tooltip: Tooltip
-        }
-      }
-    })
-    expect((wrapper.vm as any).status).toBe(true)
-    expect(localStorage.getItem('NavigationStatus')).toBe('true')
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.isVisible()).toBeTruthy()
   })
 })

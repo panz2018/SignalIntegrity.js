@@ -16,16 +16,16 @@ type Position = (typeof positions)[number]
 const init: {
   status: Status
   position: Position
-} = { status: true, position: 'top-left' }
+} = { status: true, position: 'bottom-left' }
 
-export const useToolbarStore = () => {
-  const innerStore = defineStore('Toolbar', () => {
+export const useNavigationStore = () => {
+  const innerStore = defineStore('Navigation', () => {
     // Pinia store properties
-    const toolbar: Ref<{
+    const navigation: Ref<{
       status: Status
       position: Position
     }> = ref(init)
-    const toolbarMenu: Ref<
+    const navigationMenu: Ref<
       {
         label: string
         icon: string
@@ -36,23 +36,23 @@ export const useToolbarStore = () => {
 
     function read() {
       // Read from local storage
-      toolbar.value = JSON.parse(localStorage.getItem('Toolbar') ?? JSON.stringify(init))
+      navigation.value = JSON.parse(localStorage.getItem('Navigation') ?? JSON.stringify(init))
       // Check if status is valid
-      if (!Object.keys(toolbar.value).includes('status') || toolbar.value.status !== false) {
-        toolbar.value.status = init.status
+      if (!Object.keys(navigation.value).includes('status') || navigation.value.status !== false) {
+        navigation.value.status = init.status
       }
       // Check if position is valid
       if (
-        !Object.keys(toolbar.value).includes('position') ||
-        !positions.includes(toolbar.value.position)
+        !Object.keys(navigation.value).includes('position') ||
+        !positions.includes(navigation.value.position)
       ) {
-        toolbar.value.position = init.position
+        navigation.value.position = init.position
       }
       update()
     }
 
     function save() {
-      localStorage.setItem('Toolbar', JSON.stringify(toolbar.value))
+      localStorage.setItem('Navigation', JSON.stringify(navigation.value))
     }
 
     function update(): void {
@@ -63,21 +63,21 @@ export const useToolbarStore = () => {
 
       function updateStatusMenu(): void {
         // Find menu
-        let menu = toolbarMenu.value.find((item) => item.label === 'Tool Bar')
+        let menu = navigationMenu.value.find((item) => item.label === 'Navigation Map')
         // Add menu if not found
         if (menu === undefined) {
           menu = {
-            label: 'Tool Bar',
+            label: 'Navigation Map',
             icon: 'pi pi-check',
             command: () => {
-              toolbar.value.status = !toolbar.value.status
+              navigation.value.status = !navigation.value.status
               update()
             }
           }
-          toolbarMenu.value.push(menu)
+          navigationMenu.value.push(menu)
         }
         // Update status menu
-        if (toolbar.value.status) {
+        if (navigation.value.status) {
           menu.icon = 'pi pi-check'
         } else {
           menu.icon = 'pi pi-empty'
@@ -85,16 +85,16 @@ export const useToolbarStore = () => {
       }
 
       function updatePositionMenu(): void {
-        // Find menu
-        let menu = toolbarMenu.value.find((item) => item.label === 'Tool Bar Position')
+        // Find position menu
+        let menu = navigationMenu.value.find((item) => item.label === 'Navigation Map Position')
         // Add menu if not found
         if (menu === undefined) {
           menu = {
-            label: 'Tool Bar Position',
+            label: 'Navigation Map Position',
             icon: 'pi pi-empty',
             items: []
           }
-          toolbarMenu.value.push(menu)
+          navigationMenu.value.push(menu)
         }
         // Update each menu item for the corresponding position
         for (const position of positions) {
@@ -106,14 +106,14 @@ export const useToolbarStore = () => {
               label: position2label(position),
               icon: 'pi pi-empty',
               command: (event) => {
-                toolbar.value.position = label2position(event.item.label)
+                navigation.value.position = label2position(event.item.label)
                 update()
               }
             }
             menu.items!.push(item)
           }
           // Update position item
-          if (toolbar.value.position === position) {
+          if (navigation.value.position === position) {
             item.icon = 'pi pi-check'
           } else {
             item.icon = 'pi pi-empty'
@@ -136,7 +136,7 @@ export const useToolbarStore = () => {
       }
     }
 
-    return { toolbar, toolbarMenu, read, save }
+    return { navigation, navigationMenu, read, save }
   })
 
   const store = innerStore()

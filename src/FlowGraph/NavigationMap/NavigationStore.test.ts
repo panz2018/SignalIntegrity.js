@@ -5,7 +5,7 @@ import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
-import { useToolbarStore } from './ToolbarStore'
+import { useNavigationStore } from './NavigationStore'
 
 const app = createApp({})
 app.directive('ripple', Ripple)
@@ -35,58 +35,58 @@ const positions = [
   'bottom-right'
 ] as const
 
-describe.concurrent('ToolbarStore.ts', () => {
+describe.concurrent('NavigationStore.ts', () => {
   it('Valid', () => {
-    expect(useToolbarStore).toBeTruthy()
+    expect(useNavigationStore).toBeTruthy()
   })
-  it('ToolbarStore: empty', () => {
+  it('NavigationStore: empty', () => {
     localStorage.clear()
-    expect(localStorage.getItem('Toolbar')).toBeNull()
-    testToolbar({ status: true, position: 'top-left' })
+    expect(localStorage.getItem('Navigation')).toBeNull()
+    testNavigation({ status: true, position: 'bottom-left' })
   })
   for (const status of [true, false, 'other']) {
     for (const position of [...positions, 'other']) {
       const string = JSON.stringify({ status: status, position: position })
       it(string, () => {
-        localStorage.setItem('Toolbar', string)
-        expect(localStorage.getItem('Toolbar')).toBe(string)
-        testToolbar({
+        localStorage.setItem('Navigation', string)
+        expect(localStorage.getItem('Navigation')).toBe(string)
+        testNavigation({
           status: status === false ? false : true,
-          position: positions.includes(position as any) ? position : 'top-left'
+          position: positions.includes(position as any) ? position : 'bottom-left'
         })
       })
     }
   }
 
-  function testToolbar(anticipate: { status: boolean; position: string }) {
-    const store = useToolbarStore()
-    const { toolbar, toolbarMenu } = storeToRefs(store)
+  function testNavigation(anticipate: { status: boolean; position: string }) {
+    const store = useNavigationStore()
+    const { navigation, navigationMenu } = storeToRefs(store)
     check(anticipate)
     // Click enable/disable once
-    toolbarMenu.value.at(0)?.command!()
-    for (const row of toolbarMenu.value.at(1)!.items!) {
+    navigationMenu.value.at(0)?.command!()
+    for (const row of navigationMenu.value.at(1)!.items!) {
       row.command({ item: row })
       check({ status: !anticipate.status, position: label2position(row.label) })
     }
     // Click twice
-    toolbarMenu.value.at(0)?.command!()
-    for (const row of toolbarMenu.value.at(1)!.items!) {
+    navigationMenu.value.at(0)?.command!()
+    for (const row of navigationMenu.value.at(1)!.items!) {
       row.command({ item: row })
       check({ status: anticipate.status, position: label2position(row.label) })
     }
 
     function check(anticipate: { status: boolean; position: string }) {
-      expect(localStorage.getItem('Toolbar')).toBe(JSON.stringify(anticipate))
-      expect(toolbar.value).toStrictEqual(anticipate)
-      expect(toolbarMenu.value.length).toBe(2)
+      expect(localStorage.getItem('Navigation')).toBe(JSON.stringify(anticipate))
+      expect(navigation.value).toStrictEqual(anticipate)
+      expect(navigationMenu.value.length).toBe(2)
       checkMenuStatus(anticipate)
       checkMenuPosition(anticipate)
 
       function checkMenuStatus(anticipate: { status: boolean; position: string }) {
-        const menuStatus = toolbarMenu.value.at(0)
+        const menuStatus = navigationMenu.value.at(0)
         expect(menuStatus).toBeTruthy()
         expect(Object.keys(menuStatus as Object)).toStrictEqual(['label', 'icon', 'command'])
-        expect(menuStatus?.label).toBe('Tool Bar')
+        expect(menuStatus?.label).toBe('Navigation Map')
         if (anticipate.status) {
           expect(menuStatus?.icon).toBe('pi pi-check')
         } else {
@@ -95,10 +95,10 @@ describe.concurrent('ToolbarStore.ts', () => {
       }
 
       function checkMenuPosition(anticipate: { status: boolean; position: string }) {
-        const menuPosition = toolbarMenu.value.at(1)
+        const menuPosition = navigationMenu.value.at(1)
         expect(menuPosition).toBeTruthy()
         expect(Object.keys(menuPosition as Object)).toStrictEqual(['label', 'icon', 'items'])
-        expect(menuPosition?.label).toBe('Tool Bar Position')
+        expect(menuPosition?.label).toBe('Navigation Map Position')
         expect(menuPosition?.icon).toBe('pi pi-empty')
         const items = menuPosition?.items
         expect(items).toBeTruthy()
