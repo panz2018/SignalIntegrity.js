@@ -6,12 +6,13 @@ import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modificat
 import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
 import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
 import autolayout from '@/FlowGraph/Graph/AutoLayout'
+import { useGraphStore } from '@/FlowGraph/Graph/GraphStore'
 
 import { useToast } from 'primevue/usetoast'
 
 export const useMenuStore = () => {
   const toast = useToast()
-  const command = () => {
+  const warning = () => {
     toast.add({
       severity: 'warn',
       summary: 'Warning',
@@ -21,6 +22,7 @@ export const useMenuStore = () => {
   }
 
   // Menu items
+  const graph = useGraphStore()
   const modification = useModificationStore()
   const { toolbarMenu } = storeToRefs(useToolbarStore())
   const { navigationMenu } = storeToRefs(useNavigationStore())
@@ -32,12 +34,12 @@ export const useMenuStore = () => {
         {
           label: 'New',
           icon: 'pi pi-file-plus',
-          command: command
+          command: graph.reset
         },
         {
           label: 'Export',
           icon: 'pi pi-camera',
-          command: command
+          command: warning
         }
       ]
     },
@@ -74,7 +76,7 @@ export const useMenuStore = () => {
         {
           label: 'S-parameter Viewer',
           icon: 'pi pi-th-large',
-          command: command
+          command: warning
         }
       ]
     }

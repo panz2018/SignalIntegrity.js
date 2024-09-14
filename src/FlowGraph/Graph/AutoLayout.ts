@@ -9,25 +9,25 @@ export default () => {
       {
         label: 'Left => Right',
         command: () => {
-          graph.autolayout('LR')
+          graph.autoLayout('LR')
         }
       },
       {
         label: 'Right => Left',
         command: () => {
-          graph.autolayout('RL')
+          graph.autoLayout('RL')
         }
       },
       {
         label: 'Top => Bottom',
         command: () => {
-          graph.autolayout('TB')
+          graph.autoLayout('TB')
         }
       },
       {
         label: 'Bottom => Top',
         command: () => {
-          graph.autolayout('BT')
+          graph.autoLayout('BT')
         }
       }
     ]
