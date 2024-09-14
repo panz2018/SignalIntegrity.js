@@ -42,7 +42,7 @@ describe.concurrent('NavigationMap.Vue', () => {
       }
     })
     expect((wrapper.vm as any).navigation.status).toBe(true)
-    expect((wrapper.vm as any).navigation.position).toBe('bottom-right')
+    expect((wrapper.vm as any).navigation.position).toBe('bottom-left')
     expect(wrapper.element.tagName).toBe('DIV')
     expect(wrapper.isVisible()).toBeTruthy()
     expect(wrapper.attributes('disabled')).toBeUndefined()

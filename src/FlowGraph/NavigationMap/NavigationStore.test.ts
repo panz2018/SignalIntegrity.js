@@ -42,7 +42,7 @@ describe.concurrent('NavigationStore.ts', () => {
   it('NavigationStore: empty', () => {
     localStorage.clear()
     expect(localStorage.getItem('Navigation')).toBeNull()
-    testNavigation({ status: true, position: 'bottom-right' })
+    testNavigation({ status: true, position: 'bottom-left' })
   })
   for (const status of [true, false, 'other']) {
     for (const position of [...positions, 'other']) {
@@ -52,7 +52,7 @@ describe.concurrent('NavigationStore.ts', () => {
         expect(localStorage.getItem('Navigation')).toBe(string)
         testNavigation({
           status: status === false ? false : true,
-          position: positions.includes(position as any) ? position : 'bottom-right'
+          position: positions.includes(position as any) ? position : 'bottom-left'
         })
       })
     }
