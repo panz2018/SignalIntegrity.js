@@ -7,25 +7,25 @@ export default () => {
     icon: 'pi pi-objects-column',
     items: [
       {
-        label: 'Left -> Right',
+        label: 'Left => Right',
         command: () => {
           graph.autolayout('LR')
         }
       },
       {
-        label: 'Right -> Left',
+        label: 'Right => Left',
         command: () => {
           graph.autolayout('RL')
         }
       },
       {
-        label: 'Top -> Bottom',
+        label: 'Top => Bottom',
         command: () => {
           graph.autolayout('TB')
         }
       },
       {
-        label: 'Bottom -> Top',
+        label: 'Bottom => Top',
         command: () => {
           graph.autolayout('BT')
         }
