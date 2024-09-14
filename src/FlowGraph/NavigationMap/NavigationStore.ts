@@ -2,24 +2,24 @@ import { ref } from 'vue'
 import { type Ref } from 'vue'
 import { defineStore } from 'pinia'
 
+// Default perperties
+const positions = [
+  'top-left',
+  'top-center',
+  'top-right',
+  'bottom-left',
+  'bottom-center',
+  'bottom-right'
+] as const
+type Status = true | false
+type Position = (typeof positions)[number]
+const init: {
+  status: Status
+  position: Position
+} = { status: true, position: 'bottom-left' }
+
 export const useNavigationStore = () => {
   const innerStore = defineStore('Navigation', () => {
-    // Default perperties
-    const positions = [
-      'top-left',
-      'top-center',
-      'top-right',
-      'bottom-left',
-      'bottom-center',
-      'bottom-right'
-    ] as const
-    type Status = true | false
-    type Position = (typeof positions)[number]
-    const init: {
-      status: Status
-      position: Position
-    } = { status: true, position: 'bottom-left' }
-
     // Pinia store properties
     const navigation: Ref<{
       status: Status

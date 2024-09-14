@@ -13,6 +13,8 @@
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
       <button type="button" @click="graph.autolayout('RL')">layoutGraph('LR')</button>
+      <button type="button" @click="console.log(flow.getNodes.value)">VueFlow Nodes</button>
+      <button type="button" @click="console.log(graph.nodes)">Graph Nodes</button>
     </Panel>
   </VueFlow>
 </template>

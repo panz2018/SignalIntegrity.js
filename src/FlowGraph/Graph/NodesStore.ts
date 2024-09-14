@@ -5,9 +5,10 @@ import type { Node } from '@vue-flow/core'
 
 export const useNodesStore = () => {
   const innerStore = defineStore('nodes', () => {
+    const defaults = { dimensions: { width: 150, height: 50 } }
     const nodes: Ref<Node[]> = ref([])
 
-    return { nodes }
+    return { defaults, nodes }
   })
 
   const store = innerStore()
