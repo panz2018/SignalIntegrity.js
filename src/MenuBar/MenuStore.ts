@@ -44,7 +44,7 @@ export const useMenuStore = () => {
     {
       label: 'Edit',
       icon: 'pi pi-pen-to-square',
-      items: []
+      items: [autolayout()]
     },
     {
       label: 'View',

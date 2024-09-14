@@ -1,10 +1,35 @@
-// Default perperties
-// const directions = ['Left -> Right', 'Right -> Left', 'Top -> Bottom', 'Bottom -> Top'] as const
+import { useGraphStore } from './graphStore'
 
-export default [
-  {
+export default () => {
+  const graph = useGraphStore()
+  return {
     label: 'Auto Layout',
     icon: 'pi pi-objects-column',
-    items: []
+    items: [
+      {
+        label: 'Left -> Right',
+        command: () => {
+          graph.autolayout('LR')
+        }
+      },
+      {
+        label: 'Right -> Left',
+        command: () => {
+          graph.autolayout('RL')
+        }
+      },
+      {
+        label: 'Top -> Bottom',
+        command: () => {
+          graph.autolayout('TB')
+        }
+      },
+      {
+        label: 'Bottom -> Top',
+        command: () => {
+          graph.autolayout('BT')
+        }
+      }
+    ]
   }
-]
+}
