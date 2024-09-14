@@ -12,14 +12,12 @@
     <NavigationMap />
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
-      <button type="button" @click="layoutGraph('RL')">layoutGraph('LR')</button>
+      <button type="button" @click="graph.autolayout('RL')">layoutGraph('LR')</button>
     </Panel>
   </VueFlow>
 </template>
 
 <script setup lang="ts">
-// Setup Pinia for state management
-import { storeToRefs } from 'pinia'
 // Setup the VueFlow
 import { VueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
@@ -52,72 +50,6 @@ flow.snapToGrid.value = true // to enable snapping to grid
 flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
-
-// Auto layout the graph
-import dagre from '@dagrejs/dagre'
-import { Position } from '@vue-flow/core'
-import type { Node } from '@vue-flow/core'
-import type { Edge } from '@vue-flow/core'
-function layout(nodes: Node[], edges: Edge[], direction: 'LR' | 'RL' | 'TB' | 'BT') {
-  // Create a new graph instance, in case some nodes/edges were removed
-  // Otherwise dagre would act as if they were still there
-  const dagreGraph = new dagre.graphlib.Graph()
-  // Remove default edge labels
-  dagreGraph.setDefaultEdgeLabel(() => ({}))
-  // Set graph layout direction
-  dagreGraph.setGraph({ rankdir: direction })
-  // Assign the widht and height of nodes
-  for (const node of nodes) {
-    const graphNode = flow.findNode(node.id)
-    dagreGraph.setNode(node.id, {
-      width: graphNode?.dimensions.width || 150,
-      height: graphNode?.dimensions.height || 50
-    })
-  }
-  // Assign edges to the graph
-  for (const edge of edges) {
-    dagreGraph.setEdge(edge.source, edge.target)
-  }
-  // Layout the graph
-  dagre.layout(dagreGraph)
-
-  // Assign targetPosition
-  const targets = {
-    LR: Position.Left,
-    RL: Position.Right,
-    TB: Position.Top,
-    BT: Position.Bottom
-  }
-  const target = targets[direction]
-  // Assign sourcePostion
-  const sources = {
-    LR: Position.Right,
-    RL: Position.Left,
-    TB: Position.Bottom,
-    BT: Position.Top
-  }
-  const source = sources[direction]
-
-  // Calculate new nodes with the updated positions
-  return nodes.map((node) => {
-    const position = dagreGraph.node(node.id)
-    return {
-      ...node,
-      targetPosition: target,
-      sourcePosition: source,
-      position: { x: position.x, y: position.y }
-    }
-  })
-}
-
-import { nextTick } from 'vue'
-function layoutGraph(direction: 'LR' | 'RL' | 'TB' | 'BT') {
-  graph.nodes = layout(graph.nodes, graph.edges, direction)
-
-  nextTick(() => {
-    flow.fitView()
-  })
-}
 </script>
 
 <style scoped>
