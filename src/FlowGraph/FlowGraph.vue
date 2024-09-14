@@ -1,7 +1,7 @@
 <template>
   <VueFlow
-    :nodes="nodes"
-    :edges="edges"
+    :nodes="graph.nodes"
+    :edges="graph.edges"
     :class="{ dark: theme.theme === 'Bright' ? false : true }"
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.1"
@@ -10,7 +10,7 @@
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <ToolBar />
     <NavigationMap />
-    <Panel position="top-left">
+    <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
       <button type="button" @click="layoutGraph('RL')">layoutGraph('LR')</button>
     </Panel>
@@ -27,12 +27,9 @@ import '@vue-flow/core/dist/theme-default.css'
 import { Background } from '@vue-flow/background'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
-// Setup nodes for VueFlow
-import { useNodesStore } from './Nodes/NodesStore'
-const { nodes } = storeToRefs(useNodesStore())
-// Setup edges for VueFlow
-import { useEdgesStore } from './Edges/EdgesStore'
-const { edges } = storeToRefs(useEdgesStore())
+// Setup graph for VueFlow
+import { useGraphStore } from './Graph/graphStore'
+const graph = useGraphStore()
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
@@ -41,7 +38,7 @@ const theme = useThemeStore()
 import { Panel } from '@vue-flow/core'
 function addNode() {
   const id = Date.now().toString()
-  nodes.value.push({
+  graph.nodes.push({
     id: id,
     position: { x: 150, y: 50 },
     data: { label: `Node ${id}` }
@@ -115,7 +112,7 @@ function layout(nodes: Node[], edges: Edge[], direction: 'LR' | 'RL' | 'TB' | 'B
 
 import { nextTick } from 'vue'
 function layoutGraph(direction: 'LR' | 'RL' | 'TB' | 'BT') {
-  nodes.value = layout(nodes.value, edges.value, direction)
+  graph.nodes = layout(graph.nodes, graph.edges, direction)
 
   nextTick(() => {
     flow.fitView()

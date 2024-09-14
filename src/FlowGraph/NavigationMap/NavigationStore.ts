@@ -18,7 +18,7 @@ export const useNavigationStore = () => {
     const init: {
       status: Status
       position: Position
-    } = { status: true, position: 'bottom-right' }
+    } = { status: true, position: 'bottom-left' }
 
     // Pinia store properties
     const navigation: Ref<{
