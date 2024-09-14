@@ -5,6 +5,7 @@ import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
 import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
+import autolayout from '@/FlowGraph/Graph/AutoLayout'
 
 import { useToast } from 'primevue/usetoast'
 
@@ -39,6 +40,11 @@ export const useMenuStore = () => {
           command: command
         }
       ]
+    },
+    {
+      label: 'Edit',
+      icon: 'pi pi-pen-to-square',
+      items: []
     },
     {
       label: 'View',
