@@ -5,8 +5,8 @@ import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
 import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
-import autolayout from '@/FlowGraph/Graph/AutoLayout'
-import { useGraphStore } from '@/FlowGraph/Graph/GraphStore'
+import { useAutolayout } from '@/FlowGraph/AutoLayout/AutoLayout'
+import { useNewfile } from '@/FlowGraph/NewFile/NewFile'
 
 import { useToast } from 'primevue/usetoast'
 
@@ -22,20 +22,17 @@ export const useMenuStore = () => {
   }
 
   // Menu items
-  const graph = useGraphStore()
   const modification = useModificationStore()
   const { toolbarMenu } = storeToRefs(useToolbarStore())
   const { navigationMenu } = storeToRefs(useNavigationStore())
+  const { autolayoutMenu } = useAutolayout()
+  const { newfileMenu } = useNewfile()
   const menu = [
     {
       label: 'File',
       icon: 'pi pi-file',
       items: [
-        {
-          label: 'New',
-          icon: 'pi pi-file-plus',
-          command: graph.reset
-        },
+        newfileMenu,
         {
           label: 'Export',
           icon: 'pi pi-camera',
@@ -46,7 +43,7 @@ export const useMenuStore = () => {
     {
       label: 'Edit',
       icon: 'pi pi-pen-to-square',
-      items: [autolayout()]
+      items: [autolayoutMenu]
     },
     {
       label: 'View',
