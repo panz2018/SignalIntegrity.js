@@ -1,5 +1,5 @@
 <template>
-  <PrimeMenu :model="menu" breakpoint="480px">
+  <PrimeMenu :model="menu" breakpoint="575px">
     <template #start>
       <MenuLogo />
     </template>

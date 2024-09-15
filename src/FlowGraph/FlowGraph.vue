@@ -12,7 +12,6 @@
     <NavigationMap />
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
-      <button type="button" @click="graph.autolayout('RL')">layoutGraph('LR')</button>
       <button type="button" @click="console.log(flow.getNodes.value)">VueFlow Nodes</button>
       <button type="button" @click="console.log(graph.nodes)">Graph Nodes</button>
     </Panel>
@@ -28,7 +27,7 @@ import { Background } from '@vue-flow/background'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
 // Setup graph for VueFlow
-import { useGraphStore } from './Graph/graphStore'
+import { useGraphStore } from './Graph/GraphStore'
 const graph = useGraphStore()
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'

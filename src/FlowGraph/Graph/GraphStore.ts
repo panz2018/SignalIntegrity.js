@@ -13,13 +13,23 @@ type Direction = (typeof directions)[number]
 
 export const useGraphStore = defineStore(
   'graph',
-  (): { nodes: Ref<Node[]>; edges: Ref<Edge[]>; autolayout: (direction: Direction) => void } => {
+  (): {
+    nodes: Ref<Node[]>
+    edges: Ref<Edge[]>
+    reset: () => void
+    autoLayout: (direction: Direction) => void
+  } => {
     const nodes = storeToRefs(useNodesStore())
     const edges = storeToRefs(useEdgesStore())
     const flow = useVueFlow('FlowGraph')
 
+    function reset(): void {
+      nodes.nodes.value = []
+      edges.edges.value = []
+    }
+
     // Auto layout the graph
-    function autolayout(direction: Direction): void {
+    function autoLayout(direction: Direction): void {
       // Create a new graph instance, in case some nodes/edges were removed
       // Otherwise dagre would act as if they were still there
       const dagreGraph = new dagre.graphlib.Graph()
@@ -74,10 +84,12 @@ export const useGraphStore = defineStore(
         flow.fitView()
       })
     }
+
     return {
       nodes: nodes.nodes,
       edges: edges.edges,
-      autolayout: autolayout
+      reset,
+      autoLayout
     }
   }
 )
