@@ -11,7 +11,7 @@
     <Panel position="top-right">
       <button type="button" @click="addNode">Add a node</button>
       <button type="button" @click="testGraph">Test Graph</button>
-      <button type="button" @click="console.log(flow.getNodes.value)">VueFlow Nodes</button>
+      <button type="button" @click="console.log(flow.toObject())">VueFlow</button>
     </Panel>
   </VueFlow>
 </template>
