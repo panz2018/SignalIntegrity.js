@@ -27,7 +27,7 @@ import { Background } from '@vue-flow/background'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
 // Setup graph for VueFlow
-import { useGraphStore } from './Graph/graphStore'
+import { useGraphStore } from './Graph/GraphStore'
 const graph = useGraphStore()
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'

@@ -1,4 +1,4 @@
-import { useGraphStore } from './graphStore'
+import { useGraphStore } from './GraphStore'
 
 export default () => {
   const graph = useGraphStore()
