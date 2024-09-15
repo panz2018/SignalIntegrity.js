@@ -5,8 +5,8 @@ import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
 import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
-import { useAutolayout } from '@/FlowGraph/Graph/AutoLayout'
-import { useNewfile } from '@/FlowGraph/Graph/NewFile'
+import { useAutolayout } from '@/FlowGraph/AutoLayout/AutoLayout'
+import { useNewfile } from '@/FlowGraph/NewFile/NewFile'
 
 import { useToast } from 'primevue/usetoast'
 
