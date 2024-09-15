@@ -1,11 +1,7 @@
 import { nextTick } from 'vue'
-import type { Ref } from 'vue'
 import dagre from '@dagrejs/dagre'
-import { defineStore, storeToRefs } from 'pinia'
-import type { Edge, Node } from '@vue-flow/core'
+import { defineStore } from 'pinia'
 import { Position, useVueFlow } from '@vue-flow/core'
-import { useNodesStore } from './NodesStore'
-import { useEdgesStore } from './EdgesStore'
 
 // Default perperties
 const directions = ['LR', 'RL', 'TB', 'BT'] as const
@@ -14,18 +10,14 @@ type Direction = (typeof directions)[number]
 export const useGraphStore = defineStore(
   'graph',
   (): {
-    nodes: Ref<Node[]>
-    edges: Ref<Edge[]>
     reset: () => void
     autoLayout: (direction: Direction) => void
   } => {
-    const nodes = storeToRefs(useNodesStore())
-    const edges = storeToRefs(useEdgesStore())
     const flow = useVueFlow('FlowGraph')
 
     function reset(): void {
-      nodes.nodes.value = []
-      edges.edges.value = []
+      flow.removeEdges(flow.getEdges.value.map((edge) => edge.id))
+      flow.removeNodes(flow.getNodes.value.map((node) => node.id))
     }
 
     // Auto layout the graph
@@ -38,15 +30,15 @@ export const useGraphStore = defineStore(
       // Set graph layout direction
       dagreGraph.setGraph({ rankdir: direction })
       // Assign the width and height of nodes
-      for (const node of nodes.nodes.value) {
+      for (const node of flow.getNodes.value) {
         const graphNode = flow.findNode(node.id)
         dagreGraph.setNode(node.id, {
           width: graphNode?.dimensions.width || 150,
-          height: graphNode?.dimensions.height || 50
+          height: graphNode?.dimensions.height || 37
         })
       }
       // Assign edges to the graph
-      for (const edge of edges.edges.value) {
+      for (const edge of flow.getEdges.value) {
         dagreGraph.setEdge(edge.source, edge.target)
       }
       // Layout the graph
@@ -70,14 +62,13 @@ export const useGraphStore = defineStore(
       const source = sources[direction]
 
       // Calculate new nodes with the updated positions
-      nodes.nodes.value = nodes.nodes.value.map((node) => {
+      flow.getNodes.value.forEach((node) => {
         const position = dagreGraph.node(node.id)
-        return {
-          ...node,
+        flow.updateNode(node.id, {
           targetPosition: target,
           sourcePosition: source,
           position: { x: position.x, y: position.y }
-        }
+        })
       })
 
       nextTick(() => {
@@ -86,8 +77,6 @@ export const useGraphStore = defineStore(
     }
 
     return {
-      nodes: nodes.nodes,
-      edges: edges.edges,
       reset,
       autoLayout
     }
