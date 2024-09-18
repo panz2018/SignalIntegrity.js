@@ -70,7 +70,13 @@ npx cypress open
 yarn run test:component
 ```
 
-## Type-Check, Compile and Minify for Production
+## Lint, format, type-check, unit-tests and component tests
+
+```sh
+yarn run test
+```
+
+## Compile, build and minify for Production
 
 ```sh
 yarn run build
