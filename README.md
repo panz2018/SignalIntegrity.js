@@ -1,82 +1,86 @@
 # SignalIntegrity.js
 
-## Install yarn
+## Project setup
+
+### Install yarn
 
 ```sh
 npm install --global yarn
 ```
 
-## Project Setup
+### Install packages
 
 ```sh
 yarn install
 ```
 
-## Check for outdated packages
+### Check for outdated packages
 
 ```sh
 yarn outdated
 ```
 
-## Upgrades packages
+### Upgrades packages
 
 ```
 yarn upgrade --latest
 ```
 
-## Compile and Hot-Reload for Development
+## Development
+
+### Compile and hot-reload for Development
 
 ```sh
 yarn run dev
 ```
 
-## Lint with [ESLint](https://eslint.org/)
+### Lint with [ESLint](https://eslint.org/)
 
 ```sh
 yarn run lint
 ```
 
-## Format with [Prettier](https://prettier.io/)
+### Format with [Prettier](https://prettier.io/)
 
 ```sh
 yarn run format
 ```
 
-## Run Unit Tests with [Vitest](https://vitest.dev/)
+### Unit test with [Vitest](https://vitest.dev/)
 
-### Interactive development
+#### Interactive development
 
 ```sh
 yarn vitest
 ```
 
-### Command line
+#### Command line
 
 ```sh
 yarn run test:unit
 ```
 
-## Run component tests with [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
+### Component test with [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
 
-### Interactive development
+#### Interactive development
 
 ```sh
 npx cypress open
 ```
 
-### Command line
+#### Command line
 
 ```sh
 yarn run test:component
 ```
 
-## Lint, format, type-check, unit-tests and component tests
+### Lint, format, type-check, unit-test, and component test
 
 ```sh
 yarn run test
 ```
 
-## Compile, build and minify for Production
+## Compile, build and minify for production
 
 ```sh
 yarn run build
