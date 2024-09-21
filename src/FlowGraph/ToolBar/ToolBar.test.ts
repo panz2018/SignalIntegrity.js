@@ -49,7 +49,7 @@ describe.concurrent('ToolBar.Vue', () => {
     expect(Object.keys(wrapper.attributes())).toContain('class')
     // Test the buttons
     const buttons = wrapper.findAll('button')
-    expect(buttons.length).toBe(4)
+    expect(buttons.length).toBe(5)
     // Test FitView
     const fitview = buttons.at(0)
     expect(fitview).toBeTruthy()

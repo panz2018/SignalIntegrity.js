@@ -2,6 +2,7 @@ import { storeToRefs } from 'pinia'
 import fitview from '@/FlowGraph/ToolBar/FitView/FitView'
 import zoomin from '@/FlowGraph/ToolBar/ZoomIn/ZoomIn'
 import zoomout from '@/FlowGraph/ToolBar/ZoomOut/ZoomOut'
+import AddNode from '@/FlowGraph/AddNode/AddNode'
 import { useModificationStore } from '@/FlowGraph/ToolBar/Modification/Modification'
 import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
 import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
@@ -43,7 +44,13 @@ export const useMenuStore = () => {
     {
       label: 'Edit',
       icon: 'pi pi-pen-to-square',
-      items: [autolayoutMenu]
+      items: [
+        AddNode,
+        {
+          separator: true
+        },
+        autolayoutMenu
+      ]
     },
     {
       label: 'View',

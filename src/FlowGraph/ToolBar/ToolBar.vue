@@ -10,6 +10,7 @@
     <ZoomIn />
     <ZoomOut />
     <ModificationSwitcher />
+    <AddNode />
   </Controls>
 </template>
 
@@ -23,6 +24,7 @@ import FitView from './FitView/FitView.vue'
 import ZoomIn from './ZoomIn/ZoomIn.vue'
 import ZoomOut from './ZoomOut/ZoomOut.vue'
 import ModificationSwitcher from './Modification/ModificationSwitcher.vue'
+import AddNode from '../AddNode/AddNode.vue'
 
 // Determine to show/hide ToolBar
 import { storeToRefs } from 'pinia'
