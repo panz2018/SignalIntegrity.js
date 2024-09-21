@@ -13,6 +13,7 @@
       <button type="button" @click="testGraph">Test Graph</button>
       <button type="button" @click="console.log(flow.toObject())">VueFlow</button>
     </Panel>
+    <AddNodeDialog />
   </VueFlow>
 </template>
 
@@ -27,6 +28,9 @@ import NavigationMap from './NavigationMap/NavigationMap.vue'
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
+
+// Import dialogs
+import AddNodeDialog from './AddNode/AddNodeDialog.vue'
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'

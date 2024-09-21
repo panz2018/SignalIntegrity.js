@@ -1,13 +1,14 @@
 <template>
-  <ControlButton v-ripple v-tooltip.bottom="addnode.label" @click="addnode.command">
-    <i :class="addnode.icon" />
+  <ControlButton v-ripple v-tooltip.bottom="addnode.menu.label" @click="addnode.menu.command">
+    <i :class="addnode.menu.icon" />
   </ControlButton>
 </template>
 
 <script setup lang="ts">
 import { ControlButton } from '@vue-flow/controls'
 import '@vue-flow/controls/dist/style.css'
-import addnode from './AddNode'
+import { useAddNodeStore } from './AddNodeStore'
+const addnode = useAddNodeStore()
 </script>
 
 <style scope>
