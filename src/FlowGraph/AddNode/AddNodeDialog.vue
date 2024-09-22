@@ -3,10 +3,16 @@
     v-model:visible="visible"
     header="Add Node"
     :maximizable="true"
-    :style="{ width: '25rem' }"
+    class="dialog"
     appendTo="self"
+    style="min-width: 400px; min-height: 30vh; max-height: 70vh; resize: both; overflow: auto"
   >
-    Add Node
+    <div class="description">You can drag these nodes to the pane.</div>
+    <div class="nodes">
+      <div class="vue-flow__node-input" :draggable="true">Input Node</div>
+      <div class="vue-flow__node-default" :draggable="true">Default Node</div>
+      <div class="vue-flow__node-output" :draggable="true">Output Node</div>
+    </div>
   </Dialog>
 </template>
 
@@ -16,3 +22,19 @@ import Dialog from 'primevue/dialog'
 import { useAddNodeStore } from './AddNodeStore'
 const { visible } = storeToRefs(useAddNodeStore())
 </script>
+
+<style scoped>
+.description {
+  margin-bottom: 10px;
+}
+
+.nodes {
+  margin-bottom: 10px;
+  cursor: grab;
+  font-weight: 500;
+  -webkit-box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 5px 10px 2px #00000040;
+  display: flex;
+  justify-content: center;
+}
+</style>
