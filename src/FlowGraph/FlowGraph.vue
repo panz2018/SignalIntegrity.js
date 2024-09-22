@@ -6,6 +6,7 @@
     :max-zoom="10"
     @dragover="onDragOver"
     @dragleave="onDragLeave"
+    @drop="onDrop"
   >
     <BackGround />
     <ToolBar />
@@ -34,7 +35,7 @@ const theme = useThemeStore()
 // Drag and drop to add new nodes
 import AddNodeDialog from './AddNode/AddNodeDialog.vue'
 import { useDnDStore } from './AddNode/DndStore'
-const { onDragOver, onDragLeave } = useDnDStore()
+const { onDragOver, onDragLeave, onDrop } = useDnDStore()
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
