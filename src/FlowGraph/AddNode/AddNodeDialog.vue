@@ -4,6 +4,7 @@
     :maximizable="true"
     class="dialog"
     appendTo="self"
+    position="bottom"
     style="
       min-width: 400px;
       max-width: 100vw;

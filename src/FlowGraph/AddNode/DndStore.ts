@@ -13,7 +13,6 @@ export const useDnDStore = defineStore('DnD', () => {
 
   // Watch for dragging
   watch(isDragging, (dragging) => {
-    console.log('isDragging:', dragging)
     document.body.style.userSelect = dragging ? 'none' : ''
   })
 
@@ -25,8 +24,6 @@ export const useDnDStore = defineStore('DnD', () => {
     draggedType.value = type
     isDragging.value = true
     document.addEventListener('drop', onDragEnd)
-
-    console.log('onDragStart:', draggedType.value, isDragging.value, event.dataTransfer)
   }
 
   function onDragEnd(): void {
@@ -34,14 +31,18 @@ export const useDnDStore = defineStore('DnD', () => {
     isDragOver.value = false
     draggedType.value = null
     document.removeEventListener('drop', onDragEnd)
-    console.log('onDragEnd:')
   }
 
   function onDragOver(event: DragEvent): void {
     event.preventDefault()
 
-    // console.log('onDragOver:', draggedType.value, event)
+    if (draggedType.value) {
+      isDragOver.value = true
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = 'move'
+      }
+    }
   }
 
-  return { onDragStart, onDragOver }
+  return { isDragOver, onDragStart, onDragOver }
 })

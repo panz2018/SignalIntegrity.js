@@ -6,7 +6,7 @@
     :max-zoom="10"
     @dragover="onDragOver"
   >
-    <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
+    <BackGround />
     <ToolBar />
     <NavigationMap />
     <Panel position="top-right">
@@ -23,7 +23,7 @@
 import { VueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
-import { Background } from '@vue-flow/background'
+import BackGround from './BackGround.vue'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
 // Dark/Bright theme
