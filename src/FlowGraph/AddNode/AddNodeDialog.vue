@@ -5,13 +5,34 @@
     :maximizable="true"
     class="dialog"
     appendTo="self"
-    style="min-width: 400px; min-height: 30vh; max-height: 70vh; resize: both; overflow: auto"
+    style="
+      min-width: 400px;
+      max-width: 100vw;
+      min-height: 30vh;
+      max-height: 50vh;
+      resize: both;
+      overflow: auto;
+    "
   >
     <div class="description">You can drag these nodes to the pane.</div>
     <div class="nodes">
-      <div class="vue-flow__node-input" :draggable="true">Input Node</div>
-      <div class="vue-flow__node-default" :draggable="true">Default Node</div>
-      <div class="vue-flow__node-output" :draggable="true">Output Node</div>
+      <div class="vue-flow__node-input" draggable="true" @dragstart="onDragStart($event, 'input')">
+        Input Node
+      </div>
+      <div
+        class="vue-flow__node-default"
+        draggable="true"
+        @dragstart="onDragStart($event, 'default')"
+      >
+        Default Node
+      </div>
+      <div
+        class="vue-flow__node-output"
+        draggable="true"
+        @dragstart="onDragStart($event, 'output')"
+      >
+        Output Node
+      </div>
     </div>
   </Dialog>
 </template>
@@ -19,8 +40,14 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import Dialog from 'primevue/dialog'
+
+// Get visible state from AddNodeStore
 import { useAddNodeStore } from './AddNodeStore'
 const { visible } = storeToRefs(useAddNodeStore())
+
+// Start drag and drop
+import { useDnDStore } from './DndStore'
+const { onDragStart } = useDnDStore()
 </script>
 
 <style scoped>
