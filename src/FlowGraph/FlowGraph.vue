@@ -4,6 +4,7 @@
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.1"
     :max-zoom="10"
+    @dragover="onDragOver"
   >
     <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
     <ToolBar />
@@ -29,8 +30,10 @@ import NavigationMap from './NavigationMap/NavigationMap.vue'
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
 
-// Import dialogs
+// Drag and drop to add new nodes
 import AddNodeDialog from './AddNode/AddNodeDialog.vue'
+import { useDnDStore } from './AddNode/DndStore'
+const { onDragOver } = useDnDStore()
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'

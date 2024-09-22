@@ -1,7 +1,6 @@
 <template>
   <Dialog
     v-model:visible="visible"
-    header="Add Node"
     :maximizable="true"
     class="dialog"
     appendTo="self"
@@ -14,6 +13,9 @@
       overflow: auto;
     "
   >
+    <template #header>
+      <span style="cursor: move">Add Node </span>
+    </template>
     <div class="description">You can drag these nodes to the pane.</div>
     <div class="nodes">
       <div class="vue-flow__node-input" draggable="true" @dragstart="onDragStart($event, 'input')">
@@ -45,7 +47,7 @@ import Dialog from 'primevue/dialog'
 import { useAddNodeStore } from './AddNodeStore'
 const { visible } = storeToRefs(useAddNodeStore())
 
-// Start drag and drop
+// Drag and drop to add new nodes
 import { useDnDStore } from './DndStore'
 const { onDragStart } = useDnDStore()
 </script>
