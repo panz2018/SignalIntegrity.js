@@ -1,6 +1,7 @@
 import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useVueFlow } from '@vue-flow/core'
 
 const nodeTypes = [null, 'input', 'default', 'output'] as const
 type NodeType = (typeof nodeTypes)[number]
@@ -10,6 +11,7 @@ export const useDnDStore = defineStore('DnD', () => {
   const draggedType: Ref<NodeType> = ref(null)
   const isDragging: Ref<Boolean> = ref(false)
   const isDragOver: Ref<Boolean> = ref(false)
+  const flow = useVueFlow('FlowGraph')
 
   // Watch for dragging
   watch(isDragging, (dragging) => {
@@ -33,16 +35,35 @@ export const useDnDStore = defineStore('DnD', () => {
     document.removeEventListener('drop', onDragEnd)
   }
 
-  function onDragOver(event: DragEvent): void {
-    event.preventDefault()
-
-    if (draggedType.value) {
+  function onDragOver(event: DragEvent): false | void {
+    const classList = (event.target as Element).classList
+    if (
+      draggedType.value &&
+      classList.contains('vue-flow__pane') &&
+      classList.contains('vue-flow__container')
+    ) {
+      event.preventDefault()
       isDragOver.value = true
       if (event.dataTransfer) {
         event.dataTransfer.dropEffect = 'move'
       }
+    } else {
+      return false
     }
   }
 
-  return { isDragOver, onDragStart, onDragOver }
+  function onDragLeave(event: DragEvent): false | void {
+    const classList = (event.target as Element).classList
+    if (
+      draggedType.value &&
+      classList.contains('vue-flow__pane') &&
+      classList.contains('vue-flow__container')
+    ) {
+      isDragOver.value = false
+    } else {
+      return false
+    }
+  }
+
+  return { isDragOver, onDragStart, onDragOver, onDragLeave }
 })

@@ -2,7 +2,6 @@
   <Dialog
     v-model:visible="visible"
     :maximizable="true"
-    class="dialog"
     appendTo="self"
     position="bottom"
     style="
@@ -59,12 +58,17 @@ const { onDragStart } = useDnDStore()
 }
 
 .nodes {
-  margin-bottom: 10px;
   cursor: grab;
   font-weight: 500;
   -webkit-box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
   box-shadow: 5px 5px 10px 2px #00000040;
   display: flex;
   justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.nodes > * {
+  margin: 5px 5px;
 }
 </style>
