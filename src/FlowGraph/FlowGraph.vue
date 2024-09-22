@@ -4,15 +4,18 @@
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.1"
     :max-zoom="10"
+    @dragover="onDragOver"
+    @dragleave="onDragLeave"
+    @drop="onDrop"
   >
-    <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
+    <BackGround />
     <ToolBar />
     <NavigationMap />
     <Panel position="top-right">
-      <button type="button" @click="addNode">Add a node</button>
-      <button type="button" @click="testGraph">Test Graph</button>
+      <button type="button" @click="testGraph">Add Test Graph</button>
       <button type="button" @click="console.log(flow.toObject())">VueFlow</button>
     </Panel>
+    <AddNodeDialog />
   </VueFlow>
 </template>
 
@@ -21,12 +24,17 @@
 import { VueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
-import { Background } from '@vue-flow/background'
+import BackGround from './BackGround.vue'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
+
+// Drag and drop to add new nodes
+import AddNodeDialog from './AddNode/AddNodeDialog.vue'
+import { useDnDStore } from './AddNode/DndStore'
+const { onDragOver, onDragLeave, onDrop } = useDnDStore()
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
@@ -38,18 +46,6 @@ flow.onConnect((connection) => {
 
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
-function addNode() {
-  const id = Date.now().toString()
-  flow.addNodes([
-    {
-      id: id,
-      position: { x: 150, y: 50 },
-      data: { label: `Node ${id}` },
-      width: 150,
-      height: 37
-    }
-  ])
-}
 import { Position } from '@vue-flow/core'
 import { MarkerType } from '@vue-flow/core'
 function testGraph() {
@@ -68,7 +64,9 @@ function testGraph() {
       targetPosition: Position.Top,
       position: { x: 100, y: 100 },
       data: { label: 'Node 2' },
-      style: { '--vf-node-color': 'green' }
+      style: { '--vf-node-color': 'green' },
+      width: 200,
+      height: 60
     },
     {
       id: '3',

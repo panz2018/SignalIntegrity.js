@@ -4,6 +4,8 @@
     :position="navigation.position"
     :pannable="true"
     :zoomable="true"
+    :maskColor="theme.theme === 'Dark' ? '#4d5656DD' : undefined"
+    :style="{ backgroundColor: theme.theme === 'Dark' ? 'black' : undefined }"
   />
 </template>
 
@@ -15,4 +17,8 @@ import '@vue-flow/minimap/dist/style.css'
 import { storeToRefs } from 'pinia'
 import { useNavigationStore } from './NavigationStore'
 const { navigation } = storeToRefs(useNavigationStore())
+
+// Dark/Bright theme
+import { useThemeStore } from '@/MenuBar/Theme/theme'
+const theme = useThemeStore()
 </script>
