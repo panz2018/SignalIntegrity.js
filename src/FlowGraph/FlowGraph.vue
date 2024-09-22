@@ -12,8 +12,7 @@
     <ToolBar />
     <NavigationMap />
     <Panel position="top-right">
-      <button type="button" @click="addNode">Add a node</button>
-      <button type="button" @click="testGraph">Test Graph</button>
+      <button type="button" @click="testGraph">Add Test Graph</button>
       <button type="button" @click="console.log(flow.toObject())">VueFlow</button>
     </Panel>
     <AddNodeDialog />
@@ -47,18 +46,6 @@ flow.onConnect((connection) => {
 
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
-function addNode() {
-  const id = Date.now().toString()
-  flow.addNodes([
-    {
-      id: id,
-      position: { x: 150, y: 50 },
-      data: { label: `Node ${id}` },
-      width: 150,
-      height: 37
-    }
-  ])
-}
 import { Position } from '@vue-flow/core'
 import { MarkerType } from '@vue-flow/core'
 function testGraph() {
@@ -77,7 +64,9 @@ function testGraph() {
       targetPosition: Position.Top,
       position: { x: 100, y: 100 },
       data: { label: 'Node 2' },
-      style: { '--vf-node-color': 'green' }
+      style: { '--vf-node-color': 'green' },
+      width: 200,
+      height: 60
     },
     {
       id: '3',
