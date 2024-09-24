@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "test": "run-p lint && run-p format type-check test:unit test:component",
+    "test": "run-p lint:v9 && run-p format type-check test:unit test:component build",
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:component": "cypress run --component",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint:v8": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint:v9": "eslint --fix",
     "format": "prettier --write src/"
   },
   "dependencies": {
@@ -26,6 +27,8 @@
     "vue": "^3.5.8"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.1.1",
+    "@eslint/js": "^9.11.1",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
@@ -37,12 +40,14 @@
     "@vue/tsconfig": "^0.5.1",
     "cypress": "^13.14.2",
     "eslint": "^9.11.1",
-    "eslint-plugin-vue": "^9.23.0",
+    "eslint-plugin-vue": "^9.28.0",
+    "globals": "^15.9.0",
     "happy-dom": "^15.7.4",
     "less": "^4.2.0",
     "npm-run-all2": "^6.2.3",
     "prettier": "^3.2.5",
     "typescript": "~5.6.2",
+    "typescript-eslint": "^8.7.0",
     "vite": "^5.4.7",
     "vitest": "^2.1.1",
     "vue-tsc": "^2.0.21"

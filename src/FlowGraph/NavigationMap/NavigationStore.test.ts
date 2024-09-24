@@ -85,7 +85,7 @@ describe.concurrent('NavigationStore.ts', () => {
       function checkMenuStatus(anticipate: { status: boolean; position: string }) {
         const menuStatus = navigationMenu.value.at(0)
         expect(menuStatus).toBeTruthy()
-        expect(Object.keys(menuStatus as Object)).toStrictEqual(['label', 'icon', 'command'])
+        expect(Object.keys(menuStatus as object)).toStrictEqual(['label', 'icon', 'command'])
         expect(menuStatus?.label).toBe('Navigation Map')
         if (anticipate.status) {
           expect(menuStatus?.icon).toBe('pi pi-check')
@@ -97,7 +97,7 @@ describe.concurrent('NavigationStore.ts', () => {
       function checkMenuPosition(anticipate: { status: boolean; position: string }) {
         const menuPosition = navigationMenu.value.at(1)
         expect(menuPosition).toBeTruthy()
-        expect(Object.keys(menuPosition as Object)).toStrictEqual(['label', 'icon', 'items'])
+        expect(Object.keys(menuPosition as object)).toStrictEqual(['label', 'icon', 'items'])
         expect(menuPosition?.label).toBe('Navigation Map Position')
         expect(menuPosition?.icon).toBe('pi pi-empty')
         const items = menuPosition?.items
@@ -112,7 +112,7 @@ describe.concurrent('NavigationStore.ts', () => {
         }
         expect(items?.length).toBe(Object.keys(numPositions).length)
         for (const row of items!) {
-          expect(Object.keys(row as Object)).toStrictEqual(['label', 'icon', 'command'])
+          expect(Object.keys(row as object)).toStrictEqual(['label', 'icon', 'command'])
           const label = row.label
           const position = label2position(label)
           expect(position2label(position)).toBe(label)

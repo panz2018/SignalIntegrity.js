@@ -10,8 +10,8 @@ type NodeType = (typeof nodeTypes)[number]
 export const useDnDStore = defineStore('DnD', () => {
   // Define properties
   const draggedType: Ref<NodeType> = ref(null)
-  const isDragging: Ref<Boolean> = ref(false)
-  const isDragOver: Ref<Boolean> = ref(false)
+  const isDragging: Ref<boolean> = ref(false)
+  const isDragOver: Ref<boolean> = ref(false)
 
   // Watch for dragging
   watch(isDragging, (dragging) => {
@@ -35,7 +35,7 @@ export const useDnDStore = defineStore('DnD', () => {
     document.removeEventListener('drop', onDragEnd)
   }
 
-  function checkDrop(event: DragEvent): Boolean {
+  function checkDrop(event: DragEvent): boolean {
     if (!draggedType.value) {
       return false
     }
