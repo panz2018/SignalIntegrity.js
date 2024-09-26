@@ -1,5 +1,5 @@
 <template>
-  <MenuBar></MenuBar>
+  <MenuBar />
   <FlowGraph class="graph" />
   <Toast />
 </template>

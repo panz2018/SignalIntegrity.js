@@ -2,7 +2,7 @@
   <Dialog
     v-model:visible="visible"
     :maximizable="true"
-    appendTo="self"
+    append-to="self"
     position="bottom"
     style="
       min-width: 400px;

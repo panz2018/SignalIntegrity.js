@@ -4,7 +4,7 @@
     :position="navigation.position"
     :pannable="true"
     :zoomable="true"
-    :maskColor="theme.theme === 'Dark' ? '#4d5656DD' : undefined"
+    :mask-color="theme.theme === 'Dark' ? '#4d5656DD' : undefined"
     :style="{ backgroundColor: theme.theme === 'Dark' ? 'black' : undefined }"
   />
 </template>

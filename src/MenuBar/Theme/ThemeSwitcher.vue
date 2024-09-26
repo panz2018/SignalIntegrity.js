@@ -1,5 +1,5 @@
 <template>
-  <Button v-ripple v-tooltip.bottom="tooltip" @click="theme.toggle" outlined>
+  <Button v-ripple v-tooltip.bottom="tooltip" outlined @click="theme.toggle">
     <i :class="`dark:text-white pi ${icon}`" />
   </Button>
 </template>
