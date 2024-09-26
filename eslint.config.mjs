@@ -12,10 +12,25 @@ const gitignorePath = path.resolve(__dirname, '.gitignore')
 
 export default [
   includeIgnoreFile(gitignorePath),
+  {
+    ignores: ['cypress/support/component.ts']
+  },
   { files: ['**/*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}'] },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
-  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } }
+  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
+  {
+    files: ['**/*.cy.ts', '**/*.cy.js'],
+    rules: {
+      '@typescript-eslint/no-unused-expressions': 'off'
+    }
+  },
+  {
+    files: ['**/*.ts', '**/*.test.ts', '**/*.test.js'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
+  }
 ]

@@ -4,8 +4,7 @@ import { defineStore } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
 import type { Node } from '@vue-flow/core'
 
-const nodeTypes = [null, 'input', 'default', 'output'] as const
-type NodeType = (typeof nodeTypes)[number]
+type NodeType = null | 'input' | 'default' | 'output'
 
 export const useDnDStore = defineStore('DnD', () => {
   // Define properties

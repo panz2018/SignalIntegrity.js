@@ -4,14 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "test": "run-p lint:v9 && run-p format type-check test:unit test:component build",
+    "test": "run-p lint && run-p format type-check test:unit test:component build",
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest run",
     "test:component": "cypress run --component",
     "type-check": "vue-tsc --build --force",
-    "lint:v8": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "lint:v9": "eslint --fix",
+    "lint": "eslint --fix",
     "format": "prettier --write src/"
   },
   "dependencies": {

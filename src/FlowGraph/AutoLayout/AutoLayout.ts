@@ -2,9 +2,7 @@ import { nextTick } from 'vue'
 import dagre from '@dagrejs/dagre'
 import { Position, useVueFlow } from '@vue-flow/core'
 
-// Default perperties
-const directions = ['LR', 'RL', 'TB', 'BT'] as const
-type Direction = (typeof directions)[number]
+type Direction = 'LR' | 'RL' | 'TB' | 'BT'
 
 export const useAutolayout = () => {
   const flow = useVueFlow('FlowGraph')
