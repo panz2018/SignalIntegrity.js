@@ -1,12 +1,10 @@
-import { useVueFlow } from '@vue-flow/core'
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
 export const useNewfile = () => {
-  const flow = useVueFlow('FlowGraph')
+  const flows = useMultiFlows()
 
   function newFile(): void {
-    flow.removeEdges(flow.getEdges.value.map((edge) => edge.id))
-    flow.removeNodes(flow.getNodes.value.map((node) => node.id))
-    flow.zoomTo(1)
+    flows.addTab()
   }
 
   const newfileMenu = {

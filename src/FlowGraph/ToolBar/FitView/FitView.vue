@@ -11,8 +11,11 @@ import fitview from './FitView'
 
 // Fit viewport
 import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
-const flow = useVueFlow('FlowGraph')
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+const { current } = storeToRefs(useMultiFlows())
+const flow = useVueFlow(current.value)
 onMounted(() => {
   flow.fitView()
 })

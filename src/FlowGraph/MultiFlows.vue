@@ -1,11 +1,11 @@
 <template>
-  <Tabs value="flow-0">
+  <Tabs v-model:value="current">
     <TabList>
-      <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value">{{ tab.title }}</Tab>
+      <Tab v-for="tab in tabs" :key="tab.flow" :value="tab.flow">{{ tab.title }}</Tab>
     </TabList>
     <TabPanels>
-      <TabPanel v-for="tab in tabs" :key="tab.content" :value="tab.value">
-        <FlowGraph class="graph" />
+      <TabPanel v-for="tab in tabs" :key="tab.flow" :value="tab.flow">
+        <FlowGraph :flow="tab.flow" class="graph" />
       </TabPanel>
     </TabPanels>
   </Tabs>
@@ -20,8 +20,9 @@ import TabPanel from 'primevue/tabpanel'
 import FlowGraph from './FlowGraph.vue'
 
 // Setup tabs
-import { ref } from 'vue'
-const tabs = ref([{ title: 'flow-0', content: 'Tab 1 Content', value: 'flow-0' }])
+import { storeToRefs } from 'pinia'
+import { useMultiFlows } from './MultiFlows'
+const { current, tabs } = storeToRefs(useMultiFlows())
 </script>
 
 <style scoped>
