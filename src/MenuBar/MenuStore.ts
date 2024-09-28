@@ -8,6 +8,7 @@ import { useToolbarStore } from '@/FlowGraph/ToolBar/ToolbarStore'
 import { useNavigationStore } from '@/FlowGraph/NavigationMap/NavigationStore'
 import { useAutolayout } from '@/FlowGraph/AutoLayout/AutoLayout'
 import { useNewfile } from '@/FlowGraph/NewFile/NewFile'
+import { useResetFlow } from '@/FlowGraph/ResetFlow/ResetFlow'
 
 import { useToast } from 'primevue/usetoast'
 
@@ -28,6 +29,7 @@ export const useMenuStore = () => {
   const { navigationMenu } = storeToRefs(useNavigationStore())
   const { autolayoutMenu } = useAutolayout()
   const { newfileMenu } = useNewfile()
+  const { resetMenu } = useResetFlow()
   const addnode = useAddNodeStore()
   const menu = [
     {
@@ -50,7 +52,11 @@ export const useMenuStore = () => {
         {
           separator: true
         },
-        autolayoutMenu
+        autolayoutMenu,
+        {
+          separator: true
+        },
+        resetMenu
       ]
     },
     {

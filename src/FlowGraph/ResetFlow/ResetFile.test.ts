@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { useNewfile } from './NewFile'
+import { useResetFlow } from './ResetFlow'
 import { useVueFlow } from '@vue-flow/core'
 import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
@@ -10,11 +10,11 @@ app.use(createPinia())
 
 describe.concurrent('NewFile.ts', () => {
   it('Valid', () => {
-    expect(useNewfile).toBeTruthy()
-    const { newfileMenu } = useNewfile()
-    expect(Object.keys(newfileMenu)).toStrictEqual(['label', 'icon', 'command'])
-    expect(newfileMenu.label).toBe('New')
-    expect(newfileMenu.icon).toBe('pi pi-file-plus')
+    expect(useResetFlow).toBeTruthy()
+    const { resetMenu } = useResetFlow()
+    expect(Object.keys(resetMenu)).toStrictEqual(['label', 'icon', 'command'])
+    expect(resetMenu.label).toBe('Reset Graph')
+    expect(resetMenu.icon).toBe('pi pi-refresh')
   })
   it('VueFlow', () => {
     // Initialize VueFlow
@@ -45,17 +45,10 @@ describe.concurrent('NewFile.ts', () => {
       }
     ])
     expect(flow.getEdges.value.length).toBe(1)
-    // Create new file
-    const { newfileMenu } = useNewfile()
-    newfileMenu.command()
-    // Check previous flow graph
-    expect(flow.getNodes.value.length).toBe(2)
-    expect(flow.getEdges.value.length).toBe(1)
-    expect(flow.id).not.toBe(flows.current)
-    // Check the new flow graph
-    const newFlow = useVueFlow(flows.current)
-    expect(newFlow.id).toBe(flows.current)
-    expect(newFlow.getNodes.value).toStrictEqual([])
-    expect(newFlow.getEdges.value).toStrictEqual([])
+    // Create new file to reset Vueflow
+    const { resetMenu } = useResetFlow()
+    resetMenu.command()
+    expect(flow.getNodes.value).toStrictEqual([])
+    expect(flow.getEdges.value).toStrictEqual([])
   })
 })

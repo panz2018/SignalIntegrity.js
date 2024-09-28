@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import Noir from '@primevue/themes/nora'
 import Ripple from 'primevue/ripple'
@@ -11,6 +12,7 @@ import zoomout from './ZoomOut'
 const app = createApp({})
 app.directive('ripple', Ripple)
 app.directive('tooltip', Tooltip)
+app.use(createPinia())
 app.use(PrimeVue, {
   ripple: true,
   theme: {

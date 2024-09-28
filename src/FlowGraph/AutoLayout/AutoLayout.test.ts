@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import { useAutolayout } from './AutoLayout'
 import { useVueFlow } from '@vue-flow/core'
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+
+const app = createApp({})
+app.use(createPinia())
 
 describe.concurrent('AutoLayout.ts', () => {
   it('Valid', () => {
@@ -20,7 +26,8 @@ describe.concurrent('AutoLayout.ts', () => {
   })
   it('VueFlow', () => {
     // Initialize VueFlow
-    const flow = useVueFlow('FlowGraph')
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
     expect(flow.getNodes.value).toStrictEqual([])
     expect(flow.getEdges.value).toStrictEqual([])
     // Add nodes to VueFlow

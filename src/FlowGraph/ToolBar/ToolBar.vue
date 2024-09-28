@@ -2,9 +2,9 @@
   <Controls
     v-show="toolbar.status"
     :position="toolbar.position"
-    :showZoom="false"
-    :showFitView="false"
-    :showInteractive="false"
+    :show-zoom="false"
+    :show-fit-view="false"
+    :show-interactive="false"
   >
     <FitView />
     <ZoomIn />

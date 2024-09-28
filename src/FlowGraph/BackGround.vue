@@ -5,8 +5,8 @@
       backgroundColor: isDragOver ? (theme === 'Bright' ? '#e7f3ff' : '#4d5656') : 'transparent'
     }"
   >
-    <Background patternColor="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
-    <div class="overlay" v-if="isDragOver">
+    <Background pattern-color="#81818a" :gap="20" :size="1.0" :x="0" :y="0" />
+    <div v-if="isDragOver" class="overlay">
       <div>Drop here</div>
       <div>Drop here</div>
       <div>Drop here</div>

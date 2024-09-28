@@ -1,4 +1,4 @@
-export function logo({ dark }: { dark: Boolean }) {
+export function logo({ dark }: { dark: boolean }) {
   return /*html*/ `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path

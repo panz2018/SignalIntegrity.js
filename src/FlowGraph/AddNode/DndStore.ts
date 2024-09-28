@@ -3,15 +3,15 @@ import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
 import type { Node } from '@vue-flow/core'
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
-const nodeTypes = [null, 'input', 'default', 'output'] as const
-type NodeType = (typeof nodeTypes)[number]
+type NodeType = null | 'input' | 'default' | 'output'
 
 export const useDnDStore = defineStore('DnD', () => {
   // Define properties
   const draggedType: Ref<NodeType> = ref(null)
-  const isDragging: Ref<Boolean> = ref(false)
-  const isDragOver: Ref<Boolean> = ref(false)
+  const isDragging: Ref<boolean> = ref(false)
+  const isDragOver: Ref<boolean> = ref(false)
 
   // Watch for dragging
   watch(isDragging, (dragging) => {
@@ -35,7 +35,7 @@ export const useDnDStore = defineStore('DnD', () => {
     document.removeEventListener('drop', onDragEnd)
   }
 
-  function checkDrop(event: DragEvent): Boolean {
+  function checkDrop(event: DragEvent): boolean {
     if (!draggedType.value) {
       return false
     }
@@ -76,9 +76,11 @@ export const useDnDStore = defineStore('DnD', () => {
   // Properties to add new nodes
   let id = 0
   const getId = () => `node-${id++}`
-  const flow = useVueFlow('FlowGraph')
 
   function onDrop(event: DragEvent): false | void {
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
+
     const status = checkDrop(event)
     if (status === false) {
       return false

@@ -15,7 +15,7 @@ export function favicon() {
     setIcon({ dark: event.matches })
   })
 
-  function setIcon({ dark }: { dark: Boolean }) {
+  function setIcon({ dark }: { dark: boolean }) {
     favicon.href = `data:image/svg+xml,${logo({ dark: dark })}`
   }
 }

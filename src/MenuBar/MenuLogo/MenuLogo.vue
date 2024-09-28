@@ -1,5 +1,5 @@
 <template>
-  <div v-html="icon"></div>
+  <div v-html="icon" />
 </template>
 
 <script setup lang="ts">

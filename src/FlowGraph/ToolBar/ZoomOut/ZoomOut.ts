@@ -1,8 +1,12 @@
 import { useVueFlow } from '@vue-flow/core'
-const flow = useVueFlow('FlowGraph')
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
 export default {
   label: 'Zoom Out',
   icon: 'pi pi-search-minus',
-  command: flow.zoomOut
+  command: () => {
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
+    flow.zoomOut()
+  }
 }
