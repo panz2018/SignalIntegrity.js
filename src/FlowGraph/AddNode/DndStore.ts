@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
 import type { Node } from '@vue-flow/core'
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
 type NodeType = null | 'input' | 'default' | 'output'
 
@@ -75,9 +76,11 @@ export const useDnDStore = defineStore('DnD', () => {
   // Properties to add new nodes
   let id = 0
   const getId = () => `node-${id++}`
-  const flow = useVueFlow('FlowGraph')
 
   function onDrop(event: DragEvent): false | void {
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
+
     const status = checkDrop(event)
     if (status === false) {
       return false
