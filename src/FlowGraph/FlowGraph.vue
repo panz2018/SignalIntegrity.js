@@ -49,12 +49,11 @@ flow.onConnect((connection) => {
 
 // Handle errors
 import { isErrorOfType, ErrorCode, VueFlowError } from '@vue-flow/core'
-flow.onError(handleError)
-function handleError(error: VueFlowError) {
+flow.onError((error: VueFlowError) => {
   if (!isErrorOfType(error, ErrorCode.MISSING_VIEWPORT_DIMENSIONS)) {
     throw error
   }
-}
+})
 
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'

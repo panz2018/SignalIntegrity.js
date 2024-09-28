@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import { useNewfile } from './NewFile'
 import { useVueFlow } from '@vue-flow/core'
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+
+const app = createApp({})
+app.use(createPinia())
 
 describe.concurrent('NewFile.ts', () => {
   it('Valid', () => {
@@ -12,7 +18,8 @@ describe.concurrent('NewFile.ts', () => {
   })
   it('VueFlow', () => {
     // Initialize VueFlow
-    const flow = useVueFlow('FlowGraph')
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
     expect(flow.getNodes.value).toStrictEqual([])
     expect(flow.getEdges.value).toStrictEqual([])
     // Add nodes to VueFlow
@@ -41,7 +48,7 @@ describe.concurrent('NewFile.ts', () => {
     // Create new file to reset Vueflow
     const { newfileMenu } = useNewfile()
     newfileMenu.command()
-    expect(flow.getNodes.value).toStrictEqual([])
-    expect(flow.getEdges.value).toStrictEqual([])
+    expect(flow.getNodes.value.length).toBe(2)
+    expect(flow.getEdges.value.length).toBe(1)
   })
 })
