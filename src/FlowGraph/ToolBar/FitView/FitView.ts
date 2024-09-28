@@ -1,8 +1,12 @@
 import { useVueFlow } from '@vue-flow/core'
-const flow = useVueFlow('FlowGraph')
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
 export default {
   label: 'Fit View',
   icon: 'pi pi-window-maximize',
-  command: flow.fitView
+  command: () => {
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
+    flow.fitView()
+  }
 }

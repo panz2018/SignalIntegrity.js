@@ -1,14 +1,16 @@
 import { nextTick } from 'vue'
 import dagre from '@dagrejs/dagre'
 import { Position, useVueFlow } from '@vue-flow/core'
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
 type Direction = 'LR' | 'RL' | 'TB' | 'BT'
 
 export const useAutolayout = () => {
-  const flow = useVueFlow('FlowGraph')
-
   // Auto layout the graph
   function autoLayout(direction: Direction): void {
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current)
+
     // Create a new graph instance, in case some nodes/edges were removed
     // Otherwise dagre would act as if they were still there
     const dagreGraph = new dagre.graphlib.Graph()
