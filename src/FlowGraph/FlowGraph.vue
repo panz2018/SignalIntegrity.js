@@ -47,6 +47,15 @@ flow.onConnect((connection) => {
   flow.addEdges(connection)
 })
 
+// Handle errors
+import { isErrorOfType, ErrorCode, VueFlowError } from '@vue-flow/core'
+flow.onError(handleError)
+function handleError(error: VueFlowError) {
+  if (!isErrorOfType(error, ErrorCode.MISSING_VIEWPORT_DIMENSIONS)) {
+    throw error
+  }
+}
+
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
 import { Position } from '@vue-flow/core'
