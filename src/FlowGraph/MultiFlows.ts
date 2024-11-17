@@ -17,7 +17,7 @@ export const useMultiFlows = () => {
     function closeFlow(id: string): void {
       const keys = Object.keys(titles.value)
       const index = keys.indexOf(id)
-      if (index === 0) {
+      if (keys.length === 1 && index === 0) {
         newFlow()
       } else if (index === keys.length - 1) {
         current.value = keys[index - 1]
