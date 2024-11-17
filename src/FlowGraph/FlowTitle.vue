@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import events from '@/events'
 const title = defineModel({ type: String, required: true })
 const { focused } = defineProps({
   focused: { type: Boolean, required: true }
@@ -22,12 +22,11 @@ const label = useTemplateRef('label')
 const editor = useTemplateRef('editor')
 
 // Error message
-const toast = useToast()
 function error() {
-  toast.add({
+  events.emit('Error', {
     severity: 'error',
     summary: 'Error',
-    detail: 'Filename cannot be empty',
+    detail: 'Flow name cannot be empty',
     life: 3000
   })
 }
