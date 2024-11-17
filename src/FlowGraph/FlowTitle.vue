@@ -1,12 +1,21 @@
 <template>
-  <span ref="label" v-show="showLabel" @click="onClick">{{ title }}</span>
-  <div ref="editor" v-show="!showLabel">
-    <input ref="input" v-model="title" @keyup.enter="submit" type="text" class="input" />
+  <div style="display: flex">
+    <span ref="label" v-show="showLabel" @click="onClick">{{ title }}</span>
+    <input
+      ref="input"
+      v-show="!showLabel"
+      v-model="title"
+      @keyup.enter="submit"
+      type="text"
+      class="input"
+    />
+    <Button v-show="focused" icon="pi pi-times-circle" class="button" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
+import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
 const { focused } = defineProps({
@@ -14,7 +23,6 @@ const { focused } = defineProps({
 })
 const showLabel = ref(true)
 const label = useTemplateRef('label')
-const editor = useTemplateRef('editor')
 const input = useTemplateRef('input')
 
 // Error message
@@ -37,7 +45,7 @@ function onClick() {
   input.value.style.removeProperty('color')
   // Adjust the width of input
   input.value.style.width = label.value.offsetWidth + 20 + 'px'
-  // Hide label, and show the editor
+  // Hide label, and show the input
   showLabel.value = false
   nextTick(() => {
     if (document.activeElement) {
@@ -64,7 +72,7 @@ watch(title, (newVal, oldVal) => {
   }
 })
 
-// Event to exit the editor
+// Event to hide input and show label
 function submit() {
   if (title.value.length > 0) {
     // Close editor and show the label instead
@@ -77,11 +85,11 @@ window.addEventListener('click', (event) => {
   if (showLabel.value) return
   if (!label.value) return
   if (label.value.style.display !== 'none') return
-  if (!editor.value) return
-  if (editor.value.style.display === 'none') return
+  if (!input.value) return
+  if (input.value.style.display === 'none') return
   if (!event.target) return
   if (label.value.contains(event.target as Node)) return
-  if (editor.value.contains(event.target as Node)) return
+  if (input.value.contains(event.target as Node)) return
   submit()
 })
 </script>
@@ -91,5 +99,16 @@ window.addEventListener('click', (event) => {
   border: 0;
   outline: 0;
   padding: 0;
+  height: 16px;
+}
+
+.button {
+  border: 0;
+  outline: 0;
+  padding: 0;
+  margin-left: 10px;
+  margin-right: 0px;
+  width: 18px;
+  height: 16px;
 }
 </style>
