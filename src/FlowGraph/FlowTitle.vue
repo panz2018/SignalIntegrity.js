@@ -1,6 +1,6 @@
 <template>
-  <div style="display: flex">
-    <span ref="label" v-show="showLabel" @click="onClick">{{ title }}</span>
+  <div class="container">
+    <span ref="label" v-show="showLabel" @click="onEdit">{{ title }}</span>
     <input
       ref="input"
       v-show="!showLabel"
@@ -9,7 +9,7 @@
       type="text"
       class="input"
     />
-    <Button v-show="focused" icon="pi pi-times-circle" class="button" />
+    <Button v-show="focused" icon="pi pi-times-circle" @click.stop="onClose" class="button" />
   </div>
 </template>
 
@@ -18,7 +18,8 @@ import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
-const { focused } = defineProps({
+const { flow, focused } = defineProps({
+  flow: { type: String, required: true },
   focused: { type: Boolean, required: true }
 })
 const showLabel = ref(true)
@@ -36,7 +37,7 @@ function error() {
 }
 
 // Event to enter the input
-function onClick() {
+function onEdit() {
   if (focused === false) return
   if (!label.value) return
   if (!input.value) return
@@ -92,14 +93,26 @@ window.addEventListener('click', (event) => {
   if (input.value.contains(event.target as Node)) return
   submit()
 })
+
+// Close the flow
+import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+const flows = useMultiFlows()
+function onClose() {
+  flows.closeFlow(flow)
+}
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  align-items: center;
+}
+
 .input {
   border: 0;
   outline: 0;
   padding: 0;
-  height: 16px;
+  height: 20px;
 }
 
 .button {
@@ -108,7 +121,7 @@ window.addEventListener('click', (event) => {
   padding: 0;
   margin-left: 10px;
   margin-right: 0px;
-  width: 18px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 </style>

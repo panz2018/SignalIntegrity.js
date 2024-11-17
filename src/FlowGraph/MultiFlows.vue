@@ -1,13 +1,13 @@
 <template>
-  <Tabs v-model:value="current" scrollable>
+  <Tabs v-model:value="flows.current" scrollable>
     <TabList>
-      <Tab v-for="tab in tabs" :key="tab.flow" :value="tab.flow">
-        <FlowTitle v-model="tab.title" :focused="current === tab.flow" />
+      <Tab v-for="key in Object.keys(flows.titles)" :key="key" :value="key">
+        <FlowTitle :flow="key" v-model="flows.titles[key]" :focused="flows.current === key" />
       </Tab>
     </TabList>
     <TabPanels>
-      <TabPanel v-for="tab in tabs" :key="tab.flow" :value="tab.flow">
-        <FlowGraph :flow="tab.flow" class="graph" />
+      <TabPanel v-for="key in Object.keys(flows.titles)" :key="key" :value="key">
+        <FlowGraph :flow="key" class="graph" />
       </TabPanel>
     </TabPanels>
   </Tabs>
@@ -23,9 +23,8 @@ import FlowGraph from './FlowGraph.vue'
 import FlowTitle from './FlowTitle.vue'
 
 // Setup tabs
-import { storeToRefs } from 'pinia'
 import { useMultiFlows } from './MultiFlows'
-const { current, tabs } = storeToRefs(useMultiFlows())
+const flows = useMultiFlows()
 </script>
 
 <style scoped>
