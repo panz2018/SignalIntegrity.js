@@ -1,5 +1,5 @@
 <template>
-  <span ref="label" v-show="showLabel" @click="showLabel = false">{{ title }}</span>
+  <span ref="label" v-show="showLabel" @click="onClick">{{ title }}</span>
   <input
     ref="editor"
     v-show="!showLabel"
@@ -12,10 +12,22 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
 const title = defineModel({ required: true })
-
+const { focused } = defineProps({
+  focused: { type: Boolean, required: true }
+})
 const showLabel = ref(true)
 const label = useTemplateRef('label')
 const editor = useTemplateRef('editor')
+
+// Event to enter the editor
+function onClick() {
+  if (focused === false) return
+
+  // Hide label, and show the editor
+  showLabel.value = false
+}
+
+// Event to exit the editor
 window.addEventListener('click', (event) => {
   if (showLabel.value) return
   if (!label.value) return

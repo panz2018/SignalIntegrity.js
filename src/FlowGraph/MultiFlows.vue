@@ -2,7 +2,7 @@
   <Tabs v-model:value="current">
     <TabList>
       <Tab v-for="tab in tabs" :key="tab.flow" :value="tab.flow">
-        <FlowTitle v-model="tab.title" />
+        <FlowTitle v-model="tab.title" :focused="current === tab.flow" />
       </Tab>
     </TabList>
     <TabPanels>
