@@ -4,7 +4,7 @@ export const useNewfile = () => {
   const flows = useMultiFlows()
 
   function newFile(): void {
-    flows.addTab()
+    flows.newFlow()
   }
 
   const newfileMenu = {

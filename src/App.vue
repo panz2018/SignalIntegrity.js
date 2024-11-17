@@ -1,7 +1,13 @@
 <template>
   <MenuBar />
   <MultiFlows />
-  <Toast />
+  <Toast
+    :pt="{
+      closeButton: {
+        autofocus: false
+      }
+    }"
+  />
 </template>
 
 <script setup lang="ts">
