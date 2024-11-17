@@ -1,7 +1,9 @@
 <template>
   <Tabs v-model:value="current">
     <TabList>
-      <Tab v-for="tab in tabs" :key="tab.flow" :value="tab.flow">{{ tab.title }}</Tab>
+      <Tab v-for="tab in tabs" :key="tab.flow" :value="tab.flow">
+        <FlowTitle v-model="tab.title" />
+      </Tab>
     </TabList>
     <TabPanels>
       <TabPanel v-for="tab in tabs" :key="tab.flow" :value="tab.flow">
@@ -18,6 +20,7 @@ import Tab from 'primevue/tab'
 import TabPanels from 'primevue/tabpanels'
 import TabPanel from 'primevue/tabpanel'
 import FlowGraph from './FlowGraph.vue'
+import FlowTitle from './FlowTitle.vue'
 
 // Setup tabs
 import { storeToRefs } from 'pinia'
