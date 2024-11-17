@@ -1,13 +1,8 @@
 <template>
   <span ref="label" v-show="showLabel" @click="onClick">{{ title }}</span>
-  <input
-    ref="editor"
-    v-show="!showLabel"
-    v-model="title"
-    @keyup.enter="submit"
-    type="text"
-    class="editor"
-  />
+  <div ref="editor" v-show="!showLabel">
+    <input ref="input" v-model="title" @keyup.enter="submit" type="text" class="input" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +15,7 @@ const { focused } = defineProps({
 const showLabel = ref(true)
 const label = useTemplateRef('label')
 const editor = useTemplateRef('editor')
+const input = useTemplateRef('input')
 
 // Error message
 function error() {
@@ -31,36 +27,40 @@ function error() {
   })
 }
 
-// Event to enter the editor
+// Event to enter the input
 function onClick() {
   if (focused === false) return
   if (!label.value) return
-  if (!editor.value) return
+  if (!input.value) return
 
   // Remove validation
-  editor.value!.style.removeProperty('color')
-  // Adjust the width of editor
-  editor.value.style.width = label.value.offsetWidth + 20 + 'px'
+  input.value.style.removeProperty('color')
+  // Adjust the width of input
+  input.value.style.width = label.value.offsetWidth + 20 + 'px'
   // Hide label, and show the editor
   showLabel.value = false
-
-  // Focus on input
   nextTick(() => {
-    if (editor.value) {
-      editor.value.focus()
+    if (document.activeElement) {
+      // Remove focus from the current element
+      ;(document.activeElement as HTMLElement).blur()
+    }
+    if (input.value) {
+      // Focus on input
+      input.value.focus()
     }
   })
 }
 
-// Validate the editor input
+// Validate the input input
 watch(title, (newVal, oldVal) => {
-  if (!editor.value) return
+  if (!input.value) return
+
   if (newVal.length === 0) {
     title.value = oldVal
-    editor.value!.style.color = 'red'
+    input.value!.style.color = 'red'
     error()
   } else if (oldVal.length !== 0) {
-    editor.value!.style.removeProperty('color')
+    input.value!.style.removeProperty('color')
   }
 })
 
@@ -87,7 +87,7 @@ window.addEventListener('click', (event) => {
 </script>
 
 <style scoped>
-.editor {
+.input {
   border: 0;
   outline: 0;
   padding: 0;
