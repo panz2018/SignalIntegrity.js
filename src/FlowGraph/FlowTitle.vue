@@ -9,7 +9,13 @@
       type="text"
       class="input"
     />
-    <Button v-show="focused" icon="pi pi-times-circle" @click.stop="onClose" class="button" />
+    <Button
+      v-show="focused"
+      icon="pi pi-times-circle"
+      @click.stop="onClose"
+      v-tooltip.bottom="'Close'"
+      class="button"
+    />
   </div>
 </template>
 
