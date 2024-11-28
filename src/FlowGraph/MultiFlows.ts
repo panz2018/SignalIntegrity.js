@@ -1,6 +1,7 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useAutoSaveStore } from '@/FlowGraph/AutoSave/AutoSave'
 
 export const useMultiFlows = () => {
   const innerStore = defineStore('MultiFlows', () => {
@@ -26,6 +27,15 @@ export const useMultiFlows = () => {
       }
       delete titles.value[id]
     }
+
+    // AutoSave
+    const autosave = useAutoSaveStore()
+    watch(
+      () => autosave.state,
+      (save) => {
+        console.log('AutoSave:', save)
+      }
+    )
 
     return { current, titles, newFlow, closeFlow }
   })
