@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useAutoSaveStore = () => {
@@ -11,19 +11,19 @@ export const useAutoSaveStore = () => {
     }
 
     function read() {
-      // autosave.value = (localStorage.getItem('AutoSave') ?? 'Dark') === 'Bright' ? 'Bright' : 'Dark'
+      const value = localStorage.getItem('AutoSave')
+      if (value) {
+        state.value = JSON.parse(value) === true ? true : false
+      }
+      // Watch for state changes and save to local storage
+      watch(state, () => save())
     }
 
     function save() {
-      // // Update theme for PrimeVue
-      // const rootClass = document.getElementsByTagName('html')[0].classList
-      // if (theme.value === 'Bright') {
-      //   rootClass.remove('p-dark')
-      // } else {
-      //   rootClass.add('p-dark')
-      // }
-      // // Save to local storage
-      // localStorage.setItem('theme', theme.value)
+      // Save to local storage
+      if (state.value !== null) {
+        localStorage.setItem('AutoSave', JSON.stringify(state.value))
+      }
     }
 
     return { state, toggle, read, save }

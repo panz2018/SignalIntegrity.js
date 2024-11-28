@@ -13,12 +13,19 @@
       />
     </svg>
   </Button>
+  <Dialog :visible="autosave.state === null" :closable="false" modal>
+    Would you like to automatically save in your local browser?
+    <template #footer>
+      <Button label="No" @click="autosave.state = false" severity="secondary" />
+      <Button label="Yes" @click="autosave.state = true" severity="success" />
+    </template>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import Button from 'primevue/button'
-import 'primeicons/primeicons.css'
+import Dialog from 'primevue/dialog'
 
 // Setup AutoSave state
 import { useAutoSaveStore } from './AutoSave'
@@ -28,6 +35,13 @@ const tooltip = computed(() => {
     ? 'Automatically save in local browser'
     : 'Automatically save is disabled'
 })
+
+// Popover to confirm the AutoSave
+// onMounted(() => {
+//   if (autosave.state === null) {
+//     popover.value?.toggle()
+//   }
+// })
 </script>
 
 <style scoped>
