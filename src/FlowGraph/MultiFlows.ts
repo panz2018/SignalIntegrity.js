@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import { useAutoSaveStore } from '@/FlowGraph/AutoSave/AutoSave'
+import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 
 export const useMultiFlows = () => {
   const innerStore = defineStore('MultiFlows', () => {
@@ -28,12 +28,15 @@ export const useMultiFlows = () => {
     }
 
     // AutoSave
-    const autosave = useAutoSaveStore()
+    const storage = useStorage()
     watch(
-      () => autosave.state,
-      (save) => {
-        console.log('AutoSave:', save)
-        console.log('Titles:', titles.value)
+      () => storage.table,
+      (table) => {
+        if (table !== null) {
+          const items = Object.values(titles.value).map((d) => ({ title: d }))
+          const keys = Object.keys(titles.value).map((k) => parseInt(k))
+          table.bulkAdd(items, keys)
+        }
       }
     )
 
