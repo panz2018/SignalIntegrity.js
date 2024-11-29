@@ -39,9 +39,9 @@ const { onDragOver, onDragLeave, onDrop } = useDnDStore()
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
 const { flow: flowId } = defineProps({
-  flow: String
+  flow: { type: Number, required: true }
 })
-const flow = useVueFlow(flowId)
+const flow = useVueFlow(flowId.toString())
 flow.snapToGrid.value = true // to enable snapping to grid
 flow.onConnect((connection) => {
   flow.addEdges(connection)

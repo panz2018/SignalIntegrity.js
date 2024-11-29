@@ -1,12 +1,16 @@
 <template>
   <Tabs v-model:value="flows.current" scrollable>
     <TabList>
-      <Tab v-for="key in Object.keys(flows.titles)" :key="key" :value="key">
+      <Tab v-for="key in Object.keys(flows.titles).map((d) => parseInt(d))" :key="key" :value="key">
         <FlowTitle :flow="key" v-model="flows.titles[key]" :focused="flows.current === key" />
       </Tab>
     </TabList>
     <TabPanels>
-      <TabPanel v-for="key in Object.keys(flows.titles)" :key="key" :value="key">
+      <TabPanel
+        v-for="key in Object.keys(flows.titles).map((d) => parseInt(d))"
+        :key="key"
+        :value="key"
+      >
         <FlowGraph :flow="key" class="graph" />
       </TabPanel>
     </TabPanels>

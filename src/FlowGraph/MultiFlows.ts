@@ -5,18 +5,18 @@ import { useAutoSaveStore } from '@/FlowGraph/AutoSave/AutoSave'
 
 export const useMultiFlows = () => {
   const innerStore = defineStore('MultiFlows', () => {
-    let num = 0
-    const current: Ref<string> = ref('')
-    const titles: Ref<Record<string, string>> = ref({})
+    let num = 1
+    const current: Ref<number> = ref(1)
+    const titles: Ref<Record<number, string>> = ref({})
 
     function newFlow(): void {
-      const flow = `Flow-${num++}`
-      titles.value[flow] = flow
-      current.value = flow
+      titles.value[num] = `Flow-${num}`
+      current.value = num
+      num += 1
     }
 
-    function closeFlow(id: string): void {
-      const keys = Object.keys(titles.value)
+    function closeFlow(id: number): void {
+      const keys = Object.keys(titles.value).map((d) => parseInt(d))
       const index = keys.indexOf(id)
       if (keys.length === 1 && index === 0) {
         newFlow()
@@ -34,6 +34,7 @@ export const useMultiFlows = () => {
       () => autosave.state,
       (save) => {
         console.log('AutoSave:', save)
+        console.log('Titles:', titles)
       }
     )
 

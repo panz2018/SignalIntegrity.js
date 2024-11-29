@@ -25,7 +25,7 @@ import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
 const { flow, focused } = defineProps({
-  flow: { type: String, required: true },
+  flow: { type: Number, required: true },
   focused: { type: Boolean, required: true }
 })
 const showLabel = ref(true)
