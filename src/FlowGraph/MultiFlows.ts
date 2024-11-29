@@ -1,13 +1,12 @@
 import { ref, watch } from 'vue'
-import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useAutoSaveStore } from '@/FlowGraph/AutoSave/AutoSave'
 
 export const useMultiFlows = () => {
   const innerStore = defineStore('MultiFlows', () => {
     let num = 1
-    const current: Ref<number> = ref(1)
-    const titles: Ref<Record<number, string>> = ref({})
+    const current = ref<number>(1)
+    const titles = ref<Record<number, string>>({})
 
     function newFlow(): void {
       titles.value[num] = `Flow-${num}`
@@ -34,7 +33,7 @@ export const useMultiFlows = () => {
       () => autosave.state,
       (save) => {
         console.log('AutoSave:', save)
-        console.log('Titles:', titles)
+        console.log('Titles:', titles.value)
       }
     )
 

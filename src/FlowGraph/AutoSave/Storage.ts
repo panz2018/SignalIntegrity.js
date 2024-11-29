@@ -1,4 +1,6 @@
 import Dexie from 'dexie'
 
-export const storage = new Dexie('SignalIntegrity')
-// storage.version(1)
+export const useStorage = () => {
+  const storage = new Dexie('SignalIntegrity')
+  // storage.version(1)
+}
