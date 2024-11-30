@@ -6,7 +6,7 @@ import { useAutoSaveStore } from './AutoSave'
 
 export interface Flow {
   title: string
-  test?: string
+  flow?: object
 }
 
 export const useStorage = defineStore('Storage', () => {
@@ -17,7 +17,7 @@ export const useStorage = defineStore('Storage', () => {
     | null = null
   const table = ref<EntityTable<Flow> | null>(null)
 
-  // Create IndexDB table
+  // Create IndexedDB table
   function create() {
     database = new Dexie('SignalIntegrity') as Dexie & {
       flows: EntityTable<Flow>
@@ -31,7 +31,7 @@ export const useStorage = defineStore('Storage', () => {
     table.value = database.flows
   }
 
-  // Remove IndexDB table
+  // Remove IndexedDB table
   function remove() {
     if (table.value !== null && database !== null) {
       database.close()

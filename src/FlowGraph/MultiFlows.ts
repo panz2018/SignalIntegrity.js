@@ -7,7 +7,8 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
   let num = 1
   const current = ref<number>(1)
   const titles = ref<Record<number, string>>({})
-  const { table } = storeToRefs(useStorage()) // Local IndexDB storage
+  const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
+  // let watchCurrent = null // Watch for current flow changes
 
   // Initialize
   function init(): void {
@@ -16,11 +17,23 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
         newFlow()
       }
     } else {
-      table.value.toCollection().eachPrimaryKey((k) => {
-        table.value!.get(k).then((v) => {
-          titles.value[k] = (v as Flow).title
+      // Read titles from IndexedDB table
+      table.value
+        .toCollection()
+        .eachPrimaryKey((k) => {
+          table.value!.get(k).then((v) => {
+            titles.value[k] = (v as Flow).title
+          })
         })
-      })
+        .then(() => {
+          // Update num value for unique index in the keys of titles
+          num = 1 + Math.max(...Object.keys(titles.value).map((d) => parseInt(d)))
+        })
+
+      // Save current into localStorage
+      // watch(current, (key) => {
+      //   console.log(key)
+      // })
     }
   }
   init()
@@ -31,7 +44,7 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     num += 1
 
     if (table.value !== null) {
-      // Add new flow into IndexDB
+      // Add new flow into IndexedDB
       table.value.add({ title: titles.value[current.value] }, current.value as never)
     }
   }
@@ -49,14 +62,15 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     delete titles.value[id]
 
     if (table.value !== null) {
-      // Delete flow from IndexDB
+      // Delete flow from IndexedDB
       table.value.delete(id as never)
     }
   }
 
-  // Watch for IndexDb table changes
+  // Watch for IndexedDB table changes
   watch(table, (value) => {
     if (value !== null) {
+      // Save titles into IndexedDB table
       const items = Object.values(titles.value).map((d) => ({ title: d }))
       const keys = Object.keys(titles.value).map((k) => parseInt(k))
       value.bulkAdd(items, keys)
