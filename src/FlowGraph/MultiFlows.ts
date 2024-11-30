@@ -4,8 +4,8 @@ import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 
 export const useMultiFlows = defineStore('MultiFlows', () => {
   let num = 0
-  const current = ref<number>(0)
-  const titles = ref<Record<number, string>>({})
+  const current = ref<string>('')
+  const titles = ref<Record<string, string>>({})
   const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
   // let watchCurrent = null // Watch for current flow changes
   // Watch for title changes
@@ -22,10 +22,11 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
         // Clear existing IndexedDB table
         table.value!.clear().then(() => {
           // Read IndexedDB table into titles.value
-          const keys: number[] = []
+          const keys: string[] = []
           items.forEach((v, k) => {
-            keys.push(k)
-            titles.value[k] = v.title
+            const key = k.toString()
+            keys.push(key)
+            titles.value[key] = v.title
           })
           // Save titles into IndexedDB table wiht new keys
           table.value!.bulkAdd(items, keys)
@@ -44,7 +45,7 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
 
   function newFlow(): void {
     titles.value[num] = `Flow-${num}`
-    current.value = num
+    current.value = num.toString()
     num += 1
 
     if (table.value !== null) {
@@ -53,8 +54,8 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     }
   }
 
-  function closeFlow(id: number): void {
-    const keys = Object.keys(titles.value).map((d) => parseInt(d))
+  function closeFlow(id: string): void {
+    const keys = Object.keys(titles.value)
     const index = keys.indexOf(id)
     if (keys.length === 1 && index === 0) {
       newFlow()
@@ -76,7 +77,7 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     if (value !== null) {
       // Save titles into IndexedDB table
       const items = Object.values(titles.value).map((d) => ({ title: d }))
-      const keys = Object.keys(titles.value).map((k) => parseInt(k))
+      const keys = Object.keys(titles.value)
       value.bulkAdd(items, keys)
     }
   })
