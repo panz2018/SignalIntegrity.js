@@ -2,13 +2,33 @@ import { ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 
+// Watch for title changes
+
 export const useMultiFlows = defineStore('MultiFlows', () => {
   let num = 0
-  const current = ref<string>('')
   const titles = ref<Record<string, string>>({})
   const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
-  // let watchCurrent = null // Watch for current flow changes
-  // Watch for title changes
+
+  // Current flow
+  const current = ref<string>('0')
+  const currentKey = 'currentFlow'
+  let currentWatch = () => {} // Stop watch for current flow changes
+  function startCurrentWatch() {
+    currentWatch = watch(
+      current,
+      () => {
+        localStorage.setItem(currentKey, current.value)
+      },
+      { immediate: true }
+    )
+  }
+  function stopCurrentWatch() {
+    currentWatch()
+    localStorage.removeItem(currentKey)
+  }
+  function readCurrent() {
+    return localStorage.getItem(currentKey)
+  }
 
   // Initialize
   function init(): void {
@@ -17,6 +37,17 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
         newFlow()
       }
     } else {
+      // Read current from localStorage
+      const currentValue = readCurrent()
+      let currentKeys: string[] = []
+      if (currentValue) {
+        table.value
+          .toCollection()
+          .primaryKeys()
+          .then((keys) => {
+            currentKeys = keys
+          })
+      }
       // Read titles from IndexedDB table
       table.value.toArray().then((items) => {
         // Clear existing IndexedDB table
@@ -32,13 +63,12 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
           table.value!.bulkAdd(items, keys)
           // Update num for next index
           num = items.length
+          // Watch for current flow changes
+          startCurrentWatch()
+          // Update current value
+          current.value = currentKeys.indexOf(currentValue as never).toString()
         })
       })
-
-      // Save current into localStorage
-      // watch(current, (key) => {
-      //   console.log(key)
-      // })
     }
   }
   init()
@@ -79,6 +109,11 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
       const items = Object.values(titles.value).map((d) => ({ title: d }))
       const keys = Object.keys(titles.value)
       value.bulkAdd(items, keys)
+      // Watch for current flow changes
+      startCurrentWatch()
+    } else {
+      // Stop watch for current flow changes
+      stopCurrentWatch()
     }
   })
 
