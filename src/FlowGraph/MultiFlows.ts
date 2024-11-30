@@ -1,14 +1,14 @@
 import { ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { useStorage } from '@/FlowGraph/AutoSave/Storage'
-import type { Flow } from './AutoSave/Storage'
 
 export const useMultiFlows = defineStore('MultiFlows', () => {
-  let num = 1
-  const current = ref<number>(1)
+  let num = 0
+  const current = ref<number>(0)
   const titles = ref<Record<number, string>>({})
   const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
   // let watchCurrent = null // Watch for current flow changes
+  // Watch for title changes
 
   // Initialize
   function init(): void {
@@ -18,17 +18,21 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
       }
     } else {
       // Read titles from IndexedDB table
-      table.value
-        .toCollection()
-        .eachPrimaryKey((k) => {
-          table.value!.get(k).then((v) => {
-            titles.value[k] = (v as Flow).title
+      table.value.toArray().then((items) => {
+        // Clear existing IndexedDB table
+        table.value!.clear().then(() => {
+          // Read IndexedDB table into titles.value
+          const keys: number[] = []
+          items.forEach((v, k) => {
+            keys.push(k)
+            titles.value[k] = v.title
           })
+          // Save titles into IndexedDB table wiht new keys
+          table.value!.bulkAdd(items, keys)
+          // Update num for next index
+          num = items.length
         })
-        .then(() => {
-          // Update num value for unique index in the keys of titles
-          num = 1 + Math.max(...Object.keys(titles.value).map((d) => parseInt(d)))
-        })
+      })
 
       // Save current into localStorage
       // watch(current, (key) => {
