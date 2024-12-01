@@ -21,6 +21,8 @@
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
+// import { storeToRefs } from 'pinia'
+// import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
@@ -80,10 +82,21 @@ watch(title, (newVal, oldVal) => {
 })
 
 // Event to hide input and show label
+// import Dexie from 'dexie'
+// const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
 function submit() {
   if (title.value.length > 0) {
     // Close editor and show the label instead
     showLabel.value = true
+    // Save title in IndexedDB
+    // if (table.value) {
+    // Dexie.ignoreTransaction(() => {
+    //   table.value!.update(flow as never, { title: title.value }).then((updated) => {
+    //     console.log(updated)
+    //   })
+    //   console.log(table.value, flow, title.value)
+    // })
+    // }
   } else {
     error()
   }
