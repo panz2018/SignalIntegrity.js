@@ -26,8 +26,8 @@ import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
-const { flow, focused } = defineProps({
-  flow: { type: String, required: true },
+const { flowID, focused } = defineProps({
+  flowID: { type: Number, required: true },
   focused: { type: Boolean, required: true }
 })
 const showLabel = ref(true)
@@ -117,7 +117,7 @@ window.addEventListener('click', (event) => {
 import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 const flows = useMultiFlows()
 function onClose() {
-  flows.closeFlow(flow)
+  flows.closeFlow(flowID)
 }
 </script>
 

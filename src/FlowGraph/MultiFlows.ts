@@ -1,15 +1,15 @@
 import { ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
-import { useFlowsStorage } from '@/FlowGraph/AutoSave/FlowsStorage'
+// import { useFlowsStorage } from '@/FlowGraph/AutoSave/FlowsStorage'
 
 export const useMultiFlows = defineStore('MultiFlows', () => {
   let num = 0
-  const titles = ref<Record<string, string>>({})
+  const titles = ref<Record<number, string>>({})
   // const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
-  const storage = useFlowsStorage()
+  // const storage = useFlowsStorage()
 
   // Current flow
-  const current = ref<string>('0')
+  const current = ref<number>(0)
   // const currentKey = 'currentFlow'
   // let currentWatch = () => {} // Stop watch for current flow changes
   // function startCurrentWatch() {
@@ -78,7 +78,7 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
 
   function newFlow(): void {
     titles.value[num] = `Flow-${num}`
-    current.value = num.toString()
+    current.value = num
     num += 1
 
     // if (table.value !== null) {
@@ -87,15 +87,15 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     // }
   }
 
-  function closeFlow(id: string): void {
-    const keys = Object.keys(titles.value)
+  function closeFlow(id: number): void {
+    const keys = Object.keys(titles.value).map((d) => parseInt(d))
     const index = keys.indexOf(id)
     if (keys.length === 1 && index === 0) {
       newFlow()
     } else if (index === keys.length - 1) {
-      current.value = keys[index - 1].toString()
+      current.value = keys[index - 1]
     } else {
-      current.value = keys[index + 1].toString()
+      current.value = keys[index + 1]
     }
     delete titles.value[id]
 

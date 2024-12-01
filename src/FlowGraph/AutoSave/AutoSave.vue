@@ -19,7 +19,7 @@
     appendTo="self"
     style="--p-popover-border-color: gray"
   >
-    Would you like to automatically save in your local browser?
+    Would you like to automatically save flows in your local browser?
     <div style="display: flex; justify-content: end">
       <Button label="No" @click="onClickNo" severity="secondary" />
       <Button label="Yes" @click="onClickYes" severity="success" />
