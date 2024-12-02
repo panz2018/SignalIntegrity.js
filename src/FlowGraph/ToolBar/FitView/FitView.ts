@@ -6,7 +6,7 @@ export default {
   icon: 'pi pi-window-maximize',
   command: () => {
     const flows = useMultiFlows()
-    const flow = useVueFlow(flows.current)
+    const flow = useVueFlow(flows.current.toString())
     flow.fitView()
   }
 }
