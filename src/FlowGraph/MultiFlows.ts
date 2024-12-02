@@ -32,25 +32,22 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
         newFlow()
       }
     } else {
-      storage.value
-        .toCollection()
-        .eachPrimaryKey((k) => {
-          if (k === 'current') {
-            return
-          }
-          indexes.push(k)
-          storage.value!.get(k).then((v) => {
-            titles.value[k] = v as string
-          })
+      // Read current from storage
+      storage.value!.get('current' as any).then((v) => {
+        current.value = v as number
+        // Watch for current.value changes
+        startWatcherCurrent()
+      })
+      // Read indexes and titles from storage
+      storage.value.toCollection().eachPrimaryKey((k) => {
+        if (k === 'current') {
+          return
+        }
+        indexes.push(k)
+        storage.value!.get(k).then((v) => {
+          titles.value[k] = v as string
         })
-        .then(() => {
-          // Read current from storage
-          storage.value!.get('current' as any).then((v) => {
-            current.value = v as number
-            // Watch for current.value changes
-            startWatcherCurrent()
-          })
-        })
+      })
     }
   }
   init()
