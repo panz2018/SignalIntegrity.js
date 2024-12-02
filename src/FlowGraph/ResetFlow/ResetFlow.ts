@@ -5,7 +5,7 @@ export const useResetFlow = () => {
   const flows = useMultiFlows()
 
   function reset(): void {
-    const flow = useVueFlow(flows.current)
+    const flow = useVueFlow(flows.current.toString())
     flow.removeEdges(flow.getEdges.value.map((edge) => edge.id))
     flow.removeNodes(flow.getNodes.value.map((node) => node.id))
     flow.zoomTo(1)

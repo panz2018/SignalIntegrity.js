@@ -10,17 +10,14 @@ import '@vue-flow/controls/dist/style.css'
 import fitview from './FitView'
 
 // Fit viewport
-import { nextTick, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
 import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+
 const { current } = storeToRefs(useMultiFlows())
 const flow = useVueFlow(current.value.toString())
-onMounted(() => {
-  nextTick(() => flow.fitView())
-})
-flow.onInit(() => {
-  flow.fitView()
+flow.onPaneReady((instance) => {
+  instance.fitView()
 })
 </script>
 

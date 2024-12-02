@@ -79,7 +79,7 @@ export const useDnDStore = defineStore('DnD', () => {
 
   function onDrop(event: DragEvent): false | void {
     const flows = useMultiFlows()
-    const flow = useVueFlow(flows.current)
+    const flow = useVueFlow(flows.current.toString())
 
     const status = checkDrop(event)
     if (status === false) {

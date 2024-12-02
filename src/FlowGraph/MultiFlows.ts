@@ -3,10 +3,10 @@ import { defineStore, storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
 
 export const useMultiFlows = defineStore('MultiFlows', () => {
-  let num = 0
+  let index = 0
   const titles = ref<Record<number, string>>({})
   const { titles: storage } = storeToRefs(useFlowsStore())
-  const keys = []
+  const indexes: number[] = []
 
   // Current flow
   const current = ref<number>(0)
@@ -38,6 +38,7 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
           if (k === 'current') {
             return
           }
+          indexes.push(k)
           storage.value!.get(k).then((v) => {
             titles.value[k] = v as string
           })
@@ -55,9 +56,14 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
   init()
 
   function newFlow(): void {
-    titles.value[num] = `Flow-${num}`
-    current.value = num
-    num += 1
+    // Find if index already exists in keys
+    while (indexes.includes(index)) {
+      index += 1
+    }
+    // Generate a new title
+    titles.value[index] = `Flow-${index}`
+    current.value = index
+    index += 1
 
     // Add new title into storage
     if (storage.value !== null) {

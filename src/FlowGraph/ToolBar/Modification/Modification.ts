@@ -27,7 +27,7 @@ export const useModificationStore = () => {
       })
 
     function update() {
-      const flow = useVueFlow(current.value)
+      const flow = useVueFlow(current.value.toString())
       const state =
         flow.nodesDraggable.value || flow.nodesConnectable.value || flow.elementsSelectable.value
       if (state) {

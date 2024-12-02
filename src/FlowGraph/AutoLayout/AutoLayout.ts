@@ -9,7 +9,7 @@ export const useAutolayout = () => {
   // Auto layout the graph
   function autoLayout(direction: Direction): void {
     const flows = useMultiFlows()
-    const flow = useVueFlow(flows.current)
+    const flow = useVueFlow(flows.current.toString())
 
     // Create a new graph instance, in case some nodes/edges were removed
     // Otherwise dagre would act as if they were still there
