@@ -6,6 +6,7 @@
       v-show="!showLabel"
       v-model="title"
       @keyup.enter="submit"
+      @keyup.esc="cancel"
       type="text"
       class="input"
     />
@@ -81,11 +82,24 @@ watch(title, (newVal, oldVal) => {
   }
 })
 
+// Cancel the edit
+const previous = ref(title.value)
+function cancel() {
+  if (previous.value.length > 0) {
+    // Assign the title from previous
+    title.value = previous.value
+    // Close editor and show the label instead
+    showLabel.value = true
+  }
+}
+
 // Event to hide input and show label
 // import Dexie from 'dexie'
 // const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
 function submit() {
   if (title.value.length > 0) {
+    // Assign the title to previous
+    previous.value = title.value
     // Close editor and show the label instead
     showLabel.value = true
     // Save title in IndexedDB
