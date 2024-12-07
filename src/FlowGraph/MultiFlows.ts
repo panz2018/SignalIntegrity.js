@@ -6,7 +6,6 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
   let index = 0
   const titles = ref<Record<number, string>>({})
   const { titles: storage } = storeToRefs(useFlowsStore())
-  const indexes: number[] = []
 
   // Current flow
   const current = ref<number>(0)
@@ -15,14 +14,16 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     watcherCurrent = watch(
       current,
       () => {
-        storage.value?.put(current.value, 'current' as any)
+        storage.value!.put(current.value, 'current' as any)
       },
       { immediate: true }
     )
   }
   function stopWatcherCurrent() {
     watcherCurrent()
-    storage.value?.delete('current' as never)
+    if (storage.value) {
+      storage.value.delete('current' as never)
+    }
   }
 
   // Initialize
@@ -32,31 +33,45 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
         newFlow()
       }
     } else {
-      // Read current from storage
-      storage.value!.get('current' as any).then((v) => {
-        current.value = v as number
-        // Watch for current.value changes
-        startWatcherCurrent()
-      })
-      // Read indexes and titles from storage
-      storage.value.toCollection().eachPrimaryKey((k) => {
-        if (k === 'current') {
-          return
-        }
-        indexes.push(k)
-        storage.value!.get(k).then((v) => {
-          titles.value[k] = v as string
-        })
+      // Read from storage
+      storage.value.get('current' as any).then((c) => {
+        storage
+          .value!.toCollection()
+          .primaryKeys()
+          .then((keys) => {
+            // Read old indexes
+            keys = keys.filter((k) => k !== 'current')
+            // Generate new indexes
+            const inds = Object.keys(keys).map((d) => parseInt(d))
+            // Update index
+            index = inds.length
+            // Read titles from storage
+            storage.value!.bulkGet(keys).then((array) => {
+              // Clear storage
+              storage.value!.clear().then(() => {
+                // Update storage with new indexes
+                storage.value!.bulkAdd(array as never, inds)
+              })
+              // Assign data from stroage with update indexes to titles
+              inds.forEach((k) => (titles.value[k] = array[k] as string))
+              if (c !== undefined) {
+                // Update current.value
+                current.value = inds[keys.indexOf(c as never)]
+              }
+              // If no titles, create a new one
+              if (inds.length === 0) {
+                newFlow()
+              }
+              // Watch for current.value changes
+              startWatcherCurrent()
+            })
+          })
       })
     }
   }
   init()
 
   function newFlow(): void {
-    // Find if index already exists in keys
-    while (indexes.includes(index)) {
-      index += 1
-    }
     // Generate a new title
     titles.value[index] = `Flow-${index}`
     current.value = index
