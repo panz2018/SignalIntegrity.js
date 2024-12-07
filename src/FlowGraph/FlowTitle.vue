@@ -90,12 +90,15 @@ function cancel() {
     title.value = previous.value
     // Close editor and show the label instead
     showLabel.value = true
+  } else {
+    error()
   }
 }
 
 // Event to hide input and show label
-// import Dexie from 'dexie'
-// const { table } = storeToRefs(useStorage()) // Local IndexedDB storage
+import { storeToRefs } from 'pinia'
+import { useFlowsStore } from '@/FlowGraph/FlowsStore'
+const { titles: storage } = storeToRefs(useFlowsStore())
 function submit() {
   if (title.value.length > 0) {
     // Assign the title to previous
@@ -103,14 +106,9 @@ function submit() {
     // Close editor and show the label instead
     showLabel.value = true
     // Save title in IndexedDB
-    // if (table.value) {
-    // Dexie.ignoreTransaction(() => {
-    //   table.value!.update(flow as never, { title: title.value }).then((updated) => {
-    //     console.log(updated)
-    //   })
-    //   console.log(table.value, flow, title.value)
-    // })
-    // }
+    if (storage.value) {
+      storage.value.put(title.value, flowID as never)
+    }
   } else {
     error()
   }
