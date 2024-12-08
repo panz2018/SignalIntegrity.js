@@ -74,19 +74,24 @@ export const useDnDStore = defineStore('DnD', () => {
   }
 
   // Properties to add new nodes
-  let id = 0
-  const getId = () => `node-${id++}`
-
+  let index = 0
   function onDrop(event: DragEvent): false | void {
-    const flows = useMultiFlows()
-    const flow = useVueFlow(flows.current)
-
+    // Check the drop locaiton if valid
     const status = checkDrop(event)
     if (status === false) {
       return false
     }
 
-    const nodeId = getId()
+    // Find the current flow
+    const flows = useMultiFlows()
+    const flow = useVueFlow(flows.current.toString())
+    const indexes = flow.nodes.value.map((n) => parseInt(n.id))
+
+    // Find index not exists in nodes
+    while (indexes.includes(index)) {
+      index += 1
+    }
+    const nodeId = (index++).toString()
     const position = flow.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
     const newNode: Node = {
       id: nodeId,

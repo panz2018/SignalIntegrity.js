@@ -7,13 +7,15 @@
     @dragover="onDragOver"
     @dragleave="onDragLeave"
     @drop="onDrop"
+    :apply-default="false"
   >
     <BackGround />
     <ToolBar />
     <NavigationMap />
     <Panel position="top-right">
       <button type="button" @click="testGraph">Add Test Graph</button>
-      <button type="button" @click="console.log(flow.toObject())">VueFlow</button>
+      <button type="button" @click="console.log(JSON.stringify(flow.toObject()))">VueFlow</button>
+      <button type="button" @click="onAdd">Add</button>
     </Panel>
     <AddNodeDialog />
   </VueFlow>
@@ -38,10 +40,11 @@ const { onDragOver, onDragLeave, onDrop } = useDnDStore()
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
-const { flow: flowId } = defineProps({
-  flow: String
+import type { FlowExportObject } from '@vue-flow/core'
+const { flowID } = defineProps({
+  flowID: { type: Number, required: true }
 })
-const flow = useVueFlow(flowId)
+const flow = useVueFlow(flowID.toString())
 flow.snapToGrid.value = true // to enable snapping to grid
 flow.onConnect((connection) => {
   flow.addEdges(connection)
@@ -55,6 +58,119 @@ flow.onError((error: VueFlowError) => {
   }
 })
 
+// Handle node changes
+flow.onNodesChange(async (changes) => {
+  const nextChanges = []
+  for (const change of changes) {
+    if (['add', 'dimensions', 'position', 'select', 'remove'].includes(change.type)) {
+      nextChanges.push(change)
+    } else {
+      throw new Error(`Unknow node operation: ${change.type}`)
+    }
+  }
+  flow.applyNodeChanges(nextChanges)
+
+  if (storage.value) {
+    // Save flow changes into storage
+    startWatcher()
+  }
+})
+
+// Handle edge changes
+flow.onEdgesChange(async (changes) => {
+  const nextChanges = []
+  for (const change of changes) {
+    if (['add', 'remove'].includes(change.type)) {
+      nextChanges.push(change)
+    } else {
+      throw new Error(`Unknown edge operation: ${change.type}`)
+    }
+  }
+  flow.applyEdgeChanges(nextChanges)
+
+  if (storage.value) {
+    // Save flow changes into storage
+    startWatcher()
+  }
+})
+
+// Read and save the flow
+import { watch } from 'vue'
+import { liveQuery } from 'dexie'
+import { storeToRefs } from 'pinia'
+import { useFlowsStore } from '@/FlowGraph/FlowsStore'
+const { flows: storage } = storeToRefs(useFlowsStore())
+let watcher: (() => void) | null = null // Stop the watcher for flow change
+function startWatcher() {
+  if (!watcher) {
+    watcher = watch(
+      () => flow.toObject(),
+      (data) => {
+        storage.value!.put(data, flowID as never)
+      },
+      { deep: true, immediate: true }
+    )
+  }
+}
+function stopWatcher() {
+  if (watcher) {
+    watcher()
+    watcher = null
+  }
+  if (storage.value) {
+    storage.value.delete(flowID as never)
+  }
+}
+watch(
+  () => storage.value,
+  (db) => {
+    if (db !== null) {
+      startWatcher()
+    } else {
+      stopWatcher()
+    }
+  }
+)
+if (storage.value) {
+  const observable = liveQuery(() => storage.value!.get(flowID as never))
+  // Subscribe
+  const subscription = observable.subscribe({
+    next: (o) => {
+      if (o) {
+        // Read from storage to Vue-flow
+        flow.fromObject(o as FlowExportObject).then((status) => {
+          if (status) {
+            // Unsubscribe
+            subscription.unsubscribe()
+            // // Start watcher for flow changes
+            startWatcher()
+          } else {
+            throw new Error(`Unable to load flow: ${JSON.stringify(o)}`)
+          }
+        })
+      }
+    },
+    error: (error) => {
+      throw error
+    }
+  })
+}
+
+function onAdd() {
+  const id = flow.nodes.value.length + 1
+
+  const newNode = {
+    id: `random_node-${id}`,
+    label: `Node ${id}`,
+    position: {
+      x: Math.random() * flow.dimensions.value.width,
+      y: Math.random() * flow.dimensions.value.height
+    }
+  }
+
+  flow.addNodes([newNode])
+}
+
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
 import { Position } from '@vue-flow/core'
@@ -62,7 +178,7 @@ import { MarkerType } from '@vue-flow/core'
 function testGraph() {
   flow.addNodes([
     {
-      id: '1',
+      id: 'A',
       type: 'input',
       sourcePosition: Position.Bottom,
       position: { x: 250, y: 0 },
@@ -70,7 +186,7 @@ function testGraph() {
       style: { color: 'white', backgroundColor: 'green', width: '100px', height: '50px' }
     },
     {
-      id: '2',
+      id: 'B',
       type: 'output',
       targetPosition: Position.Top,
       position: { x: 100, y: 100 },
@@ -80,7 +196,7 @@ function testGraph() {
       height: 60
     },
     {
-      id: '3',
+      id: 'C',
       type: 'default',
       targetPosition: Position.Top,
       sourcePosition: Position.Bottom,
@@ -88,7 +204,7 @@ function testGraph() {
       data: { label: 'Node 3' }
     },
     {
-      id: '4',
+      id: 'D',
       type: 'default',
       targetPosition: Position.Top,
       sourcePosition: Position.Bottom,
@@ -96,7 +212,7 @@ function testGraph() {
       data: { label: 'Node 4' }
     },
     {
-      id: '5',
+      id: 'E',
       type: 'output',
       targetPosition: Position.Top,
       position: { x: 300, y: 300 },
@@ -106,8 +222,8 @@ function testGraph() {
   flow.addEdges([
     {
       id: 'e1->2',
-      source: '1',
-      target: '2',
+      source: 'A',
+      target: 'B',
       type: 'default',
       label: undefined,
       markerEnd: undefined,
@@ -116,8 +232,8 @@ function testGraph() {
     },
     {
       id: 'e1->3',
-      source: '1',
-      target: '3',
+      source: 'A',
+      target: 'C',
       type: 'default',
       label: 'edge with arrowhead',
       markerEnd: MarkerType.ArrowClosed,
@@ -126,8 +242,8 @@ function testGraph() {
     },
     {
       id: 'e3-4',
-      source: '3',
-      target: '4',
+      source: 'C',
+      target: 'D',
       type: 'smoothstep',
       label: 'smoothstep-edge',
       markerEnd: undefined,
@@ -136,8 +252,8 @@ function testGraph() {
     },
     {
       id: 'e4-5',
-      source: '4',
-      target: '5',
+      source: 'D',
+      target: 'E',
       type: 'step',
       label: 'Node 2',
       markerEnd: undefined,

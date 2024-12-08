@@ -6,20 +6,29 @@
       v-show="!showLabel"
       v-model="title"
       @keyup.enter="submit"
+      @keyup.esc="cancel"
       type="text"
       class="input"
     />
-    <Button v-show="focused" icon="pi pi-times-circle" @click.stop="onClose" class="button" />
+    <Button
+      v-show="focused"
+      icon="pi pi-times-circle"
+      @click.stop="onClose"
+      v-tooltip.bottom="'Close'"
+      class="button"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
+// import { storeToRefs } from 'pinia'
+// import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
-const { flow, focused } = defineProps({
-  flow: { type: String, required: true },
+const { flowID, focused } = defineProps({
+  flowID: { type: Number, required: true },
   focused: { type: Boolean, required: true }
 })
 const showLabel = ref(true)
@@ -73,11 +82,33 @@ watch(title, (newVal, oldVal) => {
   }
 })
 
-// Event to hide input and show label
-function submit() {
-  if (title.value.length > 0) {
+// Cancel the edit
+const previous = ref(title.value)
+function cancel() {
+  if (previous.value.length > 0) {
+    // Assign the title from previous
+    title.value = previous.value
     // Close editor and show the label instead
     showLabel.value = true
+  } else {
+    error()
+  }
+}
+
+// Event to hide input and show label
+import { storeToRefs } from 'pinia'
+import { useFlowsStore } from '@/FlowGraph/FlowsStore'
+const { titles: storage } = storeToRefs(useFlowsStore())
+function submit() {
+  if (title.value.length > 0) {
+    // Assign the title to previous
+    previous.value = title.value
+    // Close editor and show the label instead
+    showLabel.value = true
+    // Save title in IndexedDB
+    if (storage.value) {
+      storage.value.put(title.value, flowID as never)
+    }
   } else {
     error()
   }
@@ -98,7 +129,7 @@ window.addEventListener('click', (event) => {
 import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 const flows = useMultiFlows()
 function onClose() {
-  flows.closeFlow(flow)
+  flows.closeFlow(flowID)
 }
 </script>
 

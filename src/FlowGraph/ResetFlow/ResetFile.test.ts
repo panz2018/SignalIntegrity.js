@@ -19,7 +19,7 @@ describe.concurrent('NewFile.ts', () => {
   it('VueFlow', () => {
     // Initialize VueFlow
     const flows = useMultiFlows()
-    const flow = useVueFlow(flows.current)
+    const flow = useVueFlow(flows.current.toString())
     expect(flow.getNodes.value).toStrictEqual([])
     expect(flow.getEdges.value).toStrictEqual([])
     // Add nodes to VueFlow

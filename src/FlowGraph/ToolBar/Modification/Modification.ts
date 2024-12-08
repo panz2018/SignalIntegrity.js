@@ -16,7 +16,7 @@ export const useModificationStore = () => {
         label: 'Enable modification',
         icon: 'pi pi-lock-open',
         command: () => {
-          const flow = useVueFlow(current.value)
+          const flow = useVueFlow(current.value.toString())
           const state =
             flow.nodesDraggable.value ||
             flow.nodesConnectable.value ||
@@ -27,7 +27,7 @@ export const useModificationStore = () => {
       })
 
     function update() {
-      const flow = useVueFlow(current.value)
+      const flow = useVueFlow(current.value.toString())
       const state =
         flow.nodesDraggable.value || flow.nodesConnectable.value || flow.elementsSelectable.value
       if (state) {

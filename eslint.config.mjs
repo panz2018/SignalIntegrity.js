@@ -1,26 +1,31 @@
-import globals from 'globals'
-import pluginJs from '@eslint/js'
-import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
-
-import { includeIgnoreFile } from '@eslint/compat'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const gitignorePath = path.resolve(__dirname, '.gitignore')
+import vueTsEslintConfig from '@vue/eslint-config-typescript'
+import pluginVitest from '@vitest/eslint-plugin'
+import pluginCypress from 'eslint-plugin-cypress/flat'
+import oxlint from 'eslint-plugin-oxlint'
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default [
-  includeIgnoreFile(gitignorePath),
+  {
+    name: 'app/files-to-lint',
+    files: ['**/*.{ts,mts,tsx,vue}']
+  },
+
+  {
+    name: 'app/files-to-ignore',
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**']
+  },
+
+  ...pluginVue.configs['flat/essential'],
+  ...vueTsEslintConfig(),
+
+  {
+    ...pluginVitest.configs.recommended,
+    files: ['src/**/__tests__/*']
+  },
   {
     ignores: ['cypress/support/component.ts']
   },
-  { files: ['**/*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}'] },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
-  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
   {
     files: ['**/*.cy.ts', '**/*.cy.js'],
     rules: {
@@ -32,5 +37,11 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }
-  }
+  },
+  {
+    ...pluginCypress.configs.recommended,
+    files: ['cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}', 'cypress/support/**/*.{js,ts,jsx,tsx}']
+  },
+  oxlint.configs['flat/recommended'],
+  skipFormatting
 ]
