@@ -55,6 +55,38 @@ flow.onError((error: VueFlowError) => {
   }
 })
 
+// Save the flow
+import { watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useFlowsStore } from '@/FlowGraph/FlowsStore'
+const { flows: storage } = storeToRefs(useFlowsStore())
+let watcher = () => {} // Stop the watcher for flow change
+function startWatcher() {
+  watcher = watch(
+    () => flow.toObject(),
+    (data) => {
+      storage.value!.put(data, flowID as never)
+    },
+    { deep: true, immediate: true }
+  )
+}
+function stopWatcher() {
+  watcher()
+  if (storage.value) {
+    storage.value.delete(flowID as never)
+  }
+}
+watch(
+  () => storage.value,
+  (db) => {
+    if (db !== null) {
+      startWatcher()
+    } else {
+      stopWatcher()
+    }
+  }
+)
+
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'
 import { Position } from '@vue-flow/core'
