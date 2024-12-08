@@ -7,13 +7,15 @@
     @dragover="onDragOver"
     @dragleave="onDragLeave"
     @drop="onDrop"
+    :apply-default="false"
   >
     <BackGround />
     <ToolBar />
     <NavigationMap />
     <Panel position="top-right">
       <button type="button" @click="testGraph">Add Test Graph</button>
-      <button type="button" @click="console.log(flow.toObject())">VueFlow</button>
+      <button type="button" @click="console.log(JSON.stringify(flow.toObject()))">VueFlow</button>
+      <button type="button" @click="onAdd">Add</button>
     </Panel>
     <AddNodeDialog />
   </VueFlow>
@@ -54,6 +56,38 @@ flow.onError((error: VueFlowError) => {
   if (!isErrorOfType(error, ErrorCode.MISSING_VIEWPORT_DIMENSIONS)) {
     throw error
   }
+})
+
+// Handle node changes
+flow.onNodesChange(async (changes) => {
+  const nextChanges = []
+  for (const change of changes) {
+    if (['add', 'dimensions', 'position', 'select'].includes(change.type)) {
+      nextChanges.push(change)
+    } else {
+      console.log('Change:', change)
+      console.log('Changes:', changes)
+      console.log('Flow:', flow.toObject())
+      throw new Error(`Unknow node operation: ${change.type}`)
+    }
+  }
+  flow.applyNodeChanges(nextChanges)
+})
+
+// Handle edge changes
+flow.onEdgesChange(async (changes) => {
+  const nextChanges = []
+  for (const change of changes) {
+    if (['add'].includes(change.type)) {
+      nextChanges.push(change)
+    } else {
+      console.log('Change:', change)
+      console.log('Changes:', changes)
+      console.log('Flow:', flow.toObject())
+      throw new Error(`Unknown edge operation: ${change.type}`)
+    }
+  }
+  flow.applyEdgeChanges(nextChanges)
 })
 
 // Read and save the flow
@@ -99,7 +133,7 @@ if (storage.value) {
           if (status) {
             // Unsubscribe
             subscription.unsubscribe()
-            // Start watcher for flow changes
+            // // Start watcher for flow changes
             startWatcher()
           } else {
             throw new Error(`Unable to load flow: ${JSON.stringify(o)}`)
@@ -111,6 +145,21 @@ if (storage.value) {
       throw error
     }
   })
+}
+
+function onAdd() {
+  const id = flow.nodes.value.length + 1
+
+  const newNode = {
+    id: `random_node-${id}`,
+    label: `Node ${id}`,
+    position: {
+      x: Math.random() * flow.dimensions.value.width,
+      y: Math.random() * flow.dimensions.value.height
+    }
+  }
+
+  flow.addNodes([newNode])
 }
 
 // Setup panel for VueFlow
