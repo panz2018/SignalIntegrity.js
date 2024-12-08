@@ -62,32 +62,36 @@ flow.onError((error: VueFlowError) => {
 flow.onNodesChange(async (changes) => {
   const nextChanges = []
   for (const change of changes) {
-    if (['add', 'dimensions', 'position', 'select'].includes(change.type)) {
+    if (['add', 'dimensions', 'position', 'select', 'remove'].includes(change.type)) {
       nextChanges.push(change)
     } else {
-      console.log('Change:', change)
-      console.log('Changes:', changes)
-      console.log('Flow:', flow.toObject())
       throw new Error(`Unknow node operation: ${change.type}`)
     }
   }
   flow.applyNodeChanges(nextChanges)
+
+  if (storage.value) {
+    // Save flow changes into storage
+    startWatcher()
+  }
 })
 
 // Handle edge changes
 flow.onEdgesChange(async (changes) => {
   const nextChanges = []
   for (const change of changes) {
-    if (['add'].includes(change.type)) {
+    if (['add', 'remove'].includes(change.type)) {
       nextChanges.push(change)
     } else {
-      console.log('Change:', change)
-      console.log('Changes:', changes)
-      console.log('Flow:', flow.toObject())
       throw new Error(`Unknown edge operation: ${change.type}`)
     }
   }
   flow.applyEdgeChanges(nextChanges)
+
+  if (storage.value) {
+    // Save flow changes into storage
+    startWatcher()
+  }
 })
 
 // Read and save the flow
@@ -96,18 +100,23 @@ import { liveQuery } from 'dexie'
 import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
 const { flows: storage } = storeToRefs(useFlowsStore())
-let watcher = () => {} // Stop the watcher for flow change
+let watcher: (() => void) | null = null // Stop the watcher for flow change
 function startWatcher() {
-  watcher = watch(
-    () => flow.toObject(),
-    (data) => {
-      storage.value!.put(data, flowID as never)
-    },
-    { deep: true, immediate: true }
-  )
+  if (!watcher) {
+    watcher = watch(
+      () => flow.toObject(),
+      (data) => {
+        storage.value!.put(data, flowID as never)
+      },
+      { deep: true, immediate: true }
+    )
+  }
 }
 function stopWatcher() {
-  watcher()
+  if (watcher) {
+    watcher()
+    watcher = null
+  }
   if (storage.value) {
     storage.value.delete(flowID as never)
   }
