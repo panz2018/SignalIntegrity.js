@@ -38,6 +38,7 @@ const { onDragOver, onDragLeave, onDrop } = useDnDStore()
 
 // Setup useVueFlow
 import { useVueFlow } from '@vue-flow/core'
+import type { FlowExportObject } from '@vue-flow/core'
 const { flowID } = defineProps({
   flowID: { type: Number, required: true }
 })
@@ -55,8 +56,9 @@ flow.onError((error: VueFlowError) => {
   }
 })
 
-// Save the flow
+// Read and save the flow
 import { watch } from 'vue'
+import { liveQuery } from 'dexie'
 import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
 const { flows: storage } = storeToRefs(useFlowsStore())
@@ -86,6 +88,30 @@ watch(
     }
   }
 )
+if (storage.value) {
+  const observable = liveQuery(() => storage.value!.get(flowID as never))
+  // Subscribe
+  const subscription = observable.subscribe({
+    next: (o) => {
+      if (o) {
+        // Read from storage to Vue-flow
+        flow.fromObject(o as FlowExportObject).then((status) => {
+          if (status) {
+            // Unsubscribe
+            subscription.unsubscribe()
+            // Start watcher for flow changes
+            startWatcher()
+          } else {
+            throw new Error(`Unable to load flow: ${JSON.stringify(o)}`)
+          }
+        })
+      }
+    },
+    error: (error) => {
+      throw error
+    }
+  })
+}
 
 // Setup panel for VueFlow
 import { Panel } from '@vue-flow/core'

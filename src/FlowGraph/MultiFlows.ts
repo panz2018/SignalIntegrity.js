@@ -5,7 +5,7 @@ import { useFlowsStore } from '@/FlowGraph/FlowsStore'
 export const useMultiFlows = defineStore('MultiFlows', () => {
   let index = 0
   const titles = ref<Record<number, string>>({})
-  const { titles: storage } = storeToRefs(useFlowsStore())
+  const storage = storeToRefs(useFlowsStore())
 
   // Current flow
   const current = ref<number>(0)
@@ -14,28 +14,28 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     watcherCurrent = watch(
       current,
       () => {
-        storage.value!.put(current.value, 'current' as any)
+        storage.titles.value!.put(current.value, 'current' as any)
       },
       { immediate: true }
     )
   }
   function stopWatcherCurrent() {
     watcherCurrent()
-    if (storage.value) {
-      storage.value.delete('current' as never)
+    if (storage.titles.value) {
+      storage.titles.value.delete('current' as never)
     }
   }
 
   // Initialize
   function init(): void {
-    if (storage.value === null) {
+    if (storage.titles.value === null) {
       if (Object.keys(titles.value).length === 0) {
         newFlow()
       }
     } else {
       // Read from storage
-      storage.value.get('current' as any).then((c) => {
-        storage
+      storage.titles.value.get('current' as any).then((c) => {
+        storage.titles
           .value!.toCollection()
           .primaryKeys()
           .then((keys) => {
@@ -45,12 +45,20 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
             const inds = Object.keys(keys).map((d) => parseInt(d))
             // Update index
             index = inds.length
-            // Read titles from storage
-            storage.value!.bulkGet(keys).then((array) => {
+            // Read flows from storage
+            storage.flows.value!.bulkGet(keys).then((array) => {
               // Clear storage
-              storage.value!.clear().then(() => {
+              storage.flows.value!.clear().then(() => {
                 // Update storage with new indexes
-                storage.value!.bulkAdd(array as never, inds)
+                storage.flows.value!.bulkAdd(array as never, inds)
+              })
+            })
+            // Read titles from storage
+            storage.titles.value!.bulkGet(keys).then((array) => {
+              // Clear storage
+              storage.titles.value!.clear().then(() => {
+                // Update storage with new indexes
+                storage.titles.value!.bulkAdd(array as never, inds)
               })
               // Assign data from stroage with update indexes to titles
               inds.forEach((k) => (titles.value[k] = array[k] as string))
@@ -78,8 +86,8 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     index += 1
 
     // Add new title into storage
-    if (storage.value !== null) {
-      storage.value.add(titles.value[current.value], current.value as any)
+    if (storage.titles.value !== null) {
+      storage.titles.value.add(titles.value[current.value], current.value as any)
     }
   }
 
@@ -96,14 +104,17 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     delete titles.value[id]
 
     // Remove id from storage
-    if (storage.value !== null) {
-      storage.value.delete(id as never)
+    if (storage.titles.value !== null) {
+      storage.titles.value.delete(id as never)
+    }
+    if (storage.flows.value !== null) {
+      storage.flows.value.delete(id as never)
     }
   }
 
   // Watch for IndexedDB table changes
   watch(
-    () => storage.value,
+    () => storage.titles.value,
     (value) => {
       if (value !== null) {
         // Watch for current.value changes
