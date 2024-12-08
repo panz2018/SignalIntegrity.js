@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { useAutolayout } from './AutoLayout'
 import { useVueFlow } from '@vue-flow/core'
+import { useAutolayout } from './AutoLayout'
 import { useMultiFlows } from '@/FlowGraph/MultiFlows'
 
 const app = createApp({})
