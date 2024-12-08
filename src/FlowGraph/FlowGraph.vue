@@ -178,7 +178,7 @@ import { MarkerType } from '@vue-flow/core'
 function testGraph() {
   flow.addNodes([
     {
-      id: '1',
+      id: 'A',
       type: 'input',
       sourcePosition: Position.Bottom,
       position: { x: 250, y: 0 },
@@ -186,7 +186,7 @@ function testGraph() {
       style: { color: 'white', backgroundColor: 'green', width: '100px', height: '50px' }
     },
     {
-      id: '2',
+      id: 'B',
       type: 'output',
       targetPosition: Position.Top,
       position: { x: 100, y: 100 },
@@ -196,7 +196,7 @@ function testGraph() {
       height: 60
     },
     {
-      id: '3',
+      id: 'C',
       type: 'default',
       targetPosition: Position.Top,
       sourcePosition: Position.Bottom,
@@ -204,7 +204,7 @@ function testGraph() {
       data: { label: 'Node 3' }
     },
     {
-      id: '4',
+      id: 'D',
       type: 'default',
       targetPosition: Position.Top,
       sourcePosition: Position.Bottom,
@@ -212,7 +212,7 @@ function testGraph() {
       data: { label: 'Node 4' }
     },
     {
-      id: '5',
+      id: 'E',
       type: 'output',
       targetPosition: Position.Top,
       position: { x: 300, y: 300 },
@@ -222,8 +222,8 @@ function testGraph() {
   flow.addEdges([
     {
       id: 'e1->2',
-      source: '1',
-      target: '2',
+      source: 'A',
+      target: 'B',
       type: 'default',
       label: undefined,
       markerEnd: undefined,
@@ -232,8 +232,8 @@ function testGraph() {
     },
     {
       id: 'e1->3',
-      source: '1',
-      target: '3',
+      source: 'A',
+      target: 'C',
       type: 'default',
       label: 'edge with arrowhead',
       markerEnd: MarkerType.ArrowClosed,
@@ -242,8 +242,8 @@ function testGraph() {
     },
     {
       id: 'e3-4',
-      source: '3',
-      target: '4',
+      source: 'C',
+      target: 'D',
       type: 'smoothstep',
       label: 'smoothstep-edge',
       markerEnd: undefined,
@@ -252,8 +252,8 @@ function testGraph() {
     },
     {
       id: 'e4-5',
-      source: '4',
-      target: '5',
+      source: 'D',
+      target: 'E',
       type: 'step',
       label: 'Node 2',
       markerEnd: undefined,

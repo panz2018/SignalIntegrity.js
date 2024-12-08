@@ -2,8 +2,8 @@
   <Dialog
     v-model:visible="visible"
     :maximizable="true"
-    append-to="self"
     position="bottom"
+    append-to="self"
     style="
       min-width: 400px;
       max-width: 100vw;
@@ -11,6 +11,7 @@
       max-height: 50vh;
       resize: both;
       overflow: auto;
+      border: 1px solid gray;
     "
   >
     <template #header>
