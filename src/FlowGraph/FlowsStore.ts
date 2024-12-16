@@ -2,6 +2,7 @@ import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import Dexie, { type EntityTable } from 'dexie'
 import { useAutoSaveStore } from './AutoSave/AutoSave'
+import events from '@/events'
 
 export const useFlowsStore = defineStore('Storage', () => {
   let database:
@@ -15,6 +16,10 @@ export const useFlowsStore = defineStore('Storage', () => {
 
   // Create IndexedDB table
   function create() {
+    // Update cursor to wait
+    events.emit('CursorWait')
+
+    // Create the database tables
     database = new Dexie('SignalIntegrity') as Dexie & {
       titles: EntityTable<string | number>
       flows: EntityTable<object>
@@ -27,6 +32,9 @@ export const useFlowsStore = defineStore('Storage', () => {
     // Update the table
     titles.value = database.titles
     flows.value = database.flows
+
+    // Update cursor to default
+    events.emit('CursorDefault')
   }
 
   // Remove IndexedDB table

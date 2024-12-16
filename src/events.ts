@@ -1,4 +1,4 @@
-const eventNames = ['Error'] as const
+const eventNames = ['Error', 'CursorWait', 'CursorDefault'] as const
 type EventName = (typeof eventNames)[number]
 
 class Events {

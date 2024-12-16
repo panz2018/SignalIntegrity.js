@@ -22,13 +22,15 @@
 </template>
 
 <script setup lang="ts">
-// Setup the VueFlow
+import { onMounted, watch } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
 import BackGround from './BackGround.vue'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
+import events from '@/events'
+
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
@@ -48,6 +50,14 @@ const flow = useVueFlow(flowID.toString())
 flow.snapToGrid.value = true // to enable snapping to grid
 flow.onConnect((connection) => {
   flow.addEdges(connection)
+})
+
+// Wait for ready
+onMounted(() => {
+  events.emit('CursorWait')
+})
+flow.onPaneReady(() => {
+  events.emit('CursorDefault')
 })
 
 // Handle errors
@@ -95,7 +105,6 @@ flow.onEdgesChange(async (changes) => {
 })
 
 // Read and save the flow
-import { watch } from 'vue'
 import { liveQuery } from 'dexie'
 import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
