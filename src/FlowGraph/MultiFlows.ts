@@ -5,7 +5,7 @@ import { useFlowsStore } from '@/FlowGraph/FlowsStore'
 export const useMultiFlows = defineStore('MultiFlows', () => {
   let index = 0
   const titles = ref<Record<number, string>>({})
-  const storage = storeToRefs(useFlowsStore())
+  const { storages } = useFlowsStore()
 
   // Current flow
   const current = ref<number>(0)
@@ -14,70 +14,70 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     watcherCurrent = watch(
       current,
       () => {
-        storage.titles.value!.put(current.value, 'current' as never)
+        storages.titles.put(current.value, 'current')
       },
       { immediate: true }
     )
   }
   function stopWatcherCurrent() {
     watcherCurrent()
-    if (storage.titles.value) {
-      storage.titles.value.delete('current' as never)
+    if (storages.titles.isnull) {
+      storages.titles.remove('current')
     }
   }
 
   // Initialize
   function init(): void {
-    if (storage.titles.value === null) {
+    if (storages.titles.isnull) {
       if (Object.keys(titles.value).length === 0) {
         newFlow()
       }
     } else {
       // Read from storage
-      storage.titles.value.get('current' as any).then((c) => {
-        storage.titles
-          .value!.toCollection()
-          .primaryKeys()
-          .then((keys) => {
-            // Read old indexes
-            keys = keys.filter((k) => k !== 'current')
-            // Generate new indexes
-            const inds = Object.keys(keys).map((d) => parseInt(d))
-            // Update index
-            index = inds.length
-            // Read flows from storage
-            storage.flows.value!.bulkGet(keys).then((array) => {
-              // Clear storage
-              storage.flows.value!.clear().then(() => {
-                // Update storage with new indexes
-                storage.flows.value!.bulkAdd(array as never, inds)
-              })
-            })
-            // Read titles from storage
-            storage.titles.value!.bulkGet(keys).then((array) => {
-              // Clear storage
-              storage.titles.value!.clear().then(() => {
-                // Update storage with new indexes
-                storage.titles.value!.bulkAdd(array as never, inds)
-              })
-              // Assign data from stroage with update indexes to titles
-              inds.forEach((k) => (titles.value[k] = array[k] as string))
-              if (c !== undefined) {
-                // Update current.value
-                current.value = inds[keys.indexOf(c as never)]
-              }
-              // If no titles, create a new one
-              if (inds.length === 0) {
-                newFlow()
-              }
-              // Watch for current.value changes
-              startWatcherCurrent()
+      storages.titles.get('current').then((c) => {
+        storages.titles.keys().then((keys) => {
+          // Read old indexes
+          const keysOld = keys.filter((k) => k !== 'current')
+          // Generate new indexes
+          const keysNew = Object.keys(keysOld).map((d) => parseInt(d))
+          // Update index
+          index = keysNew.length
+          // Read flows from storage
+          storages.flows.bulkGet(keysOld).then((array) => {
+            // Clear storage
+            storages.flows.clear().then(() => {
+              // Update storage with new indexes
+              storages.flows.bulkAdd(array, keysNew)
             })
           })
+          // Read titles from storage
+          storages.titles.bulkGet(keysOld).then((array) => {
+            // Clear storage
+            storages.titles.clear().then(() => {
+              // Update storage with new indexes
+              storages.titles.bulkAdd(array, keysNew)
+            })
+            // Assign data from stroage with update indexes to titles
+            keysNew.forEach((k) => (titles.value[k] = array[k] as string))
+            if (c !== undefined) {
+              // Update current.value
+              current.value = keysNew[keysOld.indexOf(c as never)]
+            }
+            // If no titles, create a new one
+            if (keysNew.length === 0) {
+              newFlow()
+            }
+            // Watch for current.value changes
+            startWatcherCurrent()
+          })
+        })
       })
     }
   }
   init()
+
+  // Remove storage
+  const storage = storeToRefs(useFlowsStore())
 
   function newFlow(): void {
     // Generate a new title
