@@ -39,12 +39,18 @@ export const useFlowsStore = defineStore('Storage', () => {
 
   // Remove IndexedDB table
   function remove() {
+    // Update cursor to wait
+    events.emit('CursorWait')
+
     if (database !== null) {
       database.close()
       database.delete()
       titles.value = null
       flows.value = null
     }
+
+    // Update cursor to default
+    events.emit('CursorDefault')
   }
 
   // Watch for AutoSave sate changes
