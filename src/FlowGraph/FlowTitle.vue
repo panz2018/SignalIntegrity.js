@@ -22,8 +22,6 @@
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
-// import { storeToRefs } from 'pinia'
-// import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
@@ -96,9 +94,8 @@ function cancel() {
 }
 
 // Event to hide input and show label
-import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
-const { titles: storage } = storeToRefs(useFlowsStore())
+const { storages } = useFlowsStore()
 function submit() {
   if (title.value.length > 0) {
     // Assign the title to previous
@@ -106,8 +103,8 @@ function submit() {
     // Close editor and show the label instead
     showLabel.value = true
     // Save title in IndexedDB
-    if (storage.value) {
-      storage.value.put(title.value, flowID as never)
+    if (!storages.titles.isnull) {
+      storages.titles.put(title.value, flowID)
     }
   } else {
     error()
