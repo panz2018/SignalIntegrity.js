@@ -76,9 +76,6 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
   }
   init()
 
-  // Remove storage
-  const storage = storeToRefs(useFlowsStore())
-
   function newFlow(): void {
     // Generate a new title
     titles.value[index] = `Flow-${index}`
@@ -86,8 +83,8 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     index += 1
 
     // Add new title into storage
-    if (storage.titles.value !== null) {
-      storage.titles.value.add(titles.value[current.value], current.value as any)
+    if (!storages.titles.isnull) {
+      storages.titles.add(titles.value[current.value], current.value)
     }
   }
 
@@ -104,25 +101,25 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     delete titles.value[id]
 
     // Remove id from storage
-    if (storage.titles.value !== null) {
-      storage.titles.value.delete(id as never)
+    if (!storages.titles.isnull) {
+      storages.titles.remove(id)
     }
-    if (storage.flows.value !== null) {
-      storage.flows.value.delete(id as never)
+    if (!storages.flows.isnull) {
+      storages.flows.remove(id)
     }
   }
 
   // Watch for IndexedDB table changes
   watch(
-    () => storage.titles.value,
+    () => storages.titles.isnull,
     (value) => {
-      if (value !== null) {
+      if (!value) {
         // Watch for current.value changes
         startWatcherCurrent()
         // Save titles into storage
         const keys = Object.keys(titles.value).map((d) => parseInt(d))
         const items = Object.values(titles.value)
-        value.bulkAdd(items, keys)
+        storages.titles.bulkAdd(items, keys)
       } else {
         // Stop watch for current.value changes
         stopWatcherCurrent()

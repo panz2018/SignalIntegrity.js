@@ -33,6 +33,20 @@ function useStorage<K, V>() {
     }
   }
 
+  async function add(item: V, key: K) {
+    if (table.value) {
+      // Update cursor to wait
+      events.emit('CursorWait')
+
+      return table.value.add(item as never, key as never).then(() => {
+        // Update cursor to default
+        events.emit('CursorDefault')
+      })
+    } else {
+      return Promise.reject(new Error('Table is not existed'))
+    }
+  }
+
   async function bulkAdd(items: (V | undefined)[], keys: K[]) {
     if (table.value) {
       // Update cursor to wait
@@ -127,7 +141,7 @@ function useStorage<K, V>() {
   }
 
   // Remove table from returned variables
-  return { isnull, init, destroy, put, bulkAdd, remove, clear, get, bulkGet, keys, table }
+  return { isnull, init, destroy, put, add, bulkAdd, remove, clear, get, bulkGet, keys, table }
 }
 
 export const useFlowsStore = defineStore('Storage', () => {
