@@ -80,7 +80,7 @@ flow.onNodesChange(async (changes) => {
   }
   flow.applyNodeChanges(nextChanges)
 
-  if (storage.value) {
+  if (!storages.flows.isnull) {
     // Save flow changes into storage
     startWatcher()
   }
@@ -98,7 +98,7 @@ flow.onEdgesChange(async (changes) => {
   }
   flow.applyEdgeChanges(nextChanges)
 
-  if (storage.value) {
+  if (!storages.flows.isnull) {
     // Save flow changes into storage
     startWatcher()
   }
@@ -106,16 +106,15 @@ flow.onEdgesChange(async (changes) => {
 
 // Read and save the flow
 import { liveQuery } from 'dexie'
-import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
-const { flows: storage } = storeToRefs(useFlowsStore())
+const { storages } = useFlowsStore()
 let watcher: (() => void) | null = null // Stop the watcher for flow change
 function startWatcher() {
   if (!watcher) {
     watcher = watch(
       () => flow.toObject(),
       (data) => {
-        storage.value!.put(data, flowID as never)
+        storages.flows.put(data, flowID)
       },
       { deep: true, immediate: true }
     )
@@ -126,22 +125,22 @@ function stopWatcher() {
     watcher()
     watcher = null
   }
-  if (storage.value) {
-    storage.value.delete(flowID as never)
+  if (!storages.flows.isnull) {
+    storages.flows.remove(flowID)
   }
 }
 watch(
-  () => storage.value,
-  (db) => {
-    if (db !== null) {
+  () => storages.flows.isnull,
+  (isnull) => {
+    if (!isnull) {
       startWatcher()
     } else {
       stopWatcher()
     }
   }
 )
-if (storage.value) {
-  const observable = liveQuery(() => storage.value!.get(flowID as never))
+if (!storages.flows.isnull) {
+  const observable = liveQuery(() => storages.flows.get(flowID))
   // Subscribe
   const subscription = observable.subscribe({
     next: (o) => {
