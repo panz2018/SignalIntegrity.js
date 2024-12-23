@@ -141,7 +141,7 @@ function useStorage<K, V>() {
   }
 
   // Remove table from returned variables
-  return { isnull, init, destroy, put, add, bulkAdd, remove, clear, get, bulkGet, keys, table }
+  return { isnull, init, destroy, put, add, bulkAdd, remove, clear, get, bulkGet, keys }
 }
 
 export const useFlowsStore = defineStore('Storage', () => {
@@ -209,9 +209,5 @@ export const useFlowsStore = defineStore('Storage', () => {
     { immediate: true }
   )
 
-  // Remove titles and flows
-  const titles = storages.titles.table
-  const flows = storages.flows.table
-
-  return { storages, titles, flows }
+  return { storages }
 })

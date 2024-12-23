@@ -21,7 +21,7 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
   }
   function stopWatcherCurrent() {
     watcherCurrent()
-    if (storages.titles.isnull) {
+    if (!storages.titles.isnull) {
       storages.titles.remove('current')
     }
   }
