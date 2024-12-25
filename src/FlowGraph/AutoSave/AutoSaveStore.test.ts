@@ -1,16 +1,15 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { createApp, nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { useAutoSaveStore } from './AutoSaveStore'
 
+// Set active pinia
+const app = createApp({})
+const pinia = createPinia()
+app.use(pinia)
+setActivePinia(pinia)
+
 describe('AutoSaveStore.ts', () => {
-  beforeEach(() => {
-    // Set active pinia
-    const app = createApp({})
-    const pinia = createPinia()
-    app.use(pinia)
-    setActivePinia(pinia)
-  })
   it('Valid', () => {
     expect(useAutoSaveStore).toBeTruthy()
   })
