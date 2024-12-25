@@ -25,29 +25,6 @@ events.on('Error', (...args) => {
 })
 
 // Cursor wait/default
-let waits = 0
-events.on('CursorWait', () => {
-  waits += 1
-  if (waits > 0) {
-    document.body.style.cursor = 'wait'
-    // Update cursor for FlowGraph
-    const panes = document.querySelectorAll('.vue-flow__pane')
-    panes.forEach((pane) => {
-      ;(pane as HTMLElement).style.cursor = 'wait'
-    })
-  }
-})
-events.on('CursorDefault', () => {
-  waits -= 1
-  if (waits <= 0) {
-    document.body.style.cursor = 'default'
-    // Update cursor for FlowGraph
-    const panes = document.querySelectorAll('.vue-flow__pane')
-    panes.forEach((pane) => {
-      ;(pane as HTMLElement).style.cursor = 'grab'
-    })
-  }
-})
 events.emit('CursorWait')
 onMounted(() => {
   events.emit('CursorDefault')
