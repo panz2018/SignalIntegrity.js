@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import Dexie, { type EntityTable } from 'dexie'
-import { useAutoSaveStore } from './AutoSave/AutoSave'
+import { useAutoSaveStore } from './AutoSave/AutoSaveStore'
 import events from '@/events'
 
 function useStorage<K, V>() {

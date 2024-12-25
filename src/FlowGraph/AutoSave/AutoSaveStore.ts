@@ -14,6 +14,8 @@ export const useAutoSaveStore = () => {
       const value = localStorage.getItem('AutoSave')
       if (value) {
         state.value = JSON.parse(value) === true ? true : false
+      } else {
+        state.value = null
       }
       // Watch for state changes and save to local storage
       watch(state, () => save())
@@ -23,6 +25,8 @@ export const useAutoSaveStore = () => {
       // Save to local storage
       if (state.value !== null) {
         localStorage.setItem('AutoSave', JSON.stringify(state.value))
+      } else {
+        localStorage.removeItem('AutoSave')
       }
     }
 

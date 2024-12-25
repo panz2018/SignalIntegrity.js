@@ -33,7 +33,7 @@ import Button from 'primevue/button'
 import Popover from 'primevue/popover'
 
 // Setup AutoSave state
-import { useAutoSaveStore } from './AutoSave'
+import { useAutoSaveStore } from './AutoSaveStore'
 const autosave = useAutoSaveStore()
 const tooltip = computed(() => {
   return autosave.state === true
