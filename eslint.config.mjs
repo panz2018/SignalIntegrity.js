@@ -2,10 +2,15 @@ import pluginVue from 'eslint-plugin-vue'
 import vueTsEslintConfig from '@vue/eslint-config-typescript'
 import pluginVitest from '@vitest/eslint-plugin'
 import pluginCypress from 'eslint-plugin-cypress/flat'
-import oxlint from 'eslint-plugin-oxlint'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default [
+  {
+    files: ['**/*.ts', '**/*.js', '**/*.test.ts', '**/*.test.js', '**/*.vue'],
+    rules: {
+      'no-unused-vars': ['error']
+    }
+  },
   {
     name: 'app/files-to-lint',
     files: ['**/*.{ts,mts,tsx,vue}']
@@ -42,6 +47,5 @@ export default [
     ...pluginCypress.configs.recommended,
     files: ['cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}', 'cypress/support/**/*.{js,ts,jsx,tsx}']
   },
-  oxlint.configs['flat/recommended'],
   skipFormatting
 ]

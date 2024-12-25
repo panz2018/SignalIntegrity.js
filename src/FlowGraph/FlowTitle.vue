@@ -1,21 +1,21 @@
 <template>
   <div class="container">
-    <span ref="label" v-show="showLabel" @click="onEdit">{{ title }}</span>
+    <span v-show="showLabel" ref="label" @click="onEdit">{{ title }}</span>
     <input
-      ref="input"
       v-show="!showLabel"
+      ref="input"
       v-model="title"
-      @keyup.enter="submit"
-      @keyup.esc="cancel"
       type="text"
       class="input"
+      @keyup.enter="submit"
+      @keyup.esc="cancel"
     />
     <Button
       v-show="focused"
-      icon="pi pi-times-circle"
-      @click.stop="onClose"
       v-tooltip.bottom="'Close'"
+      icon="pi pi-times-circle"
       class="button"
+      @click.stop="onClose"
     />
   </div>
 </template>

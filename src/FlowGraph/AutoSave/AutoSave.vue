@@ -1,5 +1,5 @@
 <template>
-  <Button v-ripple id="button" v-tooltip.bottom="tooltip" @click="autosave.toggle" outlined>
+  <Button id="button" v-ripple v-tooltip.bottom="tooltip" outlined @click="autosave.toggle">
     <svg v-show="autosave.state === true" viewBox="0 0 20 20">
       <path
         d="M3 5a2 2 0 0 1 2-2h1v3.5A1.5 1.5 0 0 0 7.5 8h4A1.5 1.5 0 0 0 13 6.5V3h.379a2 2 0 0 1 1.414.586l1.621 1.621A2 2 0 0 1 17 6.621V9.6c-.75-.384-1.6-.6-2.5-.6c-1.177 0-2.268.37-3.163 1H6.5A1.5 1.5 0 0 0 5 11.5V17a2 2 0 0 1-2-2V5zm6 9.5c0-1.33.472-2.55 1.257-3.5H6.5a.5.5 0 0 0-.5.5V17h3.6c-.384-.75-.6-1.6-.6-2.5zM12 3H7v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5V3zm-2 11.5a4.5 4.5 0 1 0 9 0a4.5 4.5 0 0 0-9 0zm6.5-3a.5.5 0 0 1 .5.5v1.5a.5.5 0 0 1-.5.5H15a.5.5 0 0 1 0-1h.468a1.999 1.999 0 0 0-2.383.336a.5.5 0 0 1-.706-.707A3.001 3.001 0 0 1 16 12.152V12a.5.5 0 0 1 .5-.5zm-.876 5.532A2.999 2.999 0 0 1 13 16.848V17a.5.5 0 0 1-1 0v-1.5a.5.5 0 0 1 .5-.5H14a.5.5 0 0 1 0 1h-.468a1.999 1.999 0 0 0 2.383-.336a.5.5 0 0 1 .706.707c-.284.285-.624.51-.997.66z"
@@ -16,13 +16,13 @@
   <Popover
     ref="popover"
     :dismissable="false"
-    appendTo="self"
+    append-to="self"
     style="--p-popover-border-color: gray"
   >
     Would you like to automatically save flows in your local browser?
     <div style="display: flex; justify-content: end">
-      <Button label="No" @click="onClickNo" severity="secondary" />
-      <Button label="Yes" @click="onClickYes" severity="success" />
+      <Button label="No" severity="secondary" @click="onClickNo" />
+      <Button label="Yes" severity="success" @click="onClickYes" />
     </div>
   </Popover>
 </template>

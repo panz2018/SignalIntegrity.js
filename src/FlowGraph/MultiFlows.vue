@@ -2,7 +2,7 @@
   <Tabs v-model:value="flows.current" scrollable>
     <TabList>
       <Tab v-for="key in Object.keys(flows.titles).map((d) => parseInt(d))" :key="key" :value="key">
-        <FlowTitle :flowID="key" v-model="flows.titles[key]" :focused="flows.current === key" />
+        <FlowTitle v-model="flows.titles[key]" :flowID="key" :focused="flows.current === key" />
       </Tab>
     </TabList>
     <TabPanels>

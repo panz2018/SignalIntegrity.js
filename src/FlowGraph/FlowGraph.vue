@@ -4,10 +4,10 @@
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.1"
     :max-zoom="10"
+    :apply-default="false"
     @dragover="onDragOver"
     @dragleave="onDragLeave"
     @drop="onDrop"
-    :apply-default="false"
   >
     <BackGround />
     <ToolBar />
