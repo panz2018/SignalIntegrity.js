@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
 
 export const useMultiFlows = defineStore('MultiFlows', () => {

@@ -123,7 +123,7 @@ window.addEventListener('click', (event) => {
 })
 
 // Close the flow
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 const flows = useMultiFlows()
 function onClose() {
   flows.closeFlow(flowID)

@@ -1,5 +1,5 @@
 import { useVueFlow } from '@vue-flow/core'
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 export default {
   label: 'Zoom In',

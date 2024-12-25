@@ -27,7 +27,7 @@ import FlowGraph from './FlowGraph.vue'
 import FlowTitle from './FlowTitle.vue'
 
 // Setup tabs
-import { useMultiFlows } from './MultiFlows'
+import { useMultiFlows } from './MultiFlowsStore'
 const flows = useMultiFlows()
 </script>
 

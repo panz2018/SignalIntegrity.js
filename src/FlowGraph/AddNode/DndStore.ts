@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
 import type { Node } from '@vue-flow/core'
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 type NodeType = null | 'input' | 'default' | 'output'
 

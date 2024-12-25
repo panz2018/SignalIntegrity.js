@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { useMultiFlows } from './MultiFlows'
+import { useMultiFlows } from './MultiFlowsStore'
 
 const app = createApp({})
 app.use(createPinia())

@@ -12,7 +12,7 @@ import fitview from './FitView'
 // Fit viewport
 import { storeToRefs } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 const { current } = storeToRefs(useMultiFlows())
 const flow = useVueFlow(current.value.toString())
