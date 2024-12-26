@@ -185,10 +185,11 @@ export const useFlowsStore = defineStore('Storage', () => {
     events.emit('CursorWait')
 
     if (database !== null) {
-      database.close()
-      database.delete()
+      database.close({ disableAutoOpen: false })
+      database.delete({ disableAutoOpen: false })
       storages.titles.destroy()
       storages.flows.destroy()
+      database = null
     }
 
     // Update cursor to default
