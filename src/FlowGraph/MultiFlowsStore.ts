@@ -14,7 +14,9 @@ export const useMultiFlows = defineStore('MultiFlows', () => {
     watcherCurrent = watch(
       current,
       () => {
-        storages.titles.put(current.value, 'current')
+        if (!storages.titles.isnull) {
+          storages.titles.put(current.value, 'current')
+        }
       },
       { immediate: true }
     )
