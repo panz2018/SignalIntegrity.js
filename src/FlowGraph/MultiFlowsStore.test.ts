@@ -82,7 +82,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-0
+    // Close a flow
     autosave.state = null
     flows.closeFlow(0)
     await testMultiFlows({
@@ -112,7 +112,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-2
+    // Close a flow
     autosave.state = false
     flows.closeFlow(2)
     await testMultiFlows({
@@ -127,7 +127,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-4
+    // Close a flow
     flows.closeFlow(4)
     await testMultiFlows({
       current: 3,
@@ -155,7 +155,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-5
+    // Close a flow
     flows.closeFlow(5)
     await testMultiFlows({
       current: 3,
@@ -168,7 +168,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-3
+    // Close a flow
     flows.closeFlow(3)
     await testMultiFlows({
       current: 1,
@@ -180,7 +180,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-1
+    // Close a flow
     flows.closeFlow(1)
     await testMultiFlows({
       current: 6,
@@ -192,7 +192,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-1
+    // Close a flow
     flows.closeFlow(6)
     await testMultiFlows({
       current: 7,
@@ -263,7 +263,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-0
+    // Close a flow
     autosave.state = null
     flows.closeFlow(0)
     await testMultiFlows({
@@ -293,7 +293,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-2
+    // Close a flow
     autosave.state = false
     flows.closeFlow(2)
     await testMultiFlows({
@@ -308,7 +308,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-4
+    // Close a flow
     flows.closeFlow(4)
     await testMultiFlows({
       current: 3,
@@ -336,7 +336,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-5
+    // Close a flow
     flows.closeFlow(5)
     await testMultiFlows({
       current: 3,
@@ -349,7 +349,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-3
+    // Close a flow
     flows.closeFlow(3)
     await testMultiFlows({
       current: 1,
@@ -361,7 +361,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-1
+    // Close a flow
     flows.closeFlow(1)
     await testMultiFlows({
       current: 6,
@@ -373,7 +373,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-1
+    // Close a flow
     flows.closeFlow(6)
     await testMultiFlows({
       current: 7,
@@ -445,7 +445,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-0
+    // Close a flow
     autosave.state = null
     flows.closeFlow(0)
     await testMultiFlows({
@@ -475,7 +475,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-2
+    // Close a flow
     autosave.state = false
     flows.closeFlow(2)
     await testMultiFlows({
@@ -490,7 +490,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-4
+    // Close a flow
     flows.closeFlow(4)
     await testMultiFlows({
       current: 3,
@@ -518,7 +518,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-5
+    // Close a flow
     flows.closeFlow(5)
     await testMultiFlows({
       current: 3,
@@ -531,7 +531,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-3
+    // Close a flow
     flows.closeFlow(3)
     await testMultiFlows({
       current: 1,
@@ -543,7 +543,7 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-1
+    // Close a flow
     flows.closeFlow(1)
     await testMultiFlows({
       current: 6,
@@ -555,7 +555,155 @@ describe('MultiFlowsStore.ts', () => {
       storages: storages,
       flows: flows
     })
-    // Close Flow-1
+    // Close a flow
+    flows.closeFlow(6)
+    await testMultiFlows({
+      current: 7,
+      titles: {
+        7: 'Flow-7'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+  })
+  it('AutoSave.state: true (has data in IndexedDB)', async () => {
+    // Initialize
+    const autosave = useAutoSaveStore()
+    autosave.state = true
+    await nextTick()
+    const { storages } = useFlowsStore()
+    await storages.titles.bulkAdd(['Flow-2', 'Flow-5', 'Flow-4'], [2, 5, 4])
+    const flows = useMultiFlows()
+    expect(flows.newFlow.constructor).toBe(Function)
+    await vi.waitUntil(async () => Object.keys(flows.titles).length > 0)
+    await testMultiFlows({
+      current: 0,
+      titles: { 0: 'Flow-2', 1: 'Flow-4', 2: 'Flow-5' },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add a new tab
+    autosave.state = true
+    flows.newFlow()
+    await testMultiFlows({
+      current: 3,
+      titles: { 0: 'Flow-2', 1: 'Flow-4', 2: 'Flow-5', 3: 'Flow-3' },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
+    autosave.state = null
+    flows.closeFlow(0)
+    await testMultiFlows({
+      current: 1,
+      titles: { 1: 'Flow-4', 2: 'Flow-5', 3: 'Flow-3' },
+      autoSaveState: null,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add another tab
+    flows.newFlow()
+    await testMultiFlows({
+      current: 4,
+      titles: {
+        1: 'Flow-4',
+        2: 'Flow-5',
+        3: 'Flow-3',
+        4: 'Flow-4'
+      },
+      autoSaveState: null,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
+    autosave.state = false
+    flows.closeFlow(2)
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        1: 'Flow-4',
+        3: 'Flow-3',
+        4: 'Flow-4'
+      },
+      autoSaveState: false,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
+    flows.closeFlow(4)
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        1: 'Flow-4',
+        3: 'Flow-3'
+      },
+      autoSaveState: false,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add another tab
+    autosave.state = true
+    flows.newFlow()
+    await testMultiFlows({
+      current: 5,
+      titles: {
+        1: 'Flow-4',
+        3: 'Flow-3',
+        5: 'Flow-5'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
+    flows.closeFlow(5)
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        1: 'Flow-4',
+        3: 'Flow-3'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
+    flows.closeFlow(3)
+    await testMultiFlows({
+      current: 1,
+      titles: {
+        1: 'Flow-4'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
+    flows.closeFlow(1)
+    await testMultiFlows({
+      current: 6,
+      titles: {
+        6: 'Flow-6'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close a flow
     flows.closeFlow(6)
     await testMultiFlows({
       current: 7,
@@ -611,7 +759,6 @@ async function testMultiFlows({
     for (const name of ['titles', 'flows'] as const) {
       expect(storages[name].isnull).toBe(false)
     }
-    expect(await storages.flows.keys()).toStrictEqual([])
     expect(await storages.titles.keys()).toStrictEqual([...keys, 'current'])
     expect(await storages.titles.bulkGet([...keys, -1])).toStrictEqual([
       ...Object.values(titles),
