@@ -4,6 +4,75 @@ import Dexie, { type EntityTable } from 'dexie'
 import { useAutoSaveStore } from './AutoSave/AutoSaveStore'
 import events from '@/events'
 
+export const useFlowsStore = defineStore('Storage', () => {
+  let database:
+    | (Dexie & {
+        titles: EntityTable<string | number>
+        flows: EntityTable<object>
+      })
+    | null = null
+  const storages = {
+    titles: useStorage<string | number, string | number>(),
+    flows: useStorage<number, object>()
+  }
+
+  // Create IndexedDB table
+  function create() {
+    // Update cursor to wait
+    events.emit('CursorWait')
+
+    // Create the database tables
+    database = new Dexie('SignalIntegrity') as Dexie & {
+      titles: EntityTable<string | number>
+      flows: EntityTable<object>
+    }
+    database.version(1 / 10).stores({
+      titles: '',
+      flows: ''
+    })
+    database.open()
+    // Update the table
+    storages.titles.init(database.titles)
+    storages.flows.init(database.flows)
+
+    // Update cursor to default
+    events.emit('CursorDefault')
+  }
+
+  // Destroy IndexedDB table
+  function destroy() {
+    // Update cursor to wait
+    events.emit('CursorWait')
+
+    if (database !== null) {
+      database.close({ disableAutoOpen: false })
+      database.delete({ disableAutoOpen: false })
+      storages.titles.destroy()
+      storages.flows.destroy()
+      database = null
+    }
+
+    // Update cursor to default
+    events.emit('CursorDefault')
+  }
+
+  // Watch for AutoSave sate changes
+  const autosave = useAutoSaveStore()
+  watch(
+    () => autosave.state,
+    (value) => {
+      if (value === true) {
+        create()
+      } else {
+        destroy()
+      }
+    },
+    { immediate: true }
+  )
+
+  return { storages }
+})
+
 function useStorage<K, V>() {
   const table = ref<EntityTable<V> | null>(null)
 
@@ -143,72 +212,3 @@ function useStorage<K, V>() {
   // Remove table from returned variables
   return { isnull, init, destroy, put, add, bulkAdd, remove, clear, get, bulkGet, keys }
 }
-
-export const useFlowsStore = defineStore('Storage', () => {
-  let database:
-    | (Dexie & {
-        titles: EntityTable<string | number>
-        flows: EntityTable<object>
-      })
-    | null = null
-  const storages = {
-    titles: useStorage<string | number, string | number>(),
-    flows: useStorage<number, object>()
-  }
-
-  // Create IndexedDB table
-  function create() {
-    // Update cursor to wait
-    events.emit('CursorWait')
-
-    // Create the database tables
-    database = new Dexie('SignalIntegrity') as Dexie & {
-      titles: EntityTable<string | number>
-      flows: EntityTable<object>
-    }
-    database.version(1 / 10).stores({
-      titles: '',
-      flows: ''
-    })
-    database.open()
-    // Update the table
-    storages.titles.init(database.titles)
-    storages.flows.init(database.flows)
-
-    // Update cursor to default
-    events.emit('CursorDefault')
-  }
-
-  // Destroy IndexedDB table
-  function destroy() {
-    // Update cursor to wait
-    events.emit('CursorWait')
-
-    if (database !== null) {
-      database.close({ disableAutoOpen: false })
-      database.delete({ disableAutoOpen: false })
-      storages.titles.destroy()
-      storages.flows.destroy()
-      database = null
-    }
-
-    // Update cursor to default
-    events.emit('CursorDefault')
-  }
-
-  // Watch for AutoSave sate changes
-  const autosave = useAutoSaveStore()
-  watch(
-    () => autosave.state,
-    (value) => {
-      if (value === true) {
-        create()
-      } else {
-        destroy()
-      }
-    },
-    { immediate: true }
-  )
-
-  return { storages }
-})

@@ -1,5 +1,5 @@
 import 'fake-indexeddb/auto'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { Dexie } from 'dexie'
@@ -8,11 +8,10 @@ import { useMultiFlows } from './MultiFlowsStore'
 import { useFlowsStore } from './FlowsStore'
 import { useAutoSaveStore } from './AutoSave/AutoSaveStore'
 
-// Set Vue App
-const app = createApp({})
-
 describe('MultiFlowsStore.ts', () => {
   beforeEach(() => {
+    // Set Vue App
+    const app = createApp({})
     // Clearn pinia
     const pinia = createPinia()
     app.use(pinia)
@@ -218,6 +217,188 @@ describe('MultiFlowsStore.ts', () => {
       current: 0,
       titles: { 0: 'Flow-0' },
       autoSaveState: false,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add a new tab
+    autosave.state = true
+    flows.newFlow()
+    await testMultiFlows({
+      current: 1,
+      titles: { 0: 'Flow-0', 1: 'Flow-1' },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add another tab
+    autosave.state = false
+    flows.newFlow()
+    await testMultiFlows({
+      current: 2,
+      titles: {
+        0: 'Flow-0',
+        1: 'Flow-1',
+        2: 'Flow-2'
+      },
+      autoSaveState: false,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add another tab
+    autosave.state = true
+    flows.newFlow()
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        0: 'Flow-0',
+        1: 'Flow-1',
+        2: 'Flow-2',
+        3: 'Flow-3'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-0
+    autosave.state = null
+    flows.closeFlow(0)
+    await testMultiFlows({
+      current: 1,
+      titles: {
+        1: 'Flow-1',
+        2: 'Flow-2',
+        3: 'Flow-3'
+      },
+      autoSaveState: null,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add another tab
+    flows.newFlow()
+    await testMultiFlows({
+      current: 4,
+      titles: {
+        1: 'Flow-1',
+        2: 'Flow-2',
+        3: 'Flow-3',
+        4: 'Flow-4'
+      },
+      autoSaveState: null,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-2
+    autosave.state = false
+    flows.closeFlow(2)
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        1: 'Flow-1',
+        3: 'Flow-3',
+        4: 'Flow-4'
+      },
+      autoSaveState: false,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-4
+    flows.closeFlow(4)
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        1: 'Flow-1',
+        3: 'Flow-3'
+      },
+      autoSaveState: false,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Add another tab
+    autosave.state = true
+    flows.newFlow()
+    await testMultiFlows({
+      current: 5,
+      titles: {
+        1: 'Flow-1',
+        3: 'Flow-3',
+        5: 'Flow-5'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-5
+    flows.closeFlow(5)
+    await testMultiFlows({
+      current: 3,
+      titles: {
+        1: 'Flow-1',
+        3: 'Flow-3'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-3
+    flows.closeFlow(3)
+    await testMultiFlows({
+      current: 1,
+      titles: {
+        1: 'Flow-1'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-1
+    flows.closeFlow(1)
+    await testMultiFlows({
+      current: 6,
+      titles: {
+        6: 'Flow-6'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+    // Close Flow-1
+    flows.closeFlow(6)
+    await testMultiFlows({
+      current: 7,
+      titles: {
+        7: 'Flow-7'
+      },
+      autoSaveState: true,
+      autosave: autosave,
+      storages: storages,
+      flows: flows
+    })
+  })
+  it('AutoSave.state: true (no data in IndexedDB)', async () => {
+    // Initialize
+    const autosave = useAutoSaveStore()
+    autosave.state = true
+    await nextTick()
+    const { storages } = useFlowsStore()
+    const flows = useMultiFlows()
+    expect(flows.newFlow.constructor).toBe(Function)
+    await vi.waitUntil(async () => Object.keys(flows.titles).length > 0)
+    await testMultiFlows({
+      current: 0,
+      titles: { 0: 'Flow-0' },
+      autoSaveState: true,
       autosave: autosave,
       storages: storages,
       flows: flows
