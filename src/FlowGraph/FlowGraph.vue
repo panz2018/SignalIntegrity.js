@@ -4,10 +4,10 @@
     :default-viewport="{ zoom: 1.0 }"
     :min-zoom="0.1"
     :max-zoom="10"
+    :apply-default="false"
     @dragover="onDragOver"
     @dragleave="onDragLeave"
     @drop="onDrop"
-    :apply-default="false"
   >
     <BackGround />
     <ToolBar />
@@ -22,13 +22,15 @@
 </template>
 
 <script setup lang="ts">
-// Setup the VueFlow
+import { onMounted, watch } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
 import BackGround from './BackGround.vue'
 import ToolBar from './ToolBar/ToolBar.vue'
 import NavigationMap from './NavigationMap/NavigationMap.vue'
+import events from '@/events'
+
 // Dark/Bright theme
 import { useThemeStore } from '@/MenuBar/Theme/theme'
 const theme = useThemeStore()
@@ -48,6 +50,14 @@ const flow = useVueFlow(flowID.toString())
 flow.snapToGrid.value = true // to enable snapping to grid
 flow.onConnect((connection) => {
   flow.addEdges(connection)
+})
+
+// Wait for ready
+onMounted(() => {
+  events.emit('CursorWait')
+})
+flow.onPaneReady(() => {
+  events.emit('CursorDefault')
 })
 
 // Handle errors
@@ -70,7 +80,7 @@ flow.onNodesChange(async (changes) => {
   }
   flow.applyNodeChanges(nextChanges)
 
-  if (storage.value) {
+  if (!storages.flows.isnull) {
     // Save flow changes into storage
     startWatcher()
   }
@@ -88,25 +98,23 @@ flow.onEdgesChange(async (changes) => {
   }
   flow.applyEdgeChanges(nextChanges)
 
-  if (storage.value) {
+  if (!storages.flows.isnull) {
     // Save flow changes into storage
     startWatcher()
   }
 })
 
 // Read and save the flow
-import { watch } from 'vue'
 import { liveQuery } from 'dexie'
-import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
-const { flows: storage } = storeToRefs(useFlowsStore())
+const { storages } = useFlowsStore()
 let watcher: (() => void) | null = null // Stop the watcher for flow change
 function startWatcher() {
   if (!watcher) {
     watcher = watch(
       () => flow.toObject(),
       (data) => {
-        storage.value!.put(data, flowID as never)
+        storages.flows.put(data, flowID)
       },
       { deep: true, immediate: true }
     )
@@ -117,22 +125,22 @@ function stopWatcher() {
     watcher()
     watcher = null
   }
-  if (storage.value) {
-    storage.value.delete(flowID as never)
+  if (!storages.flows.isnull) {
+    storages.flows.remove(flowID)
   }
 }
 watch(
-  () => storage.value,
-  (db) => {
-    if (db !== null) {
+  () => storages.flows.isnull,
+  (isnull) => {
+    if (!isnull) {
       startWatcher()
     } else {
       stopWatcher()
     }
   }
 )
-if (storage.value) {
-  const observable = liveQuery(() => storage.value!.get(flowID as never))
+if (!storages.flows.isnull) {
+  const observable = liveQuery(() => storages.flows.get(flowID))
   // Subscribe
   const subscription = observable.subscribe({
     next: (o) => {

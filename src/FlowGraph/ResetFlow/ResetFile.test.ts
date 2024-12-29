@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { useResetFlow } from './ResetFlow'
 import { useVueFlow } from '@vue-flow/core'
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 const app = createApp({})
 app.use(createPinia())

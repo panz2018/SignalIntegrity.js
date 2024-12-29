@@ -1,4 +1,4 @@
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 export const useNewfile = () => {
   const flows = useMultiFlows()

@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 import { type Ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { useVueFlow } from '@vue-flow/core'
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 export const useModificationStore = () => {
   const innerStore = defineStore('modification', () => {

@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import dagre from '@dagrejs/dagre'
 import { Position, useVueFlow } from '@vue-flow/core'
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 
 type Direction = 'LR' | 'RL' | 'TB' | 'BT'
 

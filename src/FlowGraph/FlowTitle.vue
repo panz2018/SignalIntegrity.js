@@ -1,29 +1,27 @@
 <template>
   <div class="container">
-    <span ref="label" v-show="showLabel" @click="onEdit">{{ title }}</span>
+    <span v-show="showLabel" ref="label" @click="onEdit">{{ title }}</span>
     <input
-      ref="input"
       v-show="!showLabel"
+      ref="input"
       v-model="title"
-      @keyup.enter="submit"
-      @keyup.esc="cancel"
       type="text"
       class="input"
+      @keyup.enter="submit"
+      @keyup.esc="cancel"
     />
     <Button
       v-show="focused"
-      icon="pi pi-times-circle"
-      @click.stop="onClose"
       v-tooltip.bottom="'Close'"
+      icon="pi pi-times-circle"
       class="button"
+      @click.stop="onClose"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
-// import { storeToRefs } from 'pinia'
-// import { useStorage } from '@/FlowGraph/AutoSave/Storage'
 import Button from 'primevue/button'
 import events from '@/events'
 const title = defineModel({ type: String, required: true })
@@ -96,9 +94,8 @@ function cancel() {
 }
 
 // Event to hide input and show label
-import { storeToRefs } from 'pinia'
 import { useFlowsStore } from '@/FlowGraph/FlowsStore'
-const { titles: storage } = storeToRefs(useFlowsStore())
+const { storages } = useFlowsStore()
 function submit() {
   if (title.value.length > 0) {
     // Assign the title to previous
@@ -106,8 +103,8 @@ function submit() {
     // Close editor and show the label instead
     showLabel.value = true
     // Save title in IndexedDB
-    if (storage.value) {
-      storage.value.put(title.value, flowID as never)
+    if (!storages.titles.isnull) {
+      storages.titles.put(title.value, flowID)
     }
   } else {
     error()
@@ -126,7 +123,7 @@ window.addEventListener('click', (event) => {
 })
 
 // Close the flow
-import { useMultiFlows } from '@/FlowGraph/MultiFlows'
+import { useMultiFlows } from '@/FlowGraph/MultiFlowsStore'
 const flows = useMultiFlows()
 function onClose() {
   flows.closeFlow(flowID)
