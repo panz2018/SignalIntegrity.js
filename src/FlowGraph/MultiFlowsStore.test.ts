@@ -1,7 +1,7 @@
-import 'fake-indexeddb/auto'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
+import 'fake-indexeddb/auto'
 import { Dexie } from 'dexie'
 import { IDBFactory } from 'fake-indexeddb'
 import { useMultiFlows } from './MultiFlowsStore'
