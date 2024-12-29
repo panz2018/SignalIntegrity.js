@@ -14,7 +14,7 @@ class Events {
     if (this.listeners[eventName].size > 0) {
       this.listeners[eventName].forEach((listener) => listener(...args))
     } else {
-      throw new Error(`No function is registered for event "${eventName}: ${args}"`)
+      throw new Error(`No function is registered for event "${eventName}: ${JSON.stringify(args)}"`)
     }
   }
 }
